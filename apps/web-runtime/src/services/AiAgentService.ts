@@ -16,6 +16,136 @@ export interface ChatMessage {
   }>;
 }
 
+/**
+ * Declarative Mutation State: Strictly defined Owner Tools validated via Zod
+ * Changes only local scene state / emits DOM events to ensure agent cannot break code.
+ */
+export const ownerTools = {
+  // Tool 1: Update Zone SLA / Rules
+  updateZoneRule: {
+    description: "Изменяет порог ожидания клиента или интервалы мастера для конкретной комнаты",
+    parameters: z.object({
+      zoneId: z.enum([
+        "reception",
+        "waiting_lounge",
+        "suite_aromatherapy",
+        "suite_onsen",
+        "suite_double_massage"
+      ]).describe("Target zone identifier"),
+      maxWaitMinutes: z.number().min(1).max(120).optional().describe("Maximum allowed wait time in minutes"),
+      alertThresholdMinutes: z.number().min(1).max(120).optional().describe("Threshold in minutes before warning steam and voice alert triggers")
+    }),
+    execute: async (args: { zoneId: string; maxWaitMinutes?: number; alertThresholdMinutes?: number }) => {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("spatialtwin:update_rule", {
+          detail: args
+        }));
+      }
+      spatialRuntimeDispatcher.handleUpdateRule(args);
+      return `Правила для зоны [${args.zoneId}] успешно обновлены. Alert: ${args.alertThresholdMinutes ?? "n/a"}m, max wait: ${args.maxWaitMinutes ?? "n/a"}m.`;
+    }
+  },
+
+  // Tool 2: Bind Data Stream / Telemetry
+  bindDataSource: {
+    description: "Связывает мебель или комнату с колонкой в таблице или ключом CRM",
+    parameters: z.object({
+      zoneId: z.enum([
+        "reception",
+        "waiting_lounge",
+        "suite_aromatherapy",
+        "suite_onsen",
+        "suite_double_massage"
+      ]).describe("Target zone identifier"),
+      sourceType: z.enum(["google_sheets", "telegram", "moysklad", "yclients"]).describe("Data source type"),
+      targetField: z.string().describe("Column or key name (e.g. 'Sheet1!F12', 'status_visit')")
+    }),
+    execute: async (args: { zoneId: any; sourceType: any; targetField: string }) => {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("spatialtwin:bind_stream", {
+          detail: args
+        }));
+      }
+      spatialRuntimeDispatcher.handleBindStream(args);
+      return `Зона [${args.zoneId}] теперь слушает ${args.sourceType} (${args.targetField}). Telemetry stream online.`;
+    }
+  },
+
+  // Tool 3: Toggle Interior Furniture Item
+  toggleFurnitureItem: {
+    description: "Включение/выключение объектов в интерьере из разрешенного списка",
+    parameters: z.object({
+      zoneId: z.enum([
+        "reception",
+        "waiting_lounge",
+        "suite_aromatherapy",
+        "suite_onsen",
+        "suite_double_massage"
+      ]),
+      itemType: z.enum([
+        "aromatherapy_diffuser",
+        "onsen_heater",
+        "ambient_lantern",
+        "tea_table",
+        "sakura_vase"
+      ]).describe("Furniture item type"),
+      enabled: z.boolean().describe("true to turn ON, false to turn OFF")
+    }),
+    execute: async (args: { zoneId: any; itemType: any; enabled: boolean }) => {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("spatialtwin:toggle_furniture", {
+          detail: args
+        }));
+      }
+      spatialRuntimeDispatcher.handleToggleFurniture(args);
+      return `Элемент [${args.itemType}] в зоне [${args.zoneId}] переведен в режим ${args.enabled ? "ВКЛЮЧЕН" : "ВЫКЛЮЧЕН"}.`;
+    }
+  },
+
+  // Tool 4: Query Salon Revenue and Live Metrics
+  querySalonMetrics: {
+    description: "Запрос финансовой выручки за сегодня, процента загрузки залов и количества сеансов",
+    parameters: z.object({
+      metric: z.enum(["all", "revenue", "occupancy", "sessions"]).optional().describe("Metric category filter")
+    }),
+    execute: async () => {
+      const stats = spatialRuntimeDispatcher.querySalonRevenue();
+      return stats.formattedText;
+    }
+  },
+
+  // Tool 5: Send Staff on Break to Tea Lounge
+  sendStaffOnBreak: {
+    description: "Отправляет терапевта/мастера на запланированный чайный перерыв в зону ожидания",
+    parameters: z.object({
+      staffId: z.string().default("master_somchai").describe("Staff ID (master_somchai, master_ken, therapist_yuki)"),
+      durationMinutes: z.number().default(15).describe("Break duration in minutes")
+    }),
+    execute: async (args: { staffId?: string; durationMinutes?: number }) => {
+      const res = spatialRuntimeDispatcher.sendStaffOnBreak(args.staffId || "master_somchai", args.durationMinutes || 15);
+      return res.message;
+    }
+  },
+
+  // Tool 6: Trigger SLA Violation Voice Alert (Reception Concierge)
+  triggerSlaVoiceAlert: {
+    description: "Запуск голосового оповещения и частиц предупреждения при задержке гостя в зоне ожидания",
+    parameters: z.object({
+      zoneId: z.string().default("waiting_lounge"),
+      minutes: z.number().default(20)
+    }),
+    execute: async (args: { zoneId?: string; minutes?: number }) => {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("spatialtwin:sla_alert", {
+          detail: args
+        }));
+      }
+      spatialRuntimeDispatcher.triggerSlaViolationAlert(args.zoneId || "waiting_lounge", args.minutes || 20);
+      return `Голосовой алерт на ${args.minutes || 20}m задержки запущен администратором.`;
+    }
+  }
+};
+
 export class AiAgentService {
   private static instance: AiAgentService;
 
@@ -65,115 +195,18 @@ export class AiAgentService {
   }
 
   /**
-   * Declarative Mutation State: Strictly defined Owner Tools validated via Zod
+   * Adapts ownerTools into Vercel AI SDK executable tools
    */
   public getOwnerTools() {
-    const createTool = tool as any;
-    return {
-      // Tool 1: Update Zone SLA / Rules
-      updateZoneRule: createTool({
-        description: "Updates guest waiting SLA limits and alert triggers for a specific salon zone",
-        parameters: z.object({
-          zoneId: z.enum([
-            "reception",
-            "waiting_lounge",
-            "suite_aromatherapy",
-            "suite_onsen",
-            "suite_double_massage"
-          ]).describe("Target zone identifier"),
-          maxWaitMinutes: z.number().min(1).max(120).optional().describe("Maximum allowed wait time in minutes"),
-          alertThresholdMinutes: z.number().min(1).max(120).optional().describe("Threshold in minutes before warning steam and voice alert triggers")
-        }),
-        execute: async (args: { zoneId: string; maxWaitMinutes?: number; alertThresholdMinutes?: number }) => {
-          spatialRuntimeDispatcher.handleUpdateRule(args);
-          return `Rules for zone [${args.zoneId}] updated. Alert threshold: ${args.alertThresholdMinutes ?? "n/a"}m, max wait: ${args.maxWaitMinutes ?? "n/a"}m.`;
-        }
-      }),
-
-      // Tool 2: Bind Data Stream / Telemetry
-      bindDataSource: createTool({
-        description: "Binds a room or furniture item to live telemetry (Google Sheets, YClients, MoySklad, or Telegram)",
-        parameters: z.object({
-          zoneId: z.enum([
-            "reception",
-            "waiting_lounge",
-            "suite_aromatherapy",
-            "suite_onsen",
-            "suite_double_massage"
-          ]).describe("Target zone identifier"),
-          sourceType: z.enum(["google_sheets", "telegram", "moysklad", "yclients"]).describe("Data source type"),
-          targetField: z.string().describe("Column or key name (e.g. 'Sheet1!F12', 'status_visit')")
-        }),
-        execute: async (args: { zoneId: any; sourceType: any; targetField: string }) => {
-          spatialRuntimeDispatcher.handleBindStream(args);
-          return `Zone [${args.zoneId}] is now bound to ${args.sourceType} (${args.targetField}). Telemetry stream online.`;
-        }
-      }),
-
-      // Tool 3: Toggle Interior Furniture Item
-      toggleFurnitureItem: createTool({
-        description: "Toggles interactive equipment (aromatherapy diffuser, onsen heater, ambient lantern)",
-        parameters: z.object({
-          zoneId: z.enum([
-            "reception",
-            "waiting_lounge",
-            "suite_aromatherapy",
-            "suite_onsen",
-            "suite_double_massage"
-          ]),
-          itemType: z.enum([
-            "aromatherapy_diffuser",
-            "onsen_heater",
-            "ambient_lantern",
-            "tea_table",
-            "sakura_vase"
-          ]).describe("Furniture item type"),
-          enabled: z.boolean().describe("true to turn ON, false to turn OFF")
-        }),
-        execute: async (args: { zoneId: any; itemType: any; enabled: boolean }) => {
-          spatialRuntimeDispatcher.handleToggleFurniture(args);
-          return `Equipment [${args.itemType}] in zone [${args.zoneId}] switched ${args.enabled ? "ON" : "OFF"}.`;
-        }
-      }),
-
-      // Tool 4: Query Salon Revenue and Live Metrics
-      querySalonMetrics: createTool({
-        description: "Queries today's financial revenue, occupancy percentage, and total sessions completed",
-        parameters: z.object({
-          metric: z.enum(["all", "revenue", "occupancy", "sessions"]).optional().describe("Metric category filter")
-        }),
-        execute: async () => {
-          const stats = spatialRuntimeDispatcher.querySalonRevenue();
-          return stats.formattedText;
-        }
-      }),
-
-      // Tool 5: Send Staff on Break to Tea Lounge
-      sendStaffOnBreak: createTool({
-        description: "Dispatches a therapist/master (e.g. Master Somchai) on a scheduled tea break to the waiting lounge",
-        parameters: z.object({
-          staffId: z.string().default("master_somchai").describe("Staff ID (master_somchai, master_ken, therapist_yuki)"),
-          durationMinutes: z.number().default(15).describe("Break duration in minutes")
-        }),
-        execute: async (args: { staffId?: string; durationMinutes?: number }) => {
-          const res = spatialRuntimeDispatcher.sendStaffOnBreak(args.staffId || "master_somchai", args.durationMinutes || 15);
-          return res.message;
-        }
-      }),
-
-      // Tool 6: Trigger SLA Violation Voice Alert (Reception Concierge)
-      triggerSlaVoiceAlert: createTool({
-        description: "Triggers the receptionist voice alert and warning particles for guest delay in waiting lounge",
-        parameters: z.object({
-          zoneId: z.string().default("waiting_lounge"),
-          minutes: z.number().default(20)
-        }),
-        execute: async (args: { zoneId?: string; minutes?: number }) => {
-          spatialRuntimeDispatcher.triggerSlaViolationAlert(args.zoneId || "waiting_lounge", args.minutes || 20);
-          return `Voice alert for ${args.minutes || 20}m delay broadcast by Receptionist Lin.`;
-        }
-      })
-    };
+    const sdkTools: Record<string, any> = {};
+    for (const [name, def] of Object.entries(ownerTools)) {
+      sdkTools[name] = (tool as any)({
+        description: def.description,
+        inputSchema: def.parameters,
+        execute: def.execute
+      });
+    }
+    return sdkTools;
   }
 
   /**

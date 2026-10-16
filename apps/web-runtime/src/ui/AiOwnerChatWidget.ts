@@ -371,6 +371,12 @@ export class AiOwnerChatWidget {
   }
 
   private startVoiceRecording() {
+    const hasSpeech = typeof window !== "undefined" && ("SpeechRecognition" in window || "webkitSpeechRecognition" in window);
+    if (!hasSpeech) {
+      this.appendSystemNotice("SpeechRecognition is not supported in this browser. Please use Chrome, Edge, or Safari, or enter commands in the chat.");
+      return;
+    }
+
     const recIndicator = document.getElementById("ai-recording-indicator");
     const liveTranscriptEl = document.getElementById("ai-rec-live-transcript");
     if (recIndicator) recIndicator.style.display = "flex";
