@@ -77,28 +77,81 @@ SpatialTwin implements the open **Model Context Protocol (MCP)** so AI agents ca
 
 Add the following entry to `claude_desktop_config.json`:
 
+## [04] MODEL CONTEXT PROTOCOL (MCP) INTEGRATION & PRODUCTION DEPLOYMENT
+
+SpatialTwin provides a **fully compliant Model Context Protocol (MCP v1.1.0, Protocol Spec 2024-11-05)** server deployed directly on Vercel as serverless functions with zero external dependencies required. Any external AI agent (Claude Desktop, Cursor, Antigravity, OpenRouter, or custom LLM bots) can connect remotely over **SSE** or direct **JSON-RPC 2.0 HTTP** to inspect the facility, add physical equipment, update room assignments, and remove excess or decommissioned units.
+
+### 🌐 Live Production Endpoints:
+- **Web Console & Interactive Tester:** [https://fearless-bohr-pink.vercel.app/api/mcp](https://fearless-bohr-pink.vercel.app/api/mcp)
+- **MCP SSE Remote Endpoint:** `https://fearless-bohr-pink.vercel.app/api/mcp?sse=true`
+- **MCP JSON-RPC 2.0 Endpoint:** `https://fearless-bohr-pink.vercel.app/api/mcp`
+- **Equipment Inventory REST API:** [https://fearless-bohr-pink.vercel.app/api/equipment](https://fearless-bohr-pink.vercel.app/api/equipment)
+
+---
+
+### 🤖 Remote Agent Configuration
+
+#### Option A: Claude Desktop (`claude_desktop_config.json`)
 ```json
 {
   "mcpServers": {
-    "spatialtwin": {
-      "command": "node",
-      "args": [
-        "./packages/mcp-server/dist/index.js"
-      ],
-      "env": {
-        "SPATIALTWIN_BRIDGE_URL": "http://localhost:8000"
-      }
+    "spatialtwin-spa": {
+      "url": "https://fearless-bohr-pink.vercel.app/api/mcp?sse=true"
     }
   }
 }
 ```
 
-### MCP Tool Catalog:
-- `get_layout` — Returns grid dimensions, entity world coordinates, modular wall segments, and bound data streams.
-- `place_object` — Spawns a station, modular 2.5D wall, decor item, or staff/guest character onto the isometric floor.
-- `remove_object` — Removes an entity and unbinds active telemetry streams.
-- `bind_data_stream` — Binds a spatial entity to a CRM webhook (`booking_started`, `payment_received`) or spreadsheet cell (`Sheet1!F2`).
-- `configure_business_rules` — Configures SLA wait thresholds and staff stamina recovery rules.
+#### Option B: Cursor (`.cursor/mcp.json`)
+```json
+{
+  "mcpServers": {
+    "spatialtwin-spa": {
+      "url": "https://fearless-bohr-pink.vercel.app/api/mcp?sse=true",
+      "transport": "sse"
+    }
+  }
+}
+```
+
+#### Option C: Local CLI (Stdio Transport)
+```json
+{
+  "mcpServers": {
+    "spatialtwin-local": {
+      "command": "node",
+      "args": ["./packages/mcp-server/dist/index.js"]
+    }
+  }
+}
+```
+
+---
+
+### 🛠️ Complete MCP Tool Catalog:
+
+| Tool Name | Description | Key Arguments |
+|:---|:---|:---|
+| `list_equipment` | Lists all operational stations and equipment (massage tables, Hinoki tubs, POS registers, saunas, diffusers). | `room?`, `category?`, `status?` |
+| `add_equipment` | Adds a new piece of equipment with auto-slot placement or custom grid coordinates. | `id`, `name`, `asset_type`, `room`, `category`, `power_kw` |
+| `remove_equipment` | Decommissions and removes redundant, broken, or excess equipment by ID (*"удалить лишнее"*). | `id`, `reason?` |
+| `update_equipment` | Updates operating status (`idle`, `in_service`, `maintenance`, `cleaning`, `offline`), condition, room, or staff assignment. | `id`, `status?`, `condition?`, `room?`, `maintenance_notes?` |
+| `get_equipment` | Fetches full telemetry, power rating, and service history for a specific unit. | `id` |
+| `clear_inactive_equipment` | Bulk purges offline, obsolete, or excess equipment to optimize room capacity. | `criteria` (`offline`, `maintenance`, `unused`, `all_excess`) |
+| `get_facility_layout` | Returns room boundaries, dimensions, capacity, and equipment density breakdown. | *(none)* |
+| `place_object` | Places a station, furniture, or decor sprite directly on the isometric canvas diorama. | `id`, `asset_type`, `grid_x`, `grid_y` |
+| `remove_object` | Removes an object from the diorama and unbinds associated telemetry streams. | `id` |
+| `bind_data_stream` | Binds equipment to Google Sheets (`Sheet1!D5`) or CRM webhook (`$.payment.amount`). | `entity_id`, `source_type`, `source_locator` |
+| `configure_business_rules` | Calibrates SLA wait limits and staff fatigue recovery thresholds. | `rules_group_id`, `rule_overrides` |
+
+### 📚 MCP Resources:
+- `equipment://catalog` — Live equipment inventory in JSON format.
+- `equipment://stats` — Operational metrics: occupancy rate, active stations, total power load.
+- `facility://layout` — Architectural room boundaries, dimensions, and capacities.
+
+### 💡 MCP Prompts:
+- `audit_equipment` — AI agent prompt to conduct a space and inventory audit, identifying underutilized or excess equipment.
+- `daily_maintenance_check` — Checklist prompt for equipment servicing and status tracking.
 
 ---
 

@@ -2899,9 +2899,12 @@
           <div id="mcp-log-stream"></div>
           <div class="mcp-quick-toolbar">
             <span style="font-size: 9px; color: var(--on-dark-mute); font-weight: 700;">TEST MCP:</span>
-            <button class="mcp-quick-btn" id="btn-mcp-test-place">[+] place_station</button>
-            <button class="mcp-quick-btn" id="btn-mcp-test-remove">[-] remove_object</button>
-            <button class="mcp-quick-btn" id="btn-mcp-test-bind">[~] bind_stream</button>
+            <button class="mcp-quick-btn" id="btn-mcp-test-list-eq" title="Call list_equipment">[=] list_eq</button>
+            <button class="mcp-quick-btn" id="btn-mcp-test-add-eq" title="Call add_equipment">[+] add_eq</button>
+            <button class="mcp-quick-btn" id="btn-mcp-test-del-eq" title="Call remove_equipment">[-] del_eq</button>
+            <button class="mcp-quick-btn" id="btn-mcp-test-place" title="Call place_station">[+] place</button>
+            <button class="mcp-quick-btn" id="btn-mcp-test-remove" title="Call remove_object">[-] rem</button>
+            <a href="/api/mcp" target="_blank" class="mcp-quick-btn" style="text-decoration: none; color: var(--accent); border-color: var(--accent); display: inline-flex; align-items: center;" title="Open MCP Server Console & Documentation">[MCP DOCS]</a>
           </div>
         </div>
 

@@ -56,13 +56,72 @@ export class McpConsole {
       });
     });
 
+    document.getElementById("btn-mcp-test-list-eq")?.addEventListener("click", async () => {
+      this.logMcpIn("list_equipment", {});
+      try {
+        const res = await fetch("/api/equipment");
+        const data = await res.json();
+        this.logMcpOut("list_equipment", { count: data.count, summary: data.summary });
+      } catch (err: any) {
+        this.logMcpOut("list_equipment", { error: err.message });
+      }
+    });
+
+    document.getElementById("btn-mcp-test-add-eq")?.addEventListener("click", async () => {
+      const sample = {
+        id: `cryo_pod_${Date.now().toString().slice(-4)}`,
+        name: "Cryotherapy Recovery Pod",
+        category: "thermal",
+        asset_type: "onsen_tub",
+        room: "suite_onsen",
+        power_kw: 4.8
+      };
+      this.logMcpIn("add_equipment", sample);
+      try {
+        const res = await fetch("/api/equipment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(sample)
+        });
+        const data = await res.json();
+        this.logMcpOut("add_equipment", data);
+      } catch (err: any) {
+        this.logMcpOut("add_equipment", { error: err.message });
+      }
+    });
+
+    document.getElementById("btn-mcp-test-del-eq")?.addEventListener("click", async () => {
+      this.logMcpIn("remove_equipment", { reason: "Decommissioning excess equipment" });
+      try {
+        const resList = await fetch("/api/equipment");
+        const listData = await resList.json();
+        const items = listData.equipment || [];
+        const toDelete = items.find((i: any) => i.id.startsWith("cryo_pod_")) || items[items.length - 1];
+        if (toDelete && items.length > 5) {
+          const res = await fetch(`/api/equipment?id=${encodeURIComponent(toDelete.id)}`, { method: "DELETE" });
+          const data = await res.json();
+          this.logMcpOut("remove_equipment", data);
+        } else {
+          this.logMcpOut("remove_equipment", { status: "preserved", message: "Minimum core equipment preserved" });
+        }
+      } catch (err: any) {
+        this.logMcpOut("remove_equipment", { error: err.message });
+      }
+    });
+
     // Initial system boot logs
-    this.logEngine("SYSTEM_INIT", "SpatialTwin MCP Bridge connected (stdio & ws ready)");
-    this.logMcpIn("tools/list", { count: 5, server: "spatialtwin-mcp" });
+    this.logEngine("SYSTEM_INIT", "SpatialTwin Remote MCP Server active on /api/mcp (SSE & JSON-RPC ready)");
+    this.logMcpIn("tools/list", { count: 11, server: "spatialtwin-mcp", protocol: "2024-11-05" });
     this.logMcpOut("tools/list", {
       available_tools: [
-        "get_layout",
-        "place_station",
+        "list_equipment",
+        "add_equipment",
+        "remove_equipment",
+        "update_equipment",
+        "get_equipment",
+        "clear_inactive_equipment",
+        "get_facility_layout",
+        "place_object",
         "remove_object",
         "bind_data_stream",
         "configure_business_rules"
