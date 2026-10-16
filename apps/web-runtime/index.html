@@ -260,9 +260,20 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-bottom: 6px;
+      gap: 6px;
+      padding-bottom: 8px;
       border-bottom: 1px solid var(--hairline);
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-top-bar .mode-segmented-ctrl {
+      flex: 1;
+    }
+
+    .sidebar-top-bar .mode-tab-btn {
+      flex: 1;
+      text-align: center;
+      justify-content: center;
     }
 
     .sidebar-mode-label {
@@ -2709,32 +2720,9 @@
       <div class="brand-title">
         <div class="ascii-wordmark">[:: SPATIAL ::]</div>
         <h1>SpatialTwin</h1>
-        <span class="badge-news">2.5D TUI BUILDER</span>
       </div>
 
-      <div class="tui-prompt-hint">
-        <span class="pipe">|</span>
-        <span><code>drag</code> move</span>
-        <span class="pipe">·</span>
-        <span><code>r-click</code> flip</span>
-        <span class="pipe">·</span>
-        <span><code>dbl-click</code> walk</span>
-      </div>
-
-      <button class="btn-header" id="btn-toggle-sidebar" title="Toggle Left Sidebar [Ctrl+B or '[']">
-        <span>[◀]</span> Sidebar
-      </button>
-
-      <div class="mode-segmented-ctrl" id="mode-segmented-ctrl" style="margin-left: auto; margin-right: 8px;">
-        <button class="mode-tab-btn active-mode" id="btn-mode-builder" title="Technical Builder Mode - Stage geometry, drag-to-grid catalog, and live MCP terminal">
-          [#] BUILDER MODE
-        </button>
-        <button class="mode-tab-btn" id="btn-mode-owner" title="Executive Owner View - Clean spatial view, business metrics, and AI equipment generator">
-          [★] OWNER MODE
-        </button>
-      </div>
-
-      <div class="view-mode-tabs" style="display: flex; gap: 4px; margin-right: 12px;">
+      <div class="view-mode-tabs" style="display: flex; gap: 4px; margin-left: auto; margin-right: 12px;">
         <button class="btn-header active-btn" id="btn-view-salon" title="Switch to 2.5D Interior Salon with Characters">
           [::] Salon Interior
         </button>
@@ -2764,11 +2752,18 @@
     <div id="workspace-main">
       <!-- Left Builder & Asset Studio Sidebar -->
       <aside id="builder-sidebar">
-        <!-- Persistent Sidebar Collapse Bar -->
+        <!-- Persistent Sidebar Collapse Bar & Mode Switcher -->
         <div class="sidebar-top-bar">
-          <span class="sidebar-mode-label" id="sidebar-mode-badge">[#] STUDIO &amp; STAGE</span>
+          <div class="mode-segmented-ctrl" id="mode-segmented-ctrl">
+            <button class="mode-tab-btn active-mode" id="btn-mode-builder" title="Technical Builder Mode - Stage geometry, drag-to-grid catalog, and live MCP terminal">
+              [#] BUILDER
+            </button>
+            <button class="mode-tab-btn" id="btn-mode-owner" title="Executive Owner View - Clean spatial view, business metrics, and AI equipment generator">
+              [★] OWNER
+            </button>
+          </div>
           <button class="btn-sidebar-collapse" id="btn-collapse-sidebar" title="Collapse sidebar to maximize viewport [Ctrl+B or '[']">
-            [◀ COLLAPSE]
+            [◀]
           </button>
         </div>
 

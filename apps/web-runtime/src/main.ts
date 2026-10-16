@@ -227,6 +227,18 @@ window.addEventListener("DOMContentLoaded", () => {
         dioramaScene.resetCamera();
       };
 
+      demoPanel.onResetStage = async () => {
+        await dioramaScene.loadDefaultWorldFromJson();
+      };
+
+      demoPanel.onEmptyStage = () => {
+        dioramaScene.clearStage();
+      };
+
+      demoPanel.onTriggerScenario = (stageNum: number) => {
+        dioramaScene.triggerClientDemoStage(stageNum);
+      };
+
       inspector.onFlipRequested = (entityId) => {
         dioramaScene.baseLayer.flipEntity(entityId);
         demoPanel.showToast("[~]", "Entity orientation flipped", 1500);
