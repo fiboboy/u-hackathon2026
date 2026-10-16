@@ -52,12 +52,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const sidebarBuilderView = document.getElementById("sidebar-builder-view");
     const sidebarOwnerView = document.getElementById("sidebar-owner-view");
+    const sidebarModeBadge = document.getElementById("sidebar-mode-badge");
 
     if (mode === "owner") {
       btnModeOwner?.classList.add("active-mode");
       btnModeBuilder?.classList.remove("active-mode");
       if (sidebarOwnerView) sidebarOwnerView.style.display = "flex";
       if (sidebarBuilderView) sidebarBuilderView.style.display = "none";
+      if (sidebarModeBadge) sidebarModeBadge.textContent = "[★] SALON OVERVIEW";
       demoPanel.showToast("[★]", "Owner View: Salon Operations & Live Hub", 2200);
 
       const dioramaScene = game.scene.getScene("DioramaScene") as DioramaScene;
@@ -69,6 +71,7 @@ window.addEventListener("DOMContentLoaded", () => {
       btnModeOwner?.classList.remove("active-mode");
       if (sidebarOwnerView) sidebarOwnerView.style.display = "none";
       if (sidebarBuilderView) sidebarBuilderView.style.display = "flex";
+      if (sidebarModeBadge) sidebarModeBadge.textContent = "[#] STUDIO & STAGE";
       demoPanel.showToast("[#]", "Builder Mode: Stage Geometry & Catalog", 2200);
     }
 
@@ -84,6 +87,56 @@ window.addEventListener("DOMContentLoaded", () => {
   btnModeBuilder?.addEventListener("click", () => setAppMode("builder"));
   btnModeOwner?.addEventListener("click", () => setAppMode("owner"));
   document.body.classList.add("mode-builder");
+
+  // Sidebar Collapse / Expand Functionality
+  const btnToggleSidebar = document.getElementById("btn-toggle-sidebar");
+  const btnCollapseSidebar = document.getElementById("btn-collapse-sidebar");
+  const sidebarExpandTab = document.getElementById("sidebar-expand-tab");
+
+  function toggleSidebar(forceState?: boolean) {
+    const isCurrentlyCollapsed = document.body.classList.contains("sidebar-collapsed");
+    const willCollapse = typeof forceState === "boolean" ? forceState : !isCurrentlyCollapsed;
+
+    if (willCollapse) {
+      document.body.classList.add("sidebar-collapsed");
+      if (btnToggleSidebar) btnToggleSidebar.innerHTML = `<span>[▶]</span> Sidebar`;
+      localStorage.setItem("spatialtwin_sidebar_collapsed", "true");
+      demoPanel.showToast("[◀]", "Sidebar collapsed · Viewport expanded", 1600);
+    } else {
+      document.body.classList.remove("sidebar-collapsed");
+      if (btnToggleSidebar) btnToggleSidebar.innerHTML = `<span>[◀]</span> Sidebar`;
+      localStorage.setItem("spatialtwin_sidebar_collapsed", "false");
+      demoPanel.showToast("[▶]", "Sidebar restored", 1600);
+    }
+
+    // Trigger canvas resize smoothly
+    setTimeout(() => {
+      const dioramaScene = game.scene.getScene("DioramaScene") as DioramaScene;
+      if (dioramaScene && gameContainer) {
+        dioramaScene.scale.resize(gameContainer.clientWidth, gameContainer.clientHeight);
+      }
+    }, 120);
+  }
+
+  btnToggleSidebar?.addEventListener("click", () => toggleSidebar());
+  btnCollapseSidebar?.addEventListener("click", () => toggleSidebar(true));
+  sidebarExpandTab?.addEventListener("click", () => toggleSidebar(false));
+
+  // Keyboard shortcut: '[' or 'Ctrl+B' to toggle sidebar
+  window.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "b") {
+      e.preventDefault();
+      toggleSidebar();
+    } else if (e.key === "[" && !["INPUT", "TEXTAREA"].includes((e.target as HTMLElement)?.tagName)) {
+      e.preventDefault();
+      toggleSidebar();
+    }
+  });
+
+  // Restore saved collapse state from session storage / local storage
+  if (localStorage.getItem("spatialtwin_sidebar_collapsed") === "true") {
+    toggleSidebar(true);
+  }
 
   // Module 1 & 2 triggers
   assetDrawer.onOpenAiModal = () => aiModal.open();
@@ -298,11 +351,17 @@ window.addEventListener("DOMContentLoaded", () => {
         if (mode === "district") {
           btnViewSalon?.classList.remove("active-btn");
           btnViewDistrict?.classList.add("active-btn");
+          document.body.classList.add("view-district-mode");
+          if (gameContainer) gameContainer.style.backgroundColor = "#2f2c35";
 
           if (minimapTitle) minimapTitle.textContent = "[::] SALON INTERIOR";
           if (minimapHint) minimapHint.textContent = "CLICK TO ENTER";
-          if (minimapThumbImg) minimapThumbImg.src = "/assets/diorama_master.png";
-          if (minimapPin) minimapPin.style.display = "none";
+          if (minimapThumbImg) minimapThumbImg.src = "/assets/salon_thumb.png";
+          if (minimapPin) {
+            minimapPin.style.display = "flex";
+            const pinLabel = minimapPin.querySelector(".minimap-pin-label");
+            if (pinLabel) pinLabel.textContent = "RETURN";
+          }
           if (minimapSubtext) minimapSubtext.textContent = "Zen Massage · 5 Stations Active";
           if (minimapBadge) minimapBadge.textContent = "[SALON]";
           minimapWidget?.setAttribute("title", "Click to return to Salon Interior");
@@ -314,11 +373,17 @@ window.addEventListener("DOMContentLoaded", () => {
         } else {
           btnViewSalon?.classList.add("active-btn");
           btnViewDistrict?.classList.remove("active-btn");
+          document.body.classList.remove("view-district-mode");
+          if (gameContainer) gameContainer.style.backgroundColor = "#201d1d";
 
           if (minimapTitle) minimapTitle.textContent = "[★] DISTRICT MAP";
           if (minimapHint) minimapHint.textContent = "CLICK TO EXPAND";
           if (minimapThumbImg) minimapThumbImg.src = "/assets/district_map.jpg";
-          if (minimapPin) minimapPin.style.display = "flex";
+          if (minimapPin) {
+            minimapPin.style.display = "flex";
+            const pinLabel = minimapPin.querySelector(".minimap-pin-label");
+            if (pinLabel) pinLabel.textContent = "SALON";
+          }
           if (minimapSubtext) minimapSubtext.textContent = "Bangkok RCA · Alley 7";
           if (minimapBadge) minimapBadge.textContent = "[FULLSCREEN]";
           minimapWidget?.setAttribute("title", "Click to view Fullscreen District City Map");

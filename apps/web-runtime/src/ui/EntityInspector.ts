@@ -93,8 +93,46 @@ export class EntityInspector {
       healthNotes: "Lower lumbar recovery; avoids heavy twist stretching; prefers medium pressure with warming balm.",
       healthAlert: false,
       todayBooking: "Room #2 (Bamboo) Scheduled"
+    },
+    guest_onsen: {
+      fullName: "Mei Sakamoto",
+      clientId: "#CL-5508",
+      tier: "VIP Emerald Member · 15% Off",
+      tierClass: "insp-badge-gold",
+      ltv: "$1,420.00",
+      totalVisits: 14,
+      frequency: "Bi-weekly (Relaxation Day)",
+      lastVisit: "4 days ago (Oct 12)",
+      preferredService: "Hinoki Herbal Onsen & Aromatherapy",
+      preferredMaster: "Therapist Yuki",
+      rating: "5.0 ★★★★★ (8 reviews)",
+      healthNotes: "Post-marathon leg recovery; loves warm cypress bath with mineral salts; prefers soothing yuzu citrus aroma.",
+      healthAlert: false,
+      todayBooking: "Relaxing in Bath & Garden Wing"
     }
   };
+
+  /**
+   * Resolve authentic 8-bit avatar portrait based on entity ID and asset type
+   */
+  public static getAvatarForEntity(entity: Entity): string {
+    const id = entity.id.toLowerCase();
+    const asset = (entity.asset_type || "").toLowerCase();
+
+    // Specific Guest Identifiers
+    if (id.includes("kenji") || asset.includes("kenji")) return "/assets/avatars/avatar_kenji.png";
+    if (id.includes("customer") || id.includes("haruka") || id.includes("tanaka") || asset.includes("pink")) return "/assets/avatars/avatar_customer.png";
+    if (id.includes("yukata") || id.includes("takashi") || id.includes("sato") || asset.includes("yukata")) return "/assets/avatars/avatar_yukata.png";
+    if (id.includes("onsen") || id.includes("relax") || id.includes("mei") || asset.includes("relax")) return "/assets/avatars/avatar_onsen.png";
+
+    // Staff Identifiers
+    if (id.includes("somchai") || asset.includes("room1")) return "/assets/avatars/avatar_somchai.png";
+    if (id.includes("master_ken") || id.includes("kenichi") || id.includes("ken") || asset.includes("room2")) return "/assets/avatars/avatar_ken.png";
+    if (id.includes("yuki") || asset.includes("room4")) return "/assets/avatars/avatar_yuki.png";
+    if (id.includes("reception") || asset.includes("receptionist")) return "/assets/avatars/avatar_receptionist.png";
+
+    return "/assets/avatars/avatar_kenji.png";
+  }
 
   // Curated Employee Roster & Business Performance
   private static readonly STAFF_DATABASE: Record<string, StaffCardProfile> = {
@@ -179,11 +217,12 @@ export class EntityInspector {
   }
 
   private checkIsCashRegister(entity: Entity): boolean {
+    if (entity.type === "staff" || entity.type === "guest") return false;
     const id = entity.id.toLowerCase();
     const asset = (entity.asset_type || "").toLowerCase();
     const name = (entity.name || "").toLowerCase();
     return id.includes("cash") || id.includes("chest") || id.includes("reception_desk") ||
-           asset.includes("cash") || asset.includes("reception") ||
+           id.includes("counter") || asset.includes("cash") || asset.includes("reception_desk") ||
            name.includes("cash") || name.includes("treasury") || name.includes("register");
   }
 
@@ -335,6 +374,7 @@ export class EntityInspector {
 
     const state = entity.state || ({} as any);
     const status = state.status || "waiting";
+    const avatarSrc = EntityInspector.getAvatarForEntity(entity);
 
     this.titleEl.textContent = profile.fullName;
     this.typeEl.textContent = `CRM Client Dossier · ${profile.clientId}`;
@@ -345,6 +385,18 @@ export class EntityInspector {
     `;
 
     this.bodyEl.innerHTML = `
+      <!-- 8-Bit Pixel Character Avatar Header -->
+      <div class="insp-avatar-header">
+        <div class="insp-avatar-frame">
+          <img src="${avatarSrc}" class="insp-avatar-img" alt="${profile.fullName}" />
+        </div>
+        <div class="insp-avatar-meta">
+          <div class="insp-avatar-name">${profile.fullName}</div>
+          <div class="insp-avatar-role">${profile.preferredService}</div>
+          <div class="insp-avatar-badge">${profile.clientId} · [8-BIT AVATAR]</div>
+        </div>
+      </div>
+
       <!-- Financial & Visit Metrics -->
       <div class="insp-kpi-grid">
         <div class="insp-kpi-card">
@@ -456,6 +508,7 @@ export class EntityInspector {
     const staminaVal = Math.round(state.stamina ?? 100);
     const staminaClass = staminaVal < 20 ? "low" : staminaVal < 50 ? "mid" : "";
     const staminaStatus = staminaVal < 20 ? "EXHAUSTED [!] BREAK MANDATORY" : staminaVal < 50 ? "FATIGUED (Break Recommended)" : "OPTIMAL RECOVERY";
+    const avatarSrc = EntityInspector.getAvatarForEntity(entity);
 
     this.titleEl.textContent = profile.fullName;
     this.typeEl.textContent = `${profile.roleTitle} · ${profile.staffId}`;
@@ -466,6 +519,18 @@ export class EntityInspector {
     `;
 
     this.bodyEl.innerHTML = `
+      <!-- 8-Bit Pixel Staff Avatar Header -->
+      <div class="insp-avatar-header">
+        <div class="insp-avatar-frame">
+          <img src="${avatarSrc}" class="insp-avatar-img" alt="${profile.fullName}" />
+        </div>
+        <div class="insp-avatar-meta">
+          <div class="insp-avatar-name">${profile.fullName}</div>
+          <div class="insp-avatar-role">${profile.roleTitle}</div>
+          <div class="insp-avatar-badge">${profile.staffId} · [8-BIT AVATAR]</div>
+        </div>
+      </div>
+
       <!-- Live Stamina & Fatigue Bar -->
       <div class="insp-card-section" style="margin-top: 6px;">
         <div style="display: flex; justify-content: space-between; align-items: center;">

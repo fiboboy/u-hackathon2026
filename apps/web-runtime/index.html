@@ -242,6 +242,84 @@
       flex-direction: column;
       gap: 10px;
       overflow-y: auto;
+      transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1), min-width 0.22s cubic-bezier(0.16, 1, 0.3, 1), padding 0.22s ease, opacity 0.18s ease;
+    }
+
+    body.sidebar-collapsed #builder-sidebar {
+      width: 0 !important;
+      min-width: 0 !important;
+      max-width: 0 !important;
+      padding: 0 !important;
+      border-right: none !important;
+      overflow: hidden !important;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .sidebar-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 4px;
+    }
+
+    .sidebar-mode-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.5px;
+    }
+
+    .btn-sidebar-collapse {
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline-strong);
+      color: var(--ink);
+      padding: 3px 8px;
+      border-radius: var(--rounded-sm);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-sidebar-collapse:hover {
+      background: var(--surface-card);
+      border-color: var(--ink);
+    }
+
+    /* Floating Expand Tab inside Viewport when Sidebar is Collapsed */
+    .sidebar-expand-tab {
+      display: none;
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 85;
+      background: var(--canvas);
+      border: 1px solid var(--hairline-strong);
+      color: var(--ink);
+      padding: 6px 12px;
+      border-radius: var(--rounded-sm);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .sidebar-expand-tab:hover {
+      background: var(--surface-card);
+      transform: translateX(2px);
+    }
+
+    body.sidebar-collapsed .sidebar-expand-tab {
+      display: inline-flex;
     }
 
     #builder-sidebar::-webkit-scrollbar,
@@ -629,6 +707,105 @@
       color: #ff9f0a;
       font-weight: 700;
       font-size: 12px;
+    }
+
+    /* 8-Bit Pixel Character Avatar Styling */
+    .insp-avatar-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface-card);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-sm);
+      padding: 10px 12px;
+      margin-bottom: 12px;
+    }
+
+    .insp-avatar-frame {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      background: var(--surface-dark);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    }
+
+    .insp-avatar-img {
+      width: 44px;
+      height: 44px;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+      object-fit: contain;
+    }
+
+    .insp-avatar-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .insp-avatar-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .insp-avatar-role {
+      font-size: 11px;
+      color: var(--mute);
+      font-weight: 500;
+    }
+
+    .insp-avatar-badge {
+      font-size: 10px;
+      color: var(--body);
+      font-family: var(--font-mono);
+      font-weight: 700;
+    }
+
+    /* Owner Panel 8-Bit Avatar in Staff List */
+    .owner-avatar-frame {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      background: var(--surface-dark);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-right: 4px;
+    }
+
+    .owner-avatar-img {
+      width: 26px;
+      height: 26px;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+      object-fit: contain;
+    }
+
+    /* District Map Seamless Background Styling */
+    body.view-district-mode #viewport-wrapper,
+    body.view-district-mode #game-container {
+      background-color: #2f2c35 !important;
+    }
+
+    body.view-district-mode .tui-bottom-bar {
+      background: #27242c !important;
+      border-top-color: #3d3945 !important;
     }
 
     .stamina-meter {
@@ -2544,6 +2721,10 @@
         <span><code>dbl-click</code> walk</span>
       </div>
 
+      <button class="btn-header" id="btn-toggle-sidebar" title="Toggle Left Sidebar [Ctrl+B or '[']">
+        <span>[◀]</span> Sidebar
+      </button>
+
       <div class="mode-segmented-ctrl" id="mode-segmented-ctrl" style="margin-left: auto; margin-right: 8px;">
         <button class="mode-tab-btn active-mode" id="btn-mode-builder" title="Technical Builder Mode - Stage geometry, drag-to-grid catalog, and live MCP terminal">
           [#] BUILDER MODE
@@ -2583,6 +2764,14 @@
     <div id="workspace-main">
       <!-- Left Builder & Asset Studio Sidebar -->
       <aside id="builder-sidebar">
+        <!-- Persistent Sidebar Collapse Bar -->
+        <div class="sidebar-top-bar">
+          <span class="sidebar-mode-label" id="sidebar-mode-badge">[#] STUDIO &amp; STAGE</span>
+          <button class="btn-sidebar-collapse" id="btn-collapse-sidebar" title="Collapse sidebar to maximize viewport [Ctrl+B or '[']">
+            [◀ COLLAPSE]
+          </button>
+        </div>
+
         <!-- 1. BUILDER MODE VIEW (Technical Stage Geometry & Catalog) -->
         <div id="sidebar-builder-view" class="sidebar-mode-view">
           <button class="btn-ai-creator-cta" id="btn-open-ai-creator" title="Open AI 16-bit isometric generator modal">
@@ -2668,6 +2857,12 @@
 
       <!-- Dark TUI Viewport Centerpiece -->
       <div id="viewport-wrapper">
+        <!-- Floating Expand Button when Sidebar is Collapsed -->
+        <button id="sidebar-expand-tab" class="sidebar-expand-tab" title="Expand Sidebar [Ctrl+B or '[']">
+          <span class="expand-icon">[▶]</span>
+          <span class="expand-text">EXPAND SIDEBAR</span>
+        </button>
+
         <div id="game-container"></div>
 
         <!-- Inspector Drawer -->

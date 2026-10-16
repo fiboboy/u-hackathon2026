@@ -82,6 +82,7 @@ export class DioramaScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale;
+    this.cameras.main.setBackgroundColor(0x201d1d);
 
     this.worldContainer = this.add.container(width / 2, height / 2);
 
@@ -558,6 +559,7 @@ export class DioramaScene extends Phaser.Scene {
   public switchToDistrictView(animate = true) {
     if (this.viewMode === "district") return;
     this.viewMode = "district";
+    this.cameras.main.setBackgroundColor(0x2f2c35);
     this.districtContainer.setVisible(true);
     this.districtContainer.setScale(this.worldContainer.scale);
     this.districtContainer.setPosition(this.worldContainer.x, this.worldContainer.y);
@@ -590,6 +592,7 @@ export class DioramaScene extends Phaser.Scene {
   public switchToSalonView(animate = true) {
     if (this.viewMode === "salon") return;
     this.viewMode = "salon";
+    this.cameras.main.setBackgroundColor(0x201d1d);
     this.worldContainer.setVisible(true);
     this.worldContainer.setScale(this.districtContainer.scale);
     this.worldContainer.setPosition(this.districtContainer.x, this.districtContainer.y);

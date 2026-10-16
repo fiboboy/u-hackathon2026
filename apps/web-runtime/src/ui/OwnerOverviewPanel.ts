@@ -283,6 +283,15 @@ export class OwnerOverviewPanel {
     });
   }
 
+  private getStaffAvatar(id: string): string {
+    const lower = id.toLowerCase();
+    if (lower.includes("somchai") || lower.includes("room1")) return "/assets/avatars/avatar_somchai.png";
+    if (lower.includes("ken") || lower.includes("room2")) return "/assets/avatars/avatar_ken.png";
+    if (lower.includes("yuki") || lower.includes("room4")) return "/assets/avatars/avatar_yuki.png";
+    if (lower.includes("reception") || lower.includes("napat") || lower.includes("lin") || lower.includes("aiko")) return "/assets/avatars/avatar_receptionist.png";
+    return "/assets/avatars/avatar_somchai.png";
+  }
+
   private renderStaff(staff: OwnerStaffItem[]) {
     if (!this.staffListEl) return;
     this.staffListEl.innerHTML = "";
@@ -295,9 +304,13 @@ export class OwnerOverviewPanel {
       const left = document.createElement("div");
       left.className = "owner-row-left";
 
-      const icon = document.createElement("span");
-      icon.className = "owner-row-icon";
-      icon.textContent = "[STAFF]";
+      const avatarBox = document.createElement("div");
+      avatarBox.className = "owner-avatar-frame";
+      const img = document.createElement("img");
+      img.className = "owner-avatar-img";
+      img.src = this.getStaffAvatar(s.id);
+      img.alt = s.name;
+      avatarBox.appendChild(img);
 
       const info = document.createElement("div");
       info.style.minWidth = "0";
@@ -312,7 +325,7 @@ export class OwnerOverviewPanel {
 
       info.appendChild(title);
       info.appendChild(sub);
-      left.appendChild(icon);
+      left.appendChild(avatarBox);
       left.appendChild(info);
 
       const badge = document.createElement("span");
