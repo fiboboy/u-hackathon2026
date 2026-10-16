@@ -7,6 +7,10 @@ import { wsClient } from "./services/WebSocketClient.js";
 import { mcpConsole } from "./ui/McpConsole.js";
 import { AssetStudioDrawer, CatalogItem } from "./ui/AssetStudioDrawer.js";
 import { AiAssetCreatorModal, GeneratedAsset } from "./ui/AiAssetCreatorModal.js";
+import { OwnerOverviewPanel } from "./ui/OwnerOverviewPanel.js";
+import { aiOwnerChatWidget } from "./ui/AiOwnerChatWidget.js";
+import { spatialRuntimeDispatcher } from "./services/SpatialRuntimeDispatcher.js";
+import { voiceAgentService } from "./services/VoiceAgentService.js";
 
 window.addEventListener("DOMContentLoaded", () => {
   const gameContainer = document.getElementById("game-container");
@@ -15,7 +19,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
     parent: "game-container",
-    width: gameContainer?.clientWidth || window.innerWidth - 268,
+    width: gameContainer?.clientWidth || window.innerWidth - 320,
     height: gameContainer?.clientHeight || window.innerHeight - 140,
     backgroundColor: "#201d1d",
     render: {
@@ -36,10 +40,59 @@ window.addEventListener("DOMContentLoaded", () => {
   const inspector = new EntityInspector();
   const assetDrawer = new AssetStudioDrawer();
   const aiModal = new AiAssetCreatorModal();
+  const ownerPanel = new OwnerOverviewPanel();
+
+  // Mode Switcher: Builder Mode vs Owner Mode
+  const btnModeBuilder = document.getElementById("btn-mode-builder");
+  const btnModeOwner = document.getElementById("btn-mode-owner");
+
+  function setAppMode(mode: "builder" | "owner") {
+    document.body.classList.remove("mode-builder", "mode-owner");
+    document.body.classList.add(`mode-${mode}`);
+
+    const sidebarBuilderView = document.getElementById("sidebar-builder-view");
+    const sidebarOwnerView = document.getElementById("sidebar-owner-view");
+
+    if (mode === "owner") {
+      btnModeOwner?.classList.add("active-mode");
+      btnModeBuilder?.classList.remove("active-mode");
+      if (sidebarOwnerView) sidebarOwnerView.style.display = "flex";
+      if (sidebarBuilderView) sidebarBuilderView.style.display = "none";
+      demoPanel.showToast("[★]", "Owner View: Salon Operations & Live Hub", 2200);
+
+      const dioramaScene = game.scene.getScene("DioramaScene") as DioramaScene;
+      if (dioramaScene?.currentWorld) {
+        ownerPanel.updateFromWorld(dioramaScene.currentWorld);
+      }
+    } else {
+      btnModeBuilder?.classList.add("active-mode");
+      btnModeOwner?.classList.remove("active-mode");
+      if (sidebarOwnerView) sidebarOwnerView.style.display = "none";
+      if (sidebarBuilderView) sidebarBuilderView.style.display = "flex";
+      demoPanel.showToast("[#]", "Builder Mode: Stage Geometry & Catalog", 2200);
+    }
+
+    const dioramaScene = game.scene.getScene("DioramaScene") as DioramaScene;
+    if (dioramaScene) {
+      dioramaScene.scale.resize(
+        gameContainer?.clientWidth || window.innerWidth - 320,
+        gameContainer?.clientHeight || window.innerHeight - (mode === "owner" ? 56 : 108)
+      );
+    }
+  }
+
+  btnModeBuilder?.addEventListener("click", () => setAppMode("builder"));
+  btnModeOwner?.addEventListener("click", () => setAppMode("owner"));
+  document.body.classList.add("mode-builder");
 
   // Module 1 & 2 triggers
   assetDrawer.onOpenAiModal = () => aiModal.open();
+  ownerPanel.onOpenAiModal = () => aiModal.open();
   document.getElementById("btn-open-ai-creator")?.addEventListener("click", () => aiModal.open());
+  document.getElementById("btn-owner-open-chat")?.addEventListener("click", () => aiOwnerChatWidget.toggleChat(true));
+
+  (window as any).__AI_CHAT_WIDGET__ = aiOwnerChatWidget;
+  (window as any).__SPATIAL_DISPATCHER__ = spatialRuntimeDispatcher;
 
   // Module 2 & 3: AI Asset creation -> In-canvas scaffolding and hot-reload texture replacement
   aiModal.onApplyRequested = async (asset: GeneratedAsset) => {
@@ -83,6 +136,26 @@ window.addEventListener("DOMContentLoaded", () => {
 
       dioramaScene.onEntityMovedUI = (entity) => {
         if (inspector.currentEntity?.id === entity.id) {
+          inspector.show(entity);
+        }
+      };
+
+      dioramaScene.onWorldUpdated = (world) => {
+        ownerPanel.updateFromWorld(world);
+      };
+
+      ownerPanel.onSelectStation = (stationId) => {
+        dioramaScene.centerCameraOnEntity(stationId);
+        const entity = dioramaScene.currentWorld?.entities.find(e => e.id === stationId);
+        if (entity) {
+          inspector.show(entity);
+        }
+      };
+
+      ownerPanel.onSelectStaff = (staffId) => {
+        dioramaScene.centerCameraOnEntity(staffId);
+        const entity = dioramaScene.currentWorld?.entities.find(e => e.id === staffId);
+        if (entity) {
           inspector.show(entity);
         }
       };

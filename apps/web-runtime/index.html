@@ -230,18 +230,41 @@
 
     /* Left Builder Sidebar (Flat on #fdfcfc canvas, 1px hairline right border, 0px radius, no shadow) */
     #builder-sidebar {
-      width: 268px;
-      min-width: 268px;
+      width: 320px;
+      min-width: 320px;
       height: 100%;
       background: var(--canvas);
       border-right: 1px solid var(--hairline);
       border-radius: var(--rounded-none);
-      padding: 16px;
+      padding: 14px;
       z-index: 90;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       overflow-y: auto;
+    }
+
+    #builder-sidebar::-webkit-scrollbar,
+    #studio-inventory-list::-webkit-scrollbar,
+    .owner-stations-list::-webkit-scrollbar,
+    .owner-staff-list::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    #builder-sidebar::-webkit-scrollbar-thumb,
+    #studio-inventory-list::-webkit-scrollbar-thumb,
+    .owner-stations-list::-webkit-scrollbar-thumb,
+    .owner-staff-list::-webkit-scrollbar-thumb {
+      background: var(--hairline-strong);
+      border-radius: 2px;
+    }
+
+    #builder-sidebar::-webkit-scrollbar-track,
+    #studio-inventory-list::-webkit-scrollbar-track,
+    .owner-stations-list::-webkit-scrollbar-track,
+    .owner-staff-list::-webkit-scrollbar-track {
+      background: transparent;
     }
 
     .sidebar-section-title {
@@ -922,10 +945,10 @@
     }
 
     .studio-tabs-row {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 4px;
-      overflow-x: auto;
-      padding-bottom: 6px;
+      padding-bottom: 8px;
       margin-bottom: 8px;
       border-bottom: 1px solid var(--hairline);
     }
@@ -934,12 +957,15 @@
       background: var(--surface-soft);
       border: 1px solid var(--hairline);
       border-radius: var(--rounded-sm);
-      padding: 3px 6px;
+      padding: 5px 2px;
       font-size: 10px;
       font-weight: 700;
       color: var(--mute);
       cursor: pointer;
+      text-align: center;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .studio-tab-btn:hover {
@@ -958,7 +984,246 @@
       flex-direction: column;
       gap: 6px;
       overflow-y: auto;
-      max-height: calc(100vh - 410px);
+      flex: 1;
+      min-height: 180px;
+      padding-right: 2px;
+    }
+
+    /* MODE SWITCHER (OWNER VS BUILDER) */
+    .mode-segmented-ctrl {
+      display: flex;
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-sm);
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .mode-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--mute);
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: var(--rounded-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .mode-tab-btn:hover {
+      color: var(--ink);
+    }
+
+    .mode-tab-btn.active-mode {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    /* Mode Visibility Switching */
+    body.mode-owner #sidebar-builder-view {
+      display: none !important;
+    }
+
+    body.mode-owner #sidebar-owner-view {
+      display: flex !important;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    body.mode-owner #mcp-console-widget {
+      display: none !important;
+    }
+
+    body.mode-owner #demo-panel {
+      display: none !important;
+    }
+
+    body.mode-owner #workspace-main {
+      height: calc(100vh - 56px) !important;
+    }
+
+    body.mode-owner #btn-highlight-header {
+      display: none !important;
+    }
+
+    body.mode-builder #sidebar-owner-view {
+      display: none !important;
+    }
+
+    body.mode-builder #sidebar-builder-view {
+      display: flex !important;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* OWNER MODE CARDS & METRICS */
+    .owner-metric-card {
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .owner-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .owner-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.2px;
+    }
+
+    .owner-status-pill {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    .owner-status-pill.pill-live {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+
+    .owner-kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .owner-kpi-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      background: var(--surface-card);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      padding: 6px 8px;
+    }
+
+    .kpi-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--mute);
+      text-transform: uppercase;
+    }
+
+    .kpi-val {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .kpi-sub {
+      font-size: 9px;
+      color: var(--ash);
+    }
+
+    .kpi-sub.positive {
+      color: #059669;
+      font-weight: 700;
+    }
+
+    .kpi-success {
+      color: #059669;
+    }
+
+    .owner-stations-list,
+    .owner-staff-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      max-height: 180px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .owner-station-row,
+    .owner-staff-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 8px;
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+
+    .owner-station-row:hover,
+    .owner-staff-row:hover {
+      background: var(--surface-card);
+      border-color: var(--hairline-strong);
+      transform: translateX(2px);
+    }
+
+    .owner-row-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .owner-row-icon {
+      font-size: 10px;
+      color: var(--mute);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .owner-row-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .owner-row-subtitle {
+      font-size: 9px;
+      color: var(--ash);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .owner-row-badge {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .badge-in-use {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #f59e0b;
+    }
+
+    .badge-ready {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+
+    .badge-busy {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #ef4444;
     }
 
     .studio-item-card {
@@ -1508,9 +1773,755 @@
       white-space: nowrap;
     }
 
-    .mcp-quick-btn:hover {
+    /* =========================================================================
+       AI OWNER CHAT WIDGET (Vercel AI SDK Declarative Mutation Engine)
+       ========================================================================= */
+    #ai-owner-chat-widget-root {
+      position: relative;
+      z-index: 120;
+    }
+
+    /* Floating Launcher Button in Bottom-Right Corner */
+    .ai-chat-launcher-btn {
+      position: absolute;
+      bottom: 44px;
+      right: 232px;
+      height: 32px;
+      padding: 0 12px;
+      background: var(--surface-dark);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-sm);
+      color: var(--on-dark);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      z-index: 95;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+      transition: all 0.16s ease;
+      white-space: nowrap;
+    }
+
+    .ai-chat-launcher-btn:hover {
       border-color: #ffaa33;
       color: #ffaa33;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(255, 170, 51, 0.25);
+    }
+
+    .ai-chat-launcher-btn.active-launcher {
+      background: #ffaa33;
+      color: var(--ink-deep);
+      border-color: #ffaa33;
+    }
+
+    .ai-launcher-icon {
+      color: #ffaa33;
+      font-size: 12px;
+    }
+
+    .ai-chat-launcher-btn.active-launcher .ai-launcher-icon {
+      color: var(--ink-deep);
+    }
+
+    .ai-launcher-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ff9f0a;
+      display: inline-block;
+    }
+
+    .ai-launcher-status-dot.dot-online {
+      background: #30d158;
+      box-shadow: 0 0 6px #30d158;
+    }
+
+    .ai-launcher-status-dot.dot-demo {
+      background: #ff9f0a;
+    }
+
+    /* Floating Chat Panel */
+    .ai-chat-panel {
+      position: absolute;
+      bottom: 44px;
+      right: 16px;
+      width: 440px;
+      height: 540px;
+      max-height: calc(100vh - 120px);
+      max-width: calc(100vw - 32px);
+      background: var(--surface-dark);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-sm);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      z-index: 125;
+      overflow: hidden;
+      animation: aiChatFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes aiChatFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .ai-chat-header {
+      height: 42px;
+      min-height: 42px;
+      background: var(--surface-dark-elevated);
+      border-bottom: 1px solid var(--charcoal);
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+
+    .ai-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ai-header-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffaa33;
+    }
+
+    .ai-header-titles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ai-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--on-dark);
+      letter-spacing: -0.2px;
+    }
+
+    .ai-subtitle {
+      font-size: 9px;
+      color: var(--on-dark-mute);
+      margin-top: -1px;
+    }
+
+    .ai-header-right {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .ai-status-pill {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      letter-spacing: 0.2px;
+    }
+
+    .ai-status-pill.pill-online {
+      background: #064e3b;
+      color: #34d399;
+      border: 1px solid #059669;
+    }
+
+    .ai-status-pill.pill-demo {
+      background: #451a03;
+      color: #fbbf24;
+      border: 1px solid #d97706;
+    }
+
+    .ai-btn-ctrl {
+      background: var(--surface-dark);
+      border: 1px solid var(--charcoal);
+      color: var(--on-dark);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      cursor: pointer;
+      line-height: 1.4;
+    }
+
+    .ai-btn-ctrl:hover {
+      border-color: #ffaa33;
+      color: #ffaa33;
+    }
+
+    /* Key Settings Modal Flyout */
+    .ai-key-modal {
+      position: absolute;
+      top: 42px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 0, 0, 0.92);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+    }
+
+    .ai-key-modal-content {
+      background: var(--surface-dark-elevated);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-sm);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ai-key-titlebar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffaa33;
+      border-bottom: 1px solid var(--charcoal);
+      padding-bottom: 6px;
+    }
+
+    .ai-key-desc {
+      font-size: 10px;
+      color: var(--on-dark-mute);
+      line-height: 1.4;
+    }
+
+    .ai-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .ai-field-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--on-dark-mute);
+      text-transform: uppercase;
+    }
+
+    .ai-input-with-toggle {
+      display: flex;
+      gap: 4px;
+    }
+
+    .ai-text-input {
+      flex: 1;
+      background: var(--surface-dark);
+      border: 1px solid var(--charcoal);
+      color: var(--on-dark);
+      padding: 6px 8px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      border-radius: var(--rounded-sm);
+      outline: none;
+    }
+
+    .ai-text-input:focus {
+      border-color: #ffaa33;
+    }
+
+    .ai-btn-toggle-vis {
+      background: var(--surface-dark);
+      border: 1px solid var(--charcoal);
+      color: var(--on-dark);
+      padding: 0 8px;
+      font-size: 10px;
+      cursor: pointer;
+      border-radius: var(--rounded-sm);
+    }
+
+    .ai-provider-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .ai-chip-btn {
+      background: var(--surface-dark);
+      border: 1px solid var(--charcoal);
+      color: var(--on-dark-mute);
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    .ai-chip-btn.active {
+      border-color: #ffaa33;
+      color: #ffaa33;
+      background: #3a2e1d;
+    }
+
+    .ai-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .ai-key-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .ai-action-btn {
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: var(--rounded-sm);
+    }
+
+    .ai-action-btn.btn-save {
+      background: #ffaa33;
+      color: var(--ink-deep);
+      border: 1px solid #ffaa33;
+    }
+
+    .ai-action-btn.btn-clear-key {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    /* Messages Stream */
+    .ai-chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #181515;
+    }
+
+    .ai-chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    .ai-chat-messages::-webkit-scrollbar-thumb {
+      background: var(--charcoal);
+      border-radius: 3px;
+    }
+
+    .ai-msg-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .ai-msg-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .ai-msg-user .ai-sender-tag {
+      color: #38bdf8;
+    }
+
+    .ai-msg-assistant .ai-sender-tag {
+      color: #ffaa33;
+    }
+
+    .ai-time-tag {
+      color: var(--mute);
+      font-size: 9px;
+    }
+
+    .ai-msg-body {
+      padding: 8px 10px;
+      border-radius: var(--rounded-sm);
+      word-break: break-word;
+    }
+
+    .ai-msg-user .ai-msg-body {
+      background: var(--surface-dark-elevated);
+      color: #fdfcfc;
+      border-left: 2px solid #38bdf8;
+    }
+
+    .ai-msg-assistant .ai-msg-body {
+      background: #252121;
+      color: #fdfcfc;
+      border-left: 2px solid #ffaa33;
+    }
+
+    .ai-msg-notice {
+      font-size: 10px;
+      color: var(--on-dark-mute);
+      padding: 4px 8px;
+      background: var(--surface-dark-elevated);
+      border-radius: 2px;
+      border-left: 2px solid #ffaa33;
+    }
+
+    .ai-processing-indicator .ai-dot-pulse {
+      color: #ffaa33;
+      letter-spacing: 2px;
+      animation: aiPulse 1.2s infinite ease-in-out;
+    }
+
+    @keyframes aiPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* Tool Call Cards */
+    .ai-tool-calls-container {
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ai-tool-call-card {
+      background: #1e1b1b;
+      border: 1px solid #ffaa33;
+      border-radius: var(--rounded-sm);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ai-tool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .ai-tool-icon {
+      color: #ffaa33;
+    }
+
+    .ai-tool-name {
+      color: #fdfcfc;
+      background: #382c1b;
+      padding: 1px 6px;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+    }
+
+    .ai-tool-badge {
+      color: #34d399;
+      font-size: 9px;
+    }
+
+    .ai-tool-args {
+      background: #121010;
+      color: #a3e635;
+      padding: 6px;
+      font-size: 10px;
+      font-family: var(--font-mono);
+      border-radius: 2px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .ai-tool-result {
+      font-size: 11px;
+      color: #fdfcfc;
+      line-height: 1.35;
+    }
+
+    .ai-result-tag {
+      color: #34d399;
+      font-weight: 700;
+    }
+
+    /* Preset Chips */
+    .ai-preset-chips-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: var(--surface-dark-elevated);
+      border-top: 1px solid var(--charcoal);
+      overflow-x: auto;
+    }
+
+    .ai-preset-chips-row::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .ai-chips-tag {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--on-dark-mute);
+    }
+
+    .ai-prompt-chip {
+      background: var(--surface-dark);
+      border: 1px solid var(--charcoal);
+      color: var(--on-dark);
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 2px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .ai-prompt-chip:hover {
+      border-color: #ffaa33;
+      color: #ffaa33;
+    }
+
+    /* Input Bar */
+    .ai-chat-input-bar {
+      display: flex;
+      gap: 6px;
+      padding: 8px 10px;
+      background: var(--surface-dark);
+      border-top: 1px solid var(--charcoal);
+    }
+
+    .ai-chat-input {
+      flex: 1;
+      background: var(--surface-dark-elevated);
+      border: 1px solid var(--charcoal);
+      color: var(--on-dark);
+      padding: 8px 10px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      border-radius: var(--rounded-sm);
+      outline: none;
+    }
+
+    .ai-chat-input:focus {
+      border-color: #ffaa33;
+    }
+
+    .ai-send-btn {
+      background: #ffaa33;
+      color: var(--ink-deep);
+      border: 1px solid #ffaa33;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 0 14px;
+      border-radius: var(--rounded-sm);
+      cursor: pointer;
+      transition: background 0.16s ease;
+    }
+
+    .ai-send-btn:hover {
+      background: #e69526;
+    }
+
+    .ai-send-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .ai-mic-btn {
+      background: var(--surface-dark-elevated);
+      color: #ffaa33;
+      border: 1px solid #ffaa33;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 0 10px;
+      border-radius: var(--rounded-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.16s ease;
+      white-space: nowrap;
+    }
+
+    .ai-mic-btn:hover {
+      background: #382c1b;
+    }
+
+    .ai-mic-btn.recording {
+      background: #ff3b30;
+      border-color: #ff3b30;
+      color: #ffffff;
+      animation: mic-pulse 1s infinite alternate;
+    }
+
+    @keyframes mic-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.4); }
+      100% { box-shadow: 0 0 0 8px rgba(255, 59, 48, 0); }
+    }
+
+    .ai-recording-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      background: #2a1111;
+      border-top: 1px solid #ff3b30;
+      font-size: 11px;
+      color: #ffaaaa;
+    }
+
+    .rec-dot {
+      color: #ff3b30;
+      font-weight: 900;
+      animation: blink 0.8s infinite;
+    }
+
+    .rec-label {
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .rec-transcript {
+      color: #ffaa33;
+      font-style: italic;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+    }
+
+    /* Floating Speech HUD with animated waves */
+    .ai-voice-speaking-hud {
+      position: fixed;
+      top: 68px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      background: rgba(18, 16, 16, 0.94);
+      border: 1px solid #ffaa33;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      border-radius: var(--rounded-sm);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      pointer-events: none;
+      animation: fadeInDown 0.22s ease-out;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translate(-50%, -10px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    .ai-voice-speaker-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ai-voice-avatar-icon {
+      font-size: 20px;
+    }
+
+    .ai-voice-speaker-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ai-voice-speaker-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: #fdfcfc;
+      letter-spacing: 0.5px;
+    }
+
+    .ai-voice-engine-badge {
+      font-size: 9px;
+      color: #ffaa33;
+      font-weight: 700;
+    }
+
+    .ai-voice-waves {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 18px;
+    }
+
+    .ai-voice-waves .bar {
+      display: inline-block;
+      width: 3px;
+      background: #ffaa33;
+      border-radius: 2px;
+      animation: wave 1s ease-in-out infinite alternate;
+    }
+
+    .ai-voice-waves .bar1 { height: 6px; animation-delay: 0.1s; }
+    .ai-voice-waves .bar2 { height: 16px; animation-delay: 0.25s; }
+    .ai-voice-waves .bar3 { height: 10px; animation-delay: 0.15s; }
+    .ai-voice-waves .bar4 { height: 18px; animation-delay: 0.3s; }
+    .ai-voice-waves .bar5 { height: 8px; animation-delay: 0.2s; }
+
+    @keyframes wave {
+      0% { height: 4px; }
+      100% { height: 18px; }
+    }
+
+    .ai-voice-live-text {
+      font-size: 12px;
+      color: #fdfcfc;
+      max-width: 480px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pill-voice-online {
+      background: #2b1f0c !important;
+      border: 1px solid #ffaa33 !important;
+      color: #ffaa33 !important;
+    }
+
+    .pill-voice-status {
+      background: var(--surface-dark-elevated) !important;
+      border: 1px solid var(--charcoal) !important;
+      color: #a3e635 !important;
+      cursor: pointer;
+    }
+
+    .pill-voice-mute {
+      background: #2a1111 !important;
+      border: 1px solid #ff3b30 !important;
+      color: #ff3b30 !important;
+      cursor: pointer;
+    }
+
+    .highlight-chip {
+      background: #2a2010 !important;
+      border-color: #ffaa33 !important;
+      color: #ffaa33 !important;
+      font-weight: 700;
+    }
+
+    .btn-ai-chat-cta {
+      background: var(--surface-dark);
+      border: 1px solid #ffaa33;
+      color: #ffaa33;
+      margin-top: 6px;
+    }
+
+    .btn-ai-chat-cta:hover {
+      background: #ffaa33;
+      color: var(--ink-deep);
     }
   </style>
 </head>
@@ -1533,7 +2544,16 @@
         <span><code>dbl-click</code> walk</span>
       </div>
 
-      <div class="view-mode-tabs" style="display: flex; gap: 4px; margin-left: auto; margin-right: 12px;">
+      <div class="mode-segmented-ctrl" id="mode-segmented-ctrl" style="margin-left: auto; margin-right: 8px;">
+        <button class="mode-tab-btn active-mode" id="btn-mode-builder" title="Technical Builder Mode - Stage geometry, drag-to-grid catalog, and live MCP terminal">
+          [#] BUILDER MODE
+        </button>
+        <button class="mode-tab-btn" id="btn-mode-owner" title="Executive Owner View - Clean spatial view, business metrics, and AI equipment generator">
+          [★] OWNER MODE
+        </button>
+      </div>
+
+      <div class="view-mode-tabs" style="display: flex; gap: 4px; margin-right: 12px;">
         <button class="btn-header active-btn" id="btn-view-salon" title="Switch to 2.5D Interior Salon with Characters">
           [::] Salon Interior
         </button>
@@ -1563,41 +2583,86 @@
     <div id="workspace-main">
       <!-- Left Builder & Asset Studio Sidebar -->
       <aside id="builder-sidebar">
-        <!-- Module 1: AI Creator Trigger -->
-        <button class="btn-ai-creator-cta" id="btn-open-ai-creator" title="Open AI 16-bit isometric generator modal">
-          [★] AI ASSET CREATOR (PROMPT)
-        </button>
+        <!-- 1. BUILDER MODE VIEW (Technical Stage Geometry & Catalog) -->
+        <div id="sidebar-builder-view" class="sidebar-mode-view">
+          <button class="btn-ai-creator-cta" id="btn-open-ai-creator" title="Open AI 16-bit isometric generator modal">
+            [★] AI ASSET CREATOR (PROMPT)
+          </button>
 
-        <div class="sidebar-section-title">[+] ASSET STUDIO CATALOG</div>
-        <div class="studio-tabs-row">
-          <button class="studio-tab-btn active-tab" data-category="all">[ALL]</button>
-          <button class="studio-tab-btn" data-category="massage">[RM 1] Massage</button>
-          <button class="studio-tab-btn" data-category="onsen">[RM 2] Onsen</button>
-          <button class="studio-tab-btn" data-category="reception">[RM 3] Lounge</button>
-          <button class="studio-tab-btn" data-category="walls">[RM 4] Walls</button>
-          <button class="studio-tab-btn" data-category="decor">[RM 5] Decor</button>
+          <div class="sidebar-section-title">[+] ASSET STUDIO CATALOG</div>
+          <div class="studio-tabs-row">
+            <button class="studio-tab-btn active-tab" data-category="all">[ALL]</button>
+            <button class="studio-tab-btn" data-category="massage">[RM 1] Massage</button>
+            <button class="studio-tab-btn" data-category="onsen">[RM 2] Onsen</button>
+            <button class="studio-tab-btn" data-category="reception">[RM 3] Lounge</button>
+            <button class="studio-tab-btn" data-category="walls">[RM 4] Walls</button>
+            <button class="studio-tab-btn" data-category="decor">[RM 5] Decor</button>
+          </div>
+
+          <!-- Dynamic Studio Inventory List with Room Groups & Sync Badges -->
+          <div id="studio-inventory-list"></div>
+
+          <div class="sidebar-section-title" style="margin-top: 8px;">[+] STAGE CONTROLS</div>
+          <div class="stage-actions-grid">
+            <button class="btn-stage-mode" id="btn-empty-stage" title="Remove all furniture, walls, and characters to leave a clean open floor stage">
+              [-] Empty Stage
+            </button>
+            <button class="btn-stage-mode" id="btn-populate-stage" title="Restore the full default salon layout with walls, furniture, and characters">
+              [+] Full Salon
+            </button>
+            <button class="btn-stage-mode btn-full-width" id="btn-highlight-all" title="Highlight exact pixel-art contours of all interactive objects">
+              [#] Highlight All Objects
+            </button>
+            <button class="btn-stage-mode btn-full-width" id="btn-save-default" title="Save current positions of all walls, furniture, and characters as the default layout">
+              [*] Lock Default Layout
+            </button>
+            <button class="btn-stage-mode btn-full-width active-toggle" id="btn-toggle-walk" title="Toggle autonomous character movement along corridors and doorways">
+              [>] Auto-Walk: ON
+            </button>
+          </div>
         </div>
 
-        <!-- Dynamic Studio Inventory List with Room Groups & Sync Badges -->
-        <div id="studio-inventory-list"></div>
+        <!-- 2. OWNER MODE VIEW (Simplified Executive Overview & Business Metrics) -->
+        <div id="sidebar-owner-view" class="sidebar-mode-view" style="display: none;">
+          <button class="btn-ai-creator-cta" id="btn-owner-add-equipment" title="Order custom handcrafted equipment for the salon via AI prompt">
+            [★] ORDER NEW EQUIPMENT (AI)
+          </button>
 
-        <div class="sidebar-section-title" style="margin-top: 8px;">[+] STAGE CONTROLS</div>
-        <div class="stage-actions-grid">
-          <button class="btn-stage-mode" id="btn-empty-stage" title="Remove all furniture, walls, and characters to leave a clean open floor stage">
-            [-] Empty Stage
-          </button>
-          <button class="btn-stage-mode" id="btn-populate-stage" title="Restore the full default salon layout with walls, furniture, and characters">
-            [+] Full Salon
-          </button>
-          <button class="btn-stage-mode btn-full-width" id="btn-highlight-all" title="Highlight exact pixel-art contours of all interactive objects">
-            [#] Highlight All Objects
-          </button>
-          <button class="btn-stage-mode btn-full-width" id="btn-save-default" title="Save current positions of all walls, furniture, and characters as the default layout">
-            [*] Lock Default Layout
-          </button>
-          <button class="btn-stage-mode btn-full-width active-toggle" id="btn-toggle-walk" title="Toggle autonomous character movement along corridors and doorways">
-            [>] Auto-Walk: ON
-          </button>
+          <!-- Operations & Financial Summary Card -->
+          <div class="owner-metric-card">
+            <div class="owner-card-header">
+              <span class="owner-card-title">[::] SALON OPERATIONS</span>
+              <span class="owner-status-pill pill-live">● LIVE</span>
+            </div>
+            <div class="owner-kpi-grid">
+              <div class="owner-kpi-item">
+                <span class="kpi-label">TODAY REVENUE</span>
+                <span class="kpi-val" id="owner-kpi-rev">฿14,500</span>
+                <span class="kpi-sub positive">+18% vs avg</span>
+              </div>
+              <div class="owner-kpi-item">
+                <span class="kpi-label">OCCUPANCY</span>
+                <span class="kpi-val" id="owner-kpi-occ">80%</span>
+                <span class="kpi-sub">4 / 5 Stations</span>
+              </div>
+              <div class="owner-kpi-item">
+                <span class="kpi-label">MASTERS ACTIVE</span>
+                <span class="kpi-val" id="owner-kpi-staff">4</span>
+                <span class="kpi-sub">1 on tea break</span>
+              </div>
+              <div class="owner-kpi-item">
+                <span class="kpi-label">SLA HEALTH</span>
+                <span class="kpi-val kpi-success">98.4%</span>
+                <span class="kpi-sub">0 delayed guests</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-section-title" style="margin-top: 6px;">[+] STATIONS & ROOMS</div>
+          <div class="owner-stations-list" id="owner-stations-list"></div>
+
+          <div class="sidebar-section-title" style="margin-top: 6px;">[+] STAFF ON DUTY</div>
+          <div class="owner-staff-list" id="owner-staff-list"></div>
         </div>
       </aside>
 

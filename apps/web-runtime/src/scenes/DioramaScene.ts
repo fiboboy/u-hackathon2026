@@ -19,6 +19,7 @@ export class DioramaScene extends Phaser.Scene {
   public onEntitySelected?: (entity: Entity) => void;
   public onEntityMovedUI?: (entity: Entity) => void;
   public onViewModeChanged?: (mode: "salon" | "district") => void;
+  public onWorldUpdated?: (world: World) => void;
   public autoWalkEnabled = true;
   public viewMode: "salon" | "district" = "salon";
 
@@ -139,12 +140,8 @@ export class DioramaScene extends Phaser.Scene {
 
     wsClient.connect();
 
-    // Standalone fallback: load default_world.json if bridge is not connected
-    this.time.delayedCall(700, () => {
-      if (!this.currentWorld) {
-        this.loadDefaultWorldFromJson();
-      }
-    });
+    // Standalone / Static deployment: load default_world.json immediately
+    this.loadDefaultWorldFromJson();
 
     this.scale.on("resize", (gameSize: Phaser.Structs.Size) => {
       const cx = gameSize.width / 2;
@@ -299,6 +296,7 @@ export class DioramaScene extends Phaser.Scene {
             this.lightLayer.setLightGlow(ent.id, true);
           }
         }
+        if (this.currentWorld) this.onWorldUpdated?.(this.currentWorld);
         break;
 
       case "ENTITY_PLACED":
@@ -307,6 +305,7 @@ export class DioramaScene extends Phaser.Scene {
         if (this.currentWorld) {
           this.currentWorld.entities = (this.currentWorld.entities || []).filter((e: Entity) => e.id !== newEnt.id);
           this.currentWorld.entities.push(newEnt);
+          this.onWorldUpdated?.(this.currentWorld);
         }
         break;
 
@@ -317,6 +316,7 @@ export class DioramaScene extends Phaser.Scene {
         this.hudLayer.updateTimer(removedId, 0);
         if (this.currentWorld) {
           this.currentWorld.entities = (this.currentWorld.entities || []).filter((e: Entity) => e.id !== removedId);
+          this.onWorldUpdated?.(this.currentWorld);
         }
         break;
 
@@ -412,6 +412,44 @@ export class DioramaScene extends Phaser.Scene {
       duration: 350,
       ease: "Quad.easeOut"
     });
+  }
+
+  public centerCameraOnEntity(entityId: string) {
+    if (this.viewMode !== "salon") {
+      this.switchToSalonView(false);
+    }
+    const pos = this.baseLayer.getEntityPosition(entityId);
+    if (!pos) return;
+    const { width, height } = this.scale;
+    this.tweens.add({
+      targets: this.worldContainer,
+      x: width / 2 - pos.x * this.worldContainer.scaleX,
+      y: height / 2 - pos.y * this.worldContainer.scaleY,
+      duration: 380,
+      ease: "Cubic.easeOut"
+    });
+  }
+
+  public sendStaffToBreak(staffId = "master_somchai") {
+    if (this.viewMode !== "salon") {
+      this.switchToSalonView(false);
+    }
+    const teaLoungePos = { x: -175, y: 120 }; // Waiting Lounge Tea Armchair
+    this.baseLayer.walkEntityTo(staffId, teaLoungePos.x, teaLoungePos.y, true);
+    this.centerCameraOnEntity(staffId);
+    this.hudLayer.showBubble(staffId, "icon_coffee");
+    this.hudLayer.updateStaminaBar(staffId, 100);
+
+    // Update in current world
+    if (this.currentWorld) {
+      const ent = (this.currentWorld.entities || []).find((e: any) => e.id === staffId);
+      if (ent) {
+        if (!ent.state) ent.state = {} as any;
+        ent.state.status = "idle";
+        (ent.state as any).stamina = 100;
+        this.onWorldUpdated?.(this.currentWorld);
+      }
+    }
   }
 
   // 1024x571 Isometric District Map (Kamphaeng Phet 7 Roi / RCA Alley, Bangkok)

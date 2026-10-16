@@ -20,6 +20,9 @@ importers:
       phaser:
         specifier: ^3.87.0
         version: 3.90.0
+      zod:
+        specifier: ^3.25.76
+        version: 3.25.76
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
