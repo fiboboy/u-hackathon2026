@@ -290,4 +290,76 @@ export class ParticleLayer {
       }
     });
   }
+
+  // 7. Real-Time Construction Dust (Sawdust & Mineral Dust during AI generation)
+  public spawnConstructionDust(originX: number, originY: number, count = 3) {
+    this.ensureTextures();
+    for (let i = 0; i < count; i++) {
+      const offsetX = Phaser.Math.Between(-35, 35);
+      const offsetY = Phaser.Math.Between(-20, 20);
+      const dust = this.scene.add.sprite(originX + offsetX, originY + offsetY, "particle_steam");
+      dust.setScale(Phaser.Math.FloatBetween(0.5, 0.9));
+      dust.setTint(Phaser.Math.RND.pick([0xe2d4b7, 0xd4b886, 0xc4a482, 0xffffff]));
+      dust.setAlpha(0.75);
+      dust.setDepth(15000);
+      this.container.add(dust);
+
+      this.scene.tweens.add({
+        targets: dust,
+        y: originY + offsetY - Phaser.Math.Between(20, 45),
+        x: originX + offsetX + Phaser.Math.Between(-15, 15),
+        alpha: 0,
+        scale: 1.3,
+        duration: Phaser.Math.Between(900, 1400),
+        ease: "Cubic.easeOut",
+        onComplete: () => dust.destroy()
+      });
+    }
+  }
+
+  // 8. Dynamic Construction Completion Burst (Hot-Reload Sparkle Explosion)
+  public triggerConstructionComplete(originX: number, originY: number) {
+    this.ensureTextures();
+    soundManager.playZenChime();
+
+    // Burst of 24 golden sparkles and clean sawdust puffs
+    for (let i = 0; i < 24; i++) {
+      const angle = (i / 24) * Math.PI * 2;
+      const dist = Phaser.Math.Between(25, 65);
+      const spark = this.scene.add.sprite(originX, originY - 15, "particle_coin");
+      spark.setScale(Phaser.Math.FloatBetween(0.5, 0.9));
+      spark.setAlpha(1);
+      spark.setDepth(17000);
+      this.container.add(spark);
+
+      this.scene.tweens.add({
+        targets: spark,
+        x: originX + Math.cos(angle) * dist,
+        y: originY - 15 + Math.sin(angle) * dist,
+        scale: 0.2,
+        alpha: 0,
+        duration: Phaser.Math.Between(450, 750),
+        ease: "Quad.easeOut",
+        onComplete: () => spark.destroy()
+      });
+    }
+
+    // Radial flash ring
+    const flash = this.scene.add.graphics();
+    flash.lineStyle(2, 0x30d158, 0.9);
+    flash.strokeCircle(originX, originY - 10, 15);
+    flash.setDepth(17000);
+    this.container.add(flash);
+
+    this.scene.tweens.add({
+      targets: flash,
+      scaleX: 3.5,
+      scaleY: 2.2,
+      alpha: 0,
+      duration: 500,
+      ease: "Cubic.easeOut",
+      onComplete: () => flash.destroy()
+    });
+  }
 }
+

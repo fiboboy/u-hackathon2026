@@ -38,6 +38,9 @@ export class BootScene extends Phaser.Scene {
 
     // 3. District City Map (Kamphaeng Phet 7 Roi / RCA Alley)
     this.load.image("district_map", "/assets/district_map.jpg");
+
+    // 4. AI Generated Custom Assets
+    this.load.image("cedar_tub_pixel", "/assets/cedar_tub_pixel.png");
   }
 
   create() {

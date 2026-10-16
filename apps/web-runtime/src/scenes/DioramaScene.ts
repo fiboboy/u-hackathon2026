@@ -588,4 +588,90 @@ export class DioramaScene extends Phaser.Scene {
       this.switchToSalonView(true);
     }
   }
+
+  public canvasPointToWorld(clientX: number, clientY: number): { x: number; y: number } {
+    const canvas = this.game.canvas;
+    const rect = canvas.getBoundingClientRect();
+    const screenX = clientX - rect.left;
+    const screenY = clientY - rect.top;
+    const localX = (screenX - this.worldContainer.x) / this.worldContainer.scaleX;
+    const localY = (screenY - this.worldContainer.y) / this.worldContainer.scaleY;
+    return { x: Math.round(localX), y: Math.round(localY) };
+  }
+
+  public showDragGhost(clientX: number, clientY: number, footprint = "1x1") {
+    if (this.viewMode !== "salon" || !this.baseLayer) return;
+    const worldPos = this.canvasPointToWorld(clientX, clientY);
+    this.baseLayer.showSnapReticle(worldPos.x, worldPos.y, footprint);
+  }
+
+  public hideDragGhost() {
+    this.baseLayer?.hideSnapReticle();
+  }
+
+  public spawnConstructionEntity(
+    assetType: string,
+    label: string,
+    footprint = "1x1",
+    clientX?: number,
+    clientY?: number,
+    durationMs = 4500
+  ): Promise<Entity> {
+    return new Promise((resolve) => {
+      let worldPos: { x: number; y: number };
+      if (typeof clientX === "number" && typeof clientY === "number") {
+        worldPos = this.canvasPointToWorld(clientX, clientY);
+      } else {
+        // Natural placement location inside onsen bath wing or garden deck
+        const defaultSpots: Array<{ x: number; y: number }> = [
+          { x: 230, y: -25 },
+          { x: 170, y: -45 },
+          { x: -140, y: 140 },
+          { x: -50, y: 75 }
+        ];
+        worldPos = defaultSpots[Math.floor(Math.random() * defaultSpots.length)];
+      }
+
+      const entityId = `entity_${assetType}_${Date.now().toString(36)}`;
+
+      this.baseLayer.startConstruction(
+        entityId,
+        assetType,
+        worldPos.x,
+        worldPos.y,
+        footprint,
+        label,
+        durationMs,
+        () => {
+          const createdEntity: Entity = {
+            id: entityId,
+            name: label,
+            type: "station",
+            asset_type: assetType,
+            grid_position: BaseGridLayer.worldToGrid(worldPos.x, worldPos.y),
+            footprint: {
+              w: footprint === "2x2" ? 2 : (footprint === "2x1" ? 2 : 1),
+              h: footprint === "2x2" ? 2 : 1
+            },
+            state: {
+              status: "idle",
+              stamina: 100,
+              current_session_seconds_left: 0,
+              total_session_seconds: 0,
+              wait_duration_seconds: 0,
+              custom_data: {
+                world_x: worldPos.x,
+                world_y: worldPos.y,
+                footprint,
+                is_ai_generated: true
+              }
+            }
+          };
+
+          soundManager.playAction("tap");
+          resolve(createdEntity);
+        }
+      );
+    });
+  }
 }

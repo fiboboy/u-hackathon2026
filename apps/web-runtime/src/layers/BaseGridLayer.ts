@@ -21,6 +21,7 @@ export class BaseGridLayer {
   private walkTweens: Map<string, Phaser.Tweens.Tween> = new Map();
   private stepTweens: Map<string, Phaser.Tweens.Tween> = new Map();
   private hoveredEntityId: string | null = null;
+  private snapReticle!: Phaser.GameObjects.Graphics;
 
   public selectedEntityId: string | null = null;
   public isDraggingEntity = false;
@@ -98,6 +99,8 @@ export class BaseGridLayer {
     bamboo_plant_01: 0.68,
     bamboo_plant_02: 0.68,
     cash_chest: 0.68,
+    cedar_tub: 0.76,
+    cedar_tub_pixel: 0.76,
     char_receptionist: 0.86,
     char_masseuse_room1: 0.85,
     char_masseur_room2: 0.85,
@@ -113,6 +116,10 @@ export class BaseGridLayer {
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.container = this.scene.add.container(0, 0);
+    this.snapReticle = this.scene.add.graphics();
+    this.snapReticle.setVisible(false);
+    this.snapReticle.setDepth(20000);
+    this.container.add(this.snapReticle);
   }
 
   public getContainer(): Phaser.GameObjects.Container {
@@ -155,6 +162,197 @@ export class BaseGridLayer {
       x: (gx - gy) * halfW - 40,
       y: (gx + gy) * halfH - 130
     };
+  }
+
+  // Module 1 & 3: Snap-to-Grid Reticle Preview
+  public showSnapReticle(worldX: number, worldY: number, footprint = "2x2") {
+    this.snapReticle.clear();
+    this.snapReticle.setVisible(true);
+
+    const gridPos = BaseGridLayer.worldToGrid(worldX, worldY);
+    const snapWorld = BaseGridLayer.gridToWorld(gridPos.x, gridPos.y);
+
+    const isDouble = footprint === "2x2" || footprint === "2x1";
+    const halfW = isDouble ? 48 : 32;
+    const halfH = isDouble ? 24 : 16;
+
+    // Semi-transparent isometric diamond fill & glowing dashed border
+    this.snapReticle.fillStyle(0x007aff, 0.22);
+    this.snapReticle.beginPath();
+    this.snapReticle.moveTo(snapWorld.x, snapWorld.y - halfH);
+    this.snapReticle.lineTo(snapWorld.x + halfW, snapWorld.y);
+    this.snapReticle.lineTo(snapWorld.x, snapWorld.y + halfH);
+    this.snapReticle.lineTo(snapWorld.x - halfW, snapWorld.y);
+    this.snapReticle.closePath();
+    this.snapReticle.fillPath();
+
+    this.snapReticle.lineStyle(2, 0x007aff, 0.95);
+    this.snapReticle.strokePath();
+  }
+
+  public hideSnapReticle() {
+    this.snapReticle.clear();
+    this.snapReticle.setVisible(false);
+  }
+
+  // Module 3: Real-Time In-Canvas Construction State (Graceful Fallback + Hot-Reload)
+  public startConstruction(
+    entityId: string,
+    assetType: string,
+    worldX: number,
+    worldY: number,
+    footprint: string,
+    label: string,
+    durationMs = 3800,
+    onComplete?: () => void
+  ) {
+    const gridPos = BaseGridLayer.worldToGrid(worldX, worldY);
+    const snapWorld = BaseGridLayer.gridToWorld(gridPos.x, gridPos.y);
+
+    // 1. Create Scaffold & Blueprint Container
+    const constContainer = this.scene.add.container(snapWorld.x, snapWorld.y);
+    constContainer.setDepth(15000);
+
+    const halfW = footprint === "2x2" ? 48 : 36;
+    const halfH = footprint === "2x2" ? 24 : 18;
+
+    // Blueprint floor wireframe
+    const bp = this.scene.add.graphics();
+    bp.fillStyle(0x007aff, 0.28);
+    bp.beginPath();
+    bp.moveTo(0, -halfH);
+    bp.lineTo(halfW, 0);
+    bp.lineTo(0, halfH);
+    bp.lineTo(-halfW, 0);
+    bp.closePath();
+    bp.fillPath();
+
+    bp.lineStyle(2, 0x007aff, 0.9);
+    bp.strokePath();
+    constContainer.add(bp);
+
+    // Wooden scaffolding framing
+    const scaffold = this.scene.add.graphics();
+    scaffold.lineStyle(2.5, 0xb45309, 0.95);
+    // Vertical wooden corner posts
+    scaffold.lineBetween(-halfW + 4, 0, -halfW + 4, -40);
+    scaffold.lineBetween(halfW - 4, 0, halfW - 4, -40);
+    scaffold.lineBetween(0, halfH - 2, 0, -40 + halfH);
+    scaffold.lineBetween(0, -halfH + 2, 0, -56);
+    // Cross bracing
+    scaffold.lineStyle(1.5, 0xd97706, 0.85);
+    scaffold.lineBetween(-halfW + 4, -10, halfW - 4, -35);
+    scaffold.lineBetween(-halfW + 4, -35, halfW - 4, -10);
+    constContainer.add(scaffold);
+
+    // Semi-transparent silhouette of target sprite
+    let ghostSprite: Phaser.GameObjects.Sprite | Phaser.GameObjects.Image;
+    const effectiveTex = this.scene.textures.exists(assetType)
+      ? assetType
+      : (assetType === "cedar_tub" && this.scene.textures.exists("cedar_tub_pixel"))
+        ? "cedar_tub_pixel"
+        : null;
+
+    if (effectiveTex) {
+      ghostSprite = this.scene.add.image(0, -18, effectiveTex);
+    } else {
+      const resolvedFrame = this.resolveAtlasFrame(assetType);
+      ghostSprite = this.scene.add.sprite(0, -18, "spa_atlas", resolvedFrame);
+    }
+    ghostSprite.setAlpha(0.45);
+    ghostSprite.setTint(0x60a5fa);
+    constContainer.add(ghostSprite);
+
+    // Floating monospace construction badge
+    const tagBg = this.scene.add.graphics();
+    tagBg.fillStyle(0x201d1d, 0.95);
+    tagBg.lineStyle(1, 0xffaa33, 1);
+    tagBg.fillRoundedRect(-75, -68, 150, 20, 2);
+    tagBg.strokeRoundedRect(-75, -68, 150, 20, 2);
+    constContainer.add(tagBg);
+
+    const tagText = this.scene.add.text(0, -58, `[BUILDING: ${Math.round(durationMs / 1000)}s]`, {
+      fontSize: "9px",
+      fontFamily: "'Berkeley Mono', 'JetBrains Mono', monospace",
+      color: "#ffaa33",
+      fontStyle: "bold"
+    }).setOrigin(0.5);
+    constContainer.add(tagText);
+
+    this.container.add(constContainer);
+
+    // Continuous construction sawdust emission
+    const dustTimer = this.scene.time.addEvent({
+      delay: 240,
+      loop: true,
+      callback: () => {
+        (this.scene as any).particleLayer?.spawnConstructionDust(snapWorld.x, snapWorld.y, 2);
+      }
+    });
+
+    // Countdown timer updates
+    let remaining = durationMs;
+    const countTimer = this.scene.time.addEvent({
+      delay: 500,
+      loop: true,
+      callback: () => {
+        remaining -= 500;
+        const sec = Math.max(0, remaining / 1000).toFixed(1);
+        tagText.setText(`[BUILDING: ${sec}s]`);
+      }
+    });
+
+    // Seamless hot-reload texture replacement upon completion
+    this.scene.time.delayedCall(durationMs, () => {
+      dustTimer.remove();
+      countTimer.remove();
+
+      // Trigger completion particle burst & audio
+      (this.scene as any).particleLayer?.triggerConstructionComplete(snapWorld.x, snapWorld.y);
+
+      // Dismiss scaffold with scale-fade
+      this.scene.tweens.add({
+        targets: constContainer,
+        alpha: 0,
+        scale: 1.15,
+        duration: 250,
+        ease: "Quad.easeOut",
+        onComplete: () => {
+          constContainer.destroy();
+        }
+      });
+
+      // Spawn finalized entity into world
+      const newEntity: Entity = {
+        id: entityId,
+        name: label,
+        type: "station",
+        asset_type: assetType,
+        grid_position: { x: gridPos.x, y: gridPos.y },
+        footprint: {
+          w: footprint === "2x2" ? 2 : (footprint === "2x1" ? 2 : 1),
+          h: footprint === "2x2" ? 2 : 1
+        },
+        state: {
+          status: "idle",
+          stamina: 100,
+          current_session_seconds_left: 0,
+          total_session_seconds: 0,
+          wait_duration_seconds: 0,
+          custom_data: {
+            world_x: snapWorld.x,
+            world_y: snapWorld.y,
+            footprint,
+            is_ai_generated: true
+          }
+        }
+      };
+
+      this.addOrUpdateEntity(newEntity, true);
+      this.recomputeAllDepths();
+
+      onComplete?.();
+    });
   }
 
   private resolveAtlasFrame(assetType: string): string {
@@ -342,7 +540,12 @@ export class BaseGridLayer {
 
     const isCharacter = entity.type === "staff" || entity.type === "guest";
     const isWall = BaseGridLayer.isWallAsset(entity.asset_type, entity);
-    const frame = this.resolveAtlasFrame(entity.asset_type);
+    const effectiveStandalone = this.scene.textures.exists(entity.asset_type)
+      ? entity.asset_type
+      : (entity.asset_type === "cedar_tub" && this.scene.textures.exists("cedar_tub_pixel"))
+        ? "cedar_tub_pixel"
+        : null;
+    const frame = effectiveStandalone ? "" : this.resolveAtlasFrame(entity.asset_type);
     const baseScale = BaseGridLayer.ASSET_SCALES[frame] || BaseGridLayer.ASSET_SCALES[entity.asset_type] || 0.72;
     const originY = isWall ? 0.80 : 0.88;
 
@@ -361,7 +564,9 @@ export class BaseGridLayer {
       [1.5, 1.5],
     ];
     for (const [ox, oy] of offsets) {
-      const outlineSpr = this.scene.add.sprite(ox, oy, "spa_atlas", frame);
+      const outlineSpr = effectiveStandalone
+        ? this.scene.add.sprite(ox, oy, effectiveStandalone)
+        : this.scene.add.sprite(ox, oy, "spa_atlas", frame);
       outlineSpr.setOrigin(0.5, originY);
       outlineSpr.setScale(baseScale);
       outlineSpr.setFlipX(flipX);
@@ -372,8 +577,10 @@ export class BaseGridLayer {
     entContainer.add(contourCont);
     this.entityContours.set(entity.id, contourCont);
 
-    // 2. Main Pixel Art Sprite from Atlas
-    const spr = this.scene.add.sprite(0, 0, "spa_atlas", frame);
+    // 2. Main Pixel Art Sprite from Atlas or Standalone
+    const spr = effectiveStandalone
+      ? this.scene.add.sprite(0, 0, effectiveStandalone)
+      : this.scene.add.sprite(0, 0, "spa_atlas", frame);
     spr.setOrigin(0.5, originY);
     spr.setScale(baseScale);
     spr.setFlipX(flipX);

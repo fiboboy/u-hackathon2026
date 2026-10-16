@@ -896,6 +896,622 @@
       color: var(--success);
       font-weight: 700;
     }
+
+    /* MODULE 1: ASSET STUDIO DRAWER & INVENTORY */
+    .btn-ai-creator-cta {
+      width: 100%;
+      background: var(--surface-dark);
+      color: #ffaa33;
+      border: 1px solid #ffaa33;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: var(--rounded-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      transition: all 0.16s ease;
+    }
+
+    .btn-ai-creator-cta:hover {
+      background: #ffaa33;
+      color: var(--ink-deep);
+    }
+
+    .studio-tabs-row {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .studio-tab-btn {
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      padding: 3px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--mute);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .studio-tab-btn:hover {
+      background: var(--surface-card);
+      color: var(--ink);
+    }
+
+    .studio-tab-btn.active-tab {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    #studio-inventory-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow-y: auto;
+      max-height: calc(100vh - 410px);
+    }
+
+    .studio-item-card {
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      padding: 6px 8px;
+      cursor: grab;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      transition: border-color 0.14s ease, transform 0.14s ease;
+    }
+
+    .studio-item-card:hover {
+      border-color: var(--hairline-strong);
+      background: var(--surface-card);
+      transform: translateX(2px);
+    }
+
+    .studio-item-card.dragging {
+      opacity: 0.4;
+      cursor: grabbing;
+    }
+
+    .studio-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .studio-item-icon {
+      font-weight: 700;
+      font-size: 10px;
+      color: var(--mute);
+    }
+
+    .studio-item-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .studio-item-footprint {
+      font-size: 9px;
+      font-weight: 700;
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 1px 4px;
+      border-radius: 2px;
+      color: var(--body);
+    }
+
+    .studio-item-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+    }
+
+    .studio-item-room {
+      color: var(--ash);
+      font-size: 9px;
+    }
+
+    .sync-status-badge {
+      font-size: 8px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 2px;
+      letter-spacing: -0.2px;
+    }
+
+    .sync-status-badge.status-in_atlas {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+
+    .sync-status-badge.status-queued {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #f59e0b;
+    }
+
+    .sync-status-badge.status-placeholder {
+      background: #eff6ff;
+      color: #1e40af;
+      border: 1px solid #3b82f6;
+    }
+
+    /* MODULE 2: AI ASSET CREATOR MODAL */
+    #ai-asset-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(32, 29, 29, 0.78);
+      backdrop-filter: blur(4px);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    #ai-asset-modal.visible {
+      display: flex;
+    }
+
+    .ai-modal-card {
+      width: 720px;
+      max-width: 95vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--canvas);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-none);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ai-modal-header {
+      background: var(--surface-dark);
+      color: var(--on-dark);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--charcoal);
+    }
+
+    .ai-modal-header-title {
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ai-modal-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ai-field-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--mute);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .ai-prompt-textarea {
+      width: 100%;
+      height: 64px;
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-sm);
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--ink);
+      resize: none;
+      outline: none;
+    }
+
+    .ai-prompt-textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .preset-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .preset-prompt-chip {
+      background: var(--surface-card);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      padding: 2px 7px;
+      font-size: 10px;
+      color: var(--body);
+      cursor: pointer;
+    }
+
+    .preset-prompt-chip:hover {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    .ai-two-col-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .ai-upload-box {
+      border: 1.5px dashed var(--hairline-strong);
+      border-radius: var(--rounded-sm);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: var(--surface-soft);
+      min-height: 120px;
+    }
+
+    .footprint-pills-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .footprint-pill {
+      flex: 1;
+      padding: 6px 4px;
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .footprint-pill.active-pill {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    /* Pipeline Stepper */
+    .pipeline-stepper-box {
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      padding: 10px 12px;
+    }
+
+    .pipeline-progress-bar {
+      height: 6px;
+      background: var(--hairline);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .pipeline-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--success);
+      transition: width 0.3s ease;
+    }
+
+    .pipeline-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+
+    .pipeline-step-item {
+      font-size: 9px;
+      padding: 4px 6px;
+      border-radius: 2px;
+      border: 1px solid var(--hairline);
+      background: var(--canvas);
+      color: var(--mute);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .pipeline-step-item.step-pending {
+      opacity: 0.6;
+    }
+
+    .pipeline-step-item.step-active {
+      background: #fef3c7;
+      color: #92400e;
+      border-color: #f59e0b;
+      animation: pulse-step 1s infinite alternate;
+    }
+
+    .pipeline-step-item.step-done {
+      background: #ecfdf5;
+      color: #065f46;
+      border-color: #10b981;
+    }
+
+    @keyframes pulse-step {
+      0% { opacity: 0.8; }
+      100% { opacity: 1; }
+    }
+
+    .pipeline-status-text {
+      font-size: 10px;
+      color: var(--body);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* Before / After Preview */
+    .before-after-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      padding: 10px;
+    }
+
+    .preview-pane {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .preview-pane-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--mute);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .preview-img-frame {
+      width: 100%;
+      height: 140px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #1a1818;
+    }
+
+    .preview-img-frame.checkerboard {
+      background-image: linear-gradient(45deg, #252222 25%, transparent 25%),
+                        linear-gradient(-45deg, #252222 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, #252222 75%),
+                        linear-gradient(-45deg, transparent 75%, #252222 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+      background-color: #1d1b1b;
+    }
+
+    .preview-img-frame img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    .ai-modal-footer {
+      background: var(--surface-card);
+      border-top: 1px solid var(--hairline);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ai-modal-footer-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-modal-action {
+      padding: 6px 14px;
+      border-radius: var(--rounded-sm);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--hairline-strong);
+      background: var(--canvas);
+      color: var(--ink);
+    }
+
+    .btn-modal-action.primary {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    .btn-modal-action.primary:hover {
+      background: var(--ink-deep);
+    }
+
+    .btn-modal-action.highlight-pulse {
+      background: #ffaa33;
+      color: var(--ink-deep);
+      border-color: #ffaa33;
+    }
+
+    /* MODULE 4: REAL-TIME MCP CONSOLE TERMINAL */
+    #mcp-console-widget {
+      position: absolute;
+      bottom: 44px;
+      left: 16px;
+      width: 460px;
+      max-width: calc(100vw - 320px);
+      height: 190px;
+      background: var(--surface-dark);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-sm);
+      overflow: hidden;
+      z-index: 85;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+      transition: height 0.16s ease;
+    }
+
+    #mcp-console-widget.minimized {
+      height: 32px;
+    }
+
+    .mcp-titlebar {
+      height: 32px;
+      min-height: 32px;
+      background: var(--surface-dark-elevated);
+      color: var(--on-dark);
+      border-bottom: 1px solid var(--charcoal);
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .mcp-title-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mcp-badge-active {
+      font-size: 9px;
+      background: #065f46;
+      color: #30d158;
+      border: 1px solid #10b981;
+      padding: 1px 4px;
+      border-radius: 2px;
+    }
+
+    .mcp-title-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mcp-btn-ctrl {
+      background: var(--surface-dark);
+      border: 1px solid var(--charcoal);
+      color: var(--on-dark-mute);
+      padding: 2px 6px;
+      font-size: 10px;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+
+    .mcp-btn-ctrl:hover {
+      color: var(--on-dark);
+      border-color: var(--hairline-strong);
+    }
+
+    #mcp-log-stream {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 8px;
+      font-size: 11px;
+      line-height: 1.45;
+      background: #161414;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .mcp-log-row {
+      display: flex;
+      gap: 6px;
+      word-break: break-all;
+    }
+
+    .mcp-time {
+      color: var(--ash);
+      flex-shrink: 0;
+      font-size: 10px;
+    }
+
+    .mcp-tag {
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .mcp-type-mcp-in .mcp-tag { color: #007aff; }
+    .mcp-type-mcp-out .mcp-tag { color: #30d158; }
+    .mcp-type-pipeline .mcp-tag { color: #ffaa33; }
+    .mcp-type-engine .mcp-tag { color: #f472b6; }
+    .mcp-type-sync .mcp-tag { color: #a78bfa; }
+
+    .mcp-msg {
+      color: #fdfcfc;
+    }
+
+    .mcp-payload {
+      color: #9a9898;
+      font-size: 10px;
+    }
+
+    .mcp-quick-toolbar {
+      height: 28px;
+      background: var(--surface-dark-elevated);
+      border-top: 1px solid var(--charcoal);
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+    }
+
+    .mcp-quick-btn {
+      background: var(--surface-dark);
+      border: 1px solid var(--charcoal);
+      color: var(--on-dark);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 2px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .mcp-quick-btn:hover {
+      border-color: #ffaa33;
+      color: #ffaa33;
+    }
   </style>
 </head>
 <body>
@@ -945,9 +1561,27 @@
 
     <!-- Main Workspace -->
     <div id="workspace-main">
-      <!-- Left Builder & Stage Control Sidebar -->
+      <!-- Left Builder & Asset Studio Sidebar -->
       <aside id="builder-sidebar">
-        <div class="sidebar-section-title">[+] STAGE CONTROLS</div>
+        <!-- Module 1: AI Creator Trigger -->
+        <button class="btn-ai-creator-cta" id="btn-open-ai-creator" title="Open AI 16-bit isometric generator modal">
+          [★] AI ASSET CREATOR (PROMPT)
+        </button>
+
+        <div class="sidebar-section-title">[+] ASSET STUDIO CATALOG</div>
+        <div class="studio-tabs-row">
+          <button class="studio-tab-btn active-tab" data-category="all">[ALL]</button>
+          <button class="studio-tab-btn" data-category="massage">[RM 1] Massage</button>
+          <button class="studio-tab-btn" data-category="onsen">[RM 2] Onsen</button>
+          <button class="studio-tab-btn" data-category="reception">[RM 3] Lounge</button>
+          <button class="studio-tab-btn" data-category="walls">[RM 4] Walls</button>
+          <button class="studio-tab-btn" data-category="decor">[RM 5] Decor</button>
+        </div>
+
+        <!-- Dynamic Studio Inventory List with Room Groups & Sync Badges -->
+        <div id="studio-inventory-list"></div>
+
+        <div class="sidebar-section-title" style="margin-top: 8px;">[+] STAGE CONTROLS</div>
         <div class="stage-actions-grid">
           <button class="btn-stage-mode" id="btn-empty-stage" title="Remove all furniture, walls, and characters to leave a clean open floor stage">
             [-] Empty Stage
@@ -963,58 +1597,6 @@
           </button>
           <button class="btn-stage-mode btn-full-width active-toggle" id="btn-toggle-walk" title="Toggle autonomous character movement along corridors and doorways">
             [>] Auto-Walk: ON
-          </button>
-        </div>
-
-        <div class="sidebar-section-title" style="margin-top: 6px;">[+] ADD TO SALON</div>
-        <div class="catalog-grid">
-          <button class="catalog-item-btn" data-asset="massage_bed_wood_left" data-type="station" data-name="Tatami Bed">
-            <span class="cat-icon">[+BED]</span>
-            <span>Tatami Bed</span>
-          </button>
-          <button class="catalog-item-btn" data-asset="onsen_tub" data-type="station" data-name="Onsen Bath">
-            <span class="cat-icon">[+TUB]</span>
-            <span>Onsen Bath</span>
-          </button>
-          <button class="catalog-item-btn" data-asset="reception_desk" data-type="station" data-name="Reception Desk">
-            <span class="cat-icon">[+DSK]</span>
-            <span>Reception</span>
-          </button>
-          <button class="catalog-item-btn" data-asset="sofa_armchair_cream" data-type="lounge" data-name="Lounge Sofa">
-            <span class="cat-icon">[+SFA]</span>
-            <span>Lounge Sofa</span>
-          </button>
-          <button class="catalog-item-btn" data-asset="armchair_purple_01" data-type="lounge" data-name="Guest Armchair">
-            <span class="cat-icon">[+CHR]</span>
-            <span>Guest Chair</span>
-          </button>
-          <button class="catalog-item-btn" data-asset="tea_table_wood" data-type="decor" data-name="Tea Table">
-            <span class="cat-icon">[+TEA]</span>
-            <span>Tea Table</span>
-          </button>
-          <button class="catalog-item-btn" data-asset="wall_shoji_door_left" data-type="decor" data-name="Shoji Door Wall">
-            <span class="cat-icon">[+WLL]</span>
-            <span>Shoji Wall</span>
-          </button>
-          <button class="catalog-item-btn" data-asset="wall_shoji_front_right" data-type="decor" data-name="Room Partition">
-            <span class="cat-icon">[+DIV]</span>
-            <span>Partition</span>
-          </button>
-          <button class="catalog-item-btn" data-asset="aroma_burner_01" data-type="decor" data-name="Aroma Diffuser">
-            <span class="cat-icon">[+ARM]</span>
-            <span>Aroma Lamp</span>
-          </button>
-          <button class="catalog-item-btn" data-asset="bamboo_plant_01" data-type="decor" data-name="Bamboo Planter">
-            <span class="cat-icon">[+BMB]</span>
-            <span>Bamboo Pot</span>
-          </button>
-          <button class="catalog-item-btn" data-asset="char_masseuse_room1" data-type="staff" data-name="Spa Therapist">
-            <span class="cat-icon">[+STF]</span>
-            <span>Therapist</span>
-          </button>
-          <button class="catalog-item-btn" data-asset="char_guest_yukata" data-type="guest" data-name="Yukata Guest">
-            <span class="cat-icon">[+GST]</span>
-            <span>Spa Guest</span>
           </button>
         </div>
       </aside>
@@ -1040,6 +1622,27 @@
         <div id="toast-notification">
           <span id="toast-icon">[i]</span>
           <span id="toast-text">Event triggered</span>
+        </div>
+
+        <!-- Module 4: Real-Time MCP Server Terminal & Event Stream -->
+        <div id="mcp-console-widget">
+          <div class="mcp-titlebar" id="mcp-console-header">
+            <div class="mcp-title-left">
+              <span>[MCP] SERVER TERMINAL</span>
+              <span class="mcp-badge-active">LIVE</span>
+            </div>
+            <div class="mcp-title-actions">
+              <button class="mcp-btn-ctrl" id="btn-mcp-clear" title="Clear log stream">[CLEAR]</button>
+              <button class="mcp-btn-ctrl" id="mcp-toggle-min" title="Toggle minimize">[-]</button>
+            </div>
+          </div>
+          <div id="mcp-log-stream"></div>
+          <div class="mcp-quick-toolbar">
+            <span style="font-size: 9px; color: var(--on-dark-mute); font-weight: 700;">TEST MCP:</span>
+            <button class="mcp-quick-btn" id="btn-mcp-test-place">[+] place_station</button>
+            <button class="mcp-quick-btn" id="btn-mcp-test-remove">[-] remove_object</button>
+            <button class="mcp-quick-btn" id="btn-mcp-test-bind">[~] bind_stream</button>
+          </div>
         </div>
 
         <!-- Interactive Corner Minimap Widget (Toggle between Salon & District Map) -->
@@ -1096,6 +1699,98 @@
       <button class="demo-btn btn-reset" id="btn-reset" title="Reset salon to locked default layout">
         [x] Reset
       </button>
+    </div>
+  <!-- Module 2: AI Asset Creator Modal Dialog -->
+  <div id="ai-asset-modal">
+    <div class="ai-modal-card">
+      <div class="ai-modal-header">
+        <div class="ai-modal-header-title">
+          <span>[AI] ASSET CREATOR // 16-BIT ISOMETRIC GENERATOR</span>
+        </div>
+        <button class="close-btn" id="ai-modal-close">[x]</button>
+      </div>
+      <div class="ai-modal-body">
+        <!-- Prompt Section -->
+        <div>
+          <div class="ai-field-label">[1] NATURAL LANGUAGE SPECIFICATION</div>
+          <textarea id="ai-modal-prompt" class="ai-prompt-textarea" placeholder="Describe the physical asset in detail (e.g. Handcrafted cedar barrel tub for phytotherapy and aromatic herbal soaking with copper hoops)..."></textarea>
+          <div class="preset-chips-row">
+            <span style="font-size: 10px; color: var(--mute); font-weight: 700; align-self: center;">PRESETS:</span>
+            <button class="preset-prompt-chip" data-prompt="Handcrafted Japanese cedar barrel tub for phytotherapy and aromatic herbal soaking with copper hoops">[Cedar Barrel Tub]</button>
+            <button class="preset-prompt-chip" data-prompt="Private hinoki wood mineral footbath with polished river pebbles and warm water ripple">[Hinoki Footbath]</button>
+            <button class="preset-prompt-chip" data-prompt="Traditional stone water basin with carved bamboo spout and cascading water">[Bamboo Fountain]</button>
+            <button class="preset-prompt-chip" data-prompt="Aromatic herbal steam chamber with slatted pine door and warm amber lantern glow">[Herbal Steam Chamber]</button>
+          </div>
+        </div>
+
+        <!-- Reference Photo & Footprint Grid -->
+        <div class="ai-two-col-grid">
+          <div>
+            <div class="ai-field-label">[2] REAL EQUIPMENT REFERENCE (IMAGE-TO-ASSET)</div>
+            <div class="ai-upload-box">
+              <input type="file" id="ai-ref-file-input" accept="image/*" style="display: none;" />
+              <button class="btn-modal-action" style="margin-bottom: 6px;" onclick="document.getElementById('ai-ref-file-input').click()">[↑] Upload Photo</button>
+              <button class="btn-modal-action" id="btn-load-sample-photo" style="font-size: 10px;">[Use Sample: Cedar Barrel Tub Photo]</button>
+              <span style="font-size: 9px; color: var(--mute); margin-top: 4px;">PNG, JPG up to 10MB · Stylized into 16-bit pixel art</span>
+            </div>
+          </div>
+          <div>
+            <div class="ai-field-label">[3] ISOMETRIC GRID FOOTPRINT</div>
+            <div class="footprint-pills-row">
+              <button class="footprint-pill" data-footprint="1x1">1x1 Tile<br><span style="font-size: 9px; font-weight: normal; color: var(--mute);">32x32 px</span></button>
+              <button class="footprint-pill" data-footprint="2x1">2x1 Tile<br><span style="font-size: 9px; font-weight: normal; color: var(--mute);">64x32 px</span></button>
+              <button class="footprint-pill active-pill" data-footprint="2x2">2x2 Tile<br><span style="font-size: 9px; font-weight: normal; color: var(--mute);">64x64 px</span></button>
+            </div>
+            <div style="font-size: 10px; color: var(--body); margin-top: 8px; line-height: 1.4;">
+              Determines collision mask and tile boundary allocation on the salon floor grid.
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Pipeline Stepper -->
+        <div class="pipeline-stepper-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <div class="ai-field-label" style="margin-bottom: 0;">[4] LIVE PIPELINE STEPPER</div>
+            <button class="btn-modal-action primary" id="btn-ai-start-generate">[>] Compile AI Asset</button>
+          </div>
+          <div class="pipeline-progress-bar">
+            <div class="pipeline-progress-fill" id="ai-stepper-progress-fill"></div>
+          </div>
+          <div class="pipeline-steps-grid">
+            <div class="pipeline-step-item step-pending" id="step-1-concept">1. CONCEPT GEN</div>
+            <div class="pipeline-step-item step-pending" id="step-2-rembg">2. REMBG MATTE</div>
+            <div class="pipeline-step-item step-pending" id="step-3-snap">3. PIXEL SNAP</div>
+            <div class="pipeline-step-item step-pending" id="step-4-atlas">4. ATLAS INJECT</div>
+          </div>
+          <div class="pipeline-status-text" id="ai-pipeline-status">Ready to generate · Enter prompt or upload reference photo</div>
+        </div>
+
+        <!-- Before / After Preview & Approval -->
+        <div>
+          <div class="ai-field-label">[5] DUAL-VIEW APPROVAL (BEFORE / AFTER)</div>
+          <div class="before-after-container">
+            <div class="preview-pane">
+              <div class="preview-pane-title">Reference / Concept Input</div>
+              <div class="preview-img-frame">
+                <img id="ai-preview-raw" src="/assets/cedar_tub_reference.jpg" alt="Raw Reference" />
+              </div>
+            </div>
+            <div class="preview-pane">
+              <div class="preview-pane-title">16-Bit Isometric Pixel Art (Transparent)</div>
+              <div class="preview-img-frame checkerboard">
+                <img id="ai-preview-pixel" src="/assets/cedar_tub_pixel.png" alt="16-Bit Pixel Art Output" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ai-modal-footer">
+        <button class="btn-modal-action" id="ai-modal-cancel">[x] Cancel</button>
+        <div class="ai-modal-footer-btns">
+          <button class="btn-modal-action" id="btn-ai-regenerate">[~] Regenerate</button>
+          <button class="btn-modal-action highlight-pulse" id="btn-ai-apply-salon">[★] Apply & Place in Salon</button>
+        </div>
+      </div>
     </div>
   </div>
 
