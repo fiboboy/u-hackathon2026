@@ -35,6 +35,9 @@ export class BootScene extends Phaser.Scene {
 
     // 2. High-Resolution Sprite Atlas
     this.load.atlas("spa_atlas", "/assets/atlas.png", "/assets/atlas.json");
+
+    // 3. District City Map (Kamphaeng Phet 7 Roi / RCA Alley)
+    this.load.image("district_map", "/assets/district_map.jpg");
   }
 
   create() {

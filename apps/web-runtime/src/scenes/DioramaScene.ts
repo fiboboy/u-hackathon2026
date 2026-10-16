@@ -9,6 +9,7 @@ import { soundManager } from "../services/SoundManager.js";
 
 export class DioramaScene extends Phaser.Scene {
   private worldContainer!: Phaser.GameObjects.Container;
+  private districtContainer!: Phaser.GameObjects.Container;
   public baseLayer!: BaseGridLayer;
   public lightLayer!: LightShaderLayer;
   public particleLayer!: ParticleLayer;
@@ -17,7 +18,9 @@ export class DioramaScene extends Phaser.Scene {
   public currentWorld: World | null = null;
   public onEntitySelected?: (entity: Entity) => void;
   public onEntityMovedUI?: (entity: Entity) => void;
+  public onViewModeChanged?: (mode: "salon" | "district") => void;
   public autoWalkEnabled = true;
+  public viewMode: "salon" | "district" = "salon";
 
   private isPanningCamera = false;
   private dragStartX = 0;
@@ -123,6 +126,9 @@ export class DioramaScene extends Phaser.Scene {
       }).catch(() => {});
     };
 
+    // Create Fullscreen District Map View (Kamphaeng Phet 7 Roi / RCA Alley)
+    this.createDistrictView();
+
     // Camera Pan, Zoom & Double-Click Character Walk
     this.setupPanZoomAndWalk();
 
@@ -134,7 +140,12 @@ export class DioramaScene extends Phaser.Scene {
     wsClient.connect();
 
     this.scale.on("resize", (gameSize: Phaser.Structs.Size) => {
-      this.worldContainer.setPosition(gameSize.width / 2, gameSize.height / 2);
+      const cx = gameSize.width / 2;
+      const cy = gameSize.height / 2;
+      this.worldContainer.setPosition(cx, cy);
+      if (this.districtContainer) {
+        this.districtContainer.setPosition(cx, cy);
+      }
     });
 
     // 1. Dynamic Onsen Steam (tracks actual position of onsen_tub_01 and onsen_tub_vip)
@@ -217,8 +228,8 @@ export class DioramaScene extends Phaser.Scene {
       const isDoubleClick = now - lastClickTime < 300;
       lastClickTime = now;
 
-      // Double-click on floor: if a character is selected, walk them to the clicked floor spot!
-      if (isDoubleClick && this.baseLayer.selectedEntityId) {
+      // Double-click on floor: if in salon mode and a character is selected, walk them to the clicked floor spot!
+      if (this.viewMode === "salon" && isDoubleClick && this.baseLayer.selectedEntityId) {
         const selEnt = this.baseLayer.getEntityById(this.baseLayer.selectedEntityId);
         if (selEnt && (selEnt.type === "staff" || selEnt.type === "guest")) {
           const localX = Math.round((pointer.x - this.worldContainer.x) / this.worldContainer.scaleX);
@@ -228,9 +239,10 @@ export class DioramaScene extends Phaser.Scene {
         }
       }
 
+      const activeCont = this.viewMode === "salon" ? this.worldContainer : this.districtContainer;
       this.isPanningCamera = true;
-      this.dragStartX = pointer.x - this.worldContainer.x;
-      this.dragStartY = pointer.y - this.worldContainer.y;
+      this.dragStartX = pointer.x - activeCont.x;
+      this.dragStartY = pointer.y - activeCont.y;
     });
 
     this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
@@ -239,8 +251,9 @@ export class DioramaScene extends Phaser.Scene {
         return;
       }
       if (this.isPanningCamera && pointer.isDown) {
-        this.worldContainer.x = pointer.x - this.dragStartX;
-        this.worldContainer.y = pointer.y - this.dragStartY;
+        const activeCont = this.viewMode === "salon" ? this.worldContainer : this.districtContainer;
+        activeCont.x = pointer.x - this.dragStartX;
+        activeCont.y = pointer.y - this.dragStartY;
       }
     });
 
@@ -250,9 +263,10 @@ export class DioramaScene extends Phaser.Scene {
 
     this.input.on("wheel", (_pointer: Phaser.Input.Pointer, _gameObjects: any, _deltaX: number, deltaY: number) => {
       const zoomFactor = deltaY > 0 ? 0.92 : 1.08;
-      const newScale = Phaser.Math.Clamp(this.worldContainer.scale * zoomFactor, 0.55, 2.4);
+      const activeCont = this.viewMode === "salon" ? this.worldContainer : this.districtContainer;
+      const newScale = Phaser.Math.Clamp(activeCont.scale * zoomFactor, 0.55, 2.4);
       this.tweens.add({
-        targets: this.worldContainer,
+        targets: activeCont,
         scale: newScale,
         duration: 90,
         ease: "Linear"
@@ -368,13 +382,189 @@ export class DioramaScene extends Phaser.Scene {
 
   public resetCamera() {
     const { width, height } = this.scale;
+    const activeCont = this.viewMode === "salon" ? this.worldContainer : this.districtContainer;
     this.tweens.add({
-      targets: this.worldContainer,
+      targets: activeCont,
       x: width / 2,
       y: height / 2,
       scale: 1.0,
       duration: 350,
       ease: "Quad.easeOut"
     });
+  }
+
+  // 1024x571 Isometric District Map (Kamphaeng Phet 7 Roi / RCA Alley, Bangkok)
+  private createDistrictView() {
+    const { width, height } = this.scale;
+    this.districtContainer = this.add.container(width / 2, height / 2);
+
+    // 1. District Map Base Image (1024x571)
+    const mapImg = this.add.image(0, 0, "district_map").setOrigin(0.5, 0.5);
+    this.districtContainer.add(mapImg);
+
+    // 2. Interactive Hotspot for Massage Salon (Center: x = 3, y = -70.5)
+    const salonContainer = this.add.container(3, -70.5);
+
+    // Animated Pulsing Beacon Ring
+    const pulseRing = this.add.graphics();
+    pulseRing.lineStyle(2.5, 0xffaa33, 0.95);
+    pulseRing.strokeCircle(0, 0, 48);
+    this.tweens.add({
+      targets: pulseRing,
+      scaleX: 1.5,
+      scaleY: 1.5,
+      alpha: 0,
+      duration: 1400,
+      repeat: -1,
+      ease: "Sine.easeOut"
+    });
+    salonContainer.add(pulseRing);
+
+    // Floating OpenCode Monospace Tag
+    const tagBg = this.add.graphics();
+    tagBg.fillStyle(0x201d1d, 0.96);
+    tagBg.lineStyle(1.5, 0xffaa33, 1.0);
+    tagBg.fillRoundedRect(-110, -82, 220, 30, 4);
+    tagBg.strokeRoundedRect(-110, -82, 220, 30, 4);
+    salonContainer.add(tagBg);
+
+    const tagText = this.add.text(0, -67, "[★] ZEN MASSAGE & SPA", {
+      fontSize: "11px",
+      fontFamily: "'Berkeley Mono', 'JetBrains Mono', monospace",
+      color: "#fdfcfc",
+      fontStyle: "bold"
+    }).setOrigin(0.5, 0.5);
+    salonContainer.add(tagText);
+
+    const hintText = this.add.text(0, -48, "CLICK TO ENTER SALON INTERIOR", {
+      fontSize: "9px",
+      fontFamily: "'Berkeley Mono', 'JetBrains Mono', monospace",
+      color: "#ffaa33",
+      backgroundColor: "rgba(32, 29, 29, 0.94)",
+      padding: { x: 6, y: 2 },
+      fontStyle: "bold"
+    }).setOrigin(0.5, 0.5);
+    salonContainer.add(hintText);
+
+    this.districtContainer.add(salonContainer);
+
+    // Interactive HitZone over the Massage Salon building
+    const hitZone = this.add.zone(3, -70.5, 150, 140);
+    hitZone.setInteractive({ useHandCursor: true });
+    hitZone.on("pointerover", () => {
+      salonContainer.setScale(1.08);
+      hintText.setColor("#30d158");
+    });
+    hitZone.on("pointerout", () => {
+      salonContainer.setScale(1.0);
+      hintText.setColor("#ffaa33");
+    });
+    hitZone.on("pointerdown", () => {
+      soundManager.playZenChime();
+      this.switchToSalonView(true);
+    });
+    this.districtContainer.add(hitZone);
+
+    // 3. Other District Landmarks with subtle hover tooltips
+    const landmarks = [
+      { name: "Bangkok Fitness GYM", status: "42 active members", x: -242, y: 39.5, w: 140, h: 100 },
+      { name: "7-Eleven 24/7 Store", status: "Open · Delivery active", x: -22, y: 144.5, w: 110, h: 80 },
+      { name: "RCA Cafe & Roastery", status: "Open · 18 guests", x: 68, y: 89.5, w: 100, h: 80 },
+      { name: "Maitria Residence & Hotel", status: "180 registered guests", x: 103, y: -105.5, w: 120, h: 110 }
+    ];
+
+    for (const lm of landmarks) {
+      const z = this.add.zone(lm.x, lm.y, lm.w, lm.h);
+      z.setInteractive({ useHandCursor: true });
+      const tip = this.add.text(lm.x, lm.y - lm.h / 2 - 8, `[+] ${lm.name}\n${lm.status}`, {
+        fontSize: "10px",
+        fontFamily: "'Berkeley Mono', 'JetBrains Mono', monospace",
+        color: "#fdfcfc",
+        backgroundColor: "#201d1d",
+        padding: { x: 7, y: 4 },
+        align: "center",
+        fontStyle: "bold"
+      }).setOrigin(0.5, 1).setAlpha(0).setDepth(300);
+      this.districtContainer.add(tip);
+
+      z.on("pointerover", () => tip.setAlpha(1));
+      z.on("pointerout", () => tip.setAlpha(0));
+      this.districtContainer.add(z);
+    }
+
+    this.districtContainer.setVisible(false);
+    this.districtContainer.setAlpha(0);
+  }
+
+  public switchToDistrictView(animate = true) {
+    if (this.viewMode === "district") return;
+    this.viewMode = "district";
+    this.districtContainer.setVisible(true);
+    this.districtContainer.setScale(this.worldContainer.scale);
+    this.districtContainer.setPosition(this.worldContainer.x, this.worldContainer.y);
+
+    if (animate) {
+      this.tweens.add({
+        targets: this.worldContainer,
+        alpha: 0,
+        scale: this.worldContainer.scale * 0.9,
+        duration: 260,
+        ease: "Cubic.easeInOut",
+        onComplete: () => {
+          this.worldContainer.setVisible(false);
+        }
+      });
+      this.tweens.add({
+        targets: this.districtContainer,
+        alpha: 1,
+        duration: 280,
+        ease: "Cubic.easeInOut"
+      });
+    } else {
+      this.worldContainer.setVisible(false);
+      this.worldContainer.setAlpha(0);
+      this.districtContainer.setAlpha(1);
+    }
+    this.onViewModeChanged?.("district");
+  }
+
+  public switchToSalonView(animate = true) {
+    if (this.viewMode === "salon") return;
+    this.viewMode = "salon";
+    this.worldContainer.setVisible(true);
+    this.worldContainer.setScale(this.districtContainer.scale);
+    this.worldContainer.setPosition(this.districtContainer.x, this.districtContainer.y);
+
+    if (animate) {
+      this.tweens.add({
+        targets: this.districtContainer,
+        alpha: 0,
+        scale: this.districtContainer.scale * 1.1,
+        duration: 260,
+        ease: "Cubic.easeInOut",
+        onComplete: () => {
+          this.districtContainer.setVisible(false);
+        }
+      });
+      this.tweens.add({
+        targets: this.worldContainer,
+        alpha: 1,
+        duration: 280,
+        ease: "Cubic.easeInOut"
+      });
+    } else {
+      this.districtContainer.setVisible(false);
+      this.districtContainer.setAlpha(0);
+      this.worldContainer.setAlpha(1);
+    }
+    this.onViewModeChanged?.("salon");
+  }
+
+  public toggleViewMode() {
+    if (this.viewMode === "salon") {
+      this.switchToDistrictView(true);
+    } else {
+      this.switchToSalonView(true);
+    }
   }
 }

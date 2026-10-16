@@ -774,6 +774,128 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+    /* Interactive Corner Minimap Widget (OpenCode Monospace TUI style) */
+    #district-minimap-widget {
+      position: absolute;
+      bottom: 44px;
+      right: 16px;
+      width: 204px;
+      background: var(--surface-dark);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-sm);
+      overflow: hidden;
+      cursor: pointer;
+      z-index: 85;
+      transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+    }
+
+    #district-minimap-widget:hover {
+      border-color: #ffaa33;
+      transform: translateY(-2px);
+    }
+
+    .minimap-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface-dark-elevated);
+      padding: 4px 8px;
+      border-bottom: 1px solid var(--charcoal);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .minimap-title {
+      color: #ffaa33;
+      letter-spacing: -0.2px;
+    }
+
+    .minimap-hint {
+      color: var(--ash);
+      font-size: 9px;
+    }
+
+    .minimap-viewport {
+      position: relative;
+      width: 100%;
+      height: 114px;
+      background: #151313;
+      overflow: hidden;
+    }
+
+    #minimap-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    #district-minimap-widget:hover #minimap-thumb-img {
+      transform: scale(1.05);
+    }
+
+    .minimap-pin {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .minimap-pin-ring {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid #ffaa33;
+      animation: minimap-pulse 1.6s infinite ease-out;
+    }
+
+    .minimap-pin-dot {
+      width: 8px;
+      height: 8px;
+      background: #ffaa33;
+      border-radius: 50%;
+      border: 1px solid #fdfcfc;
+    }
+
+    .minimap-pin-label {
+      font-size: 8px;
+      font-weight: 700;
+      color: #fdfcfc;
+      background: rgba(32, 29, 29, 0.92);
+      padding: 1px 4px;
+      border-radius: 2px;
+      margin-top: 3px;
+      white-space: nowrap;
+      border: 1px solid #ffaa33;
+    }
+
+    @keyframes minimap-pulse {
+      0% { transform: scale(0.6); opacity: 1; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+
+    .minimap-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface-dark-elevated);
+      padding: 4px 8px;
+      border-top: 1px solid var(--charcoal);
+      font-size: 9px;
+      color: var(--on-dark-mute);
+    }
+
+    .minimap-badge {
+      color: var(--success);
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
@@ -793,6 +915,15 @@
         <span><code>r-click</code> flip</span>
         <span class="pipe">·</span>
         <span><code>dbl-click</code> walk</span>
+      </div>
+
+      <div class="view-mode-tabs" style="display: flex; gap: 4px; margin-left: auto; margin-right: 12px;">
+        <button class="btn-header active-btn" id="btn-view-salon" title="Switch to 2.5D Interior Salon with Characters">
+          [::] Salon Interior
+        </button>
+        <button class="btn-header" id="btn-view-district" title="Switch to Fullscreen District City Map">
+          [::] District Map
+        </button>
       </div>
 
       <div class="header-status">
@@ -911,10 +1042,30 @@
           <span id="toast-text">Event triggered</span>
         </div>
 
+        <!-- Interactive Corner Minimap Widget (Toggle between Salon & District Map) -->
+        <div id="district-minimap-widget" title="Click to view Fullscreen District City Map">
+          <div class="minimap-header">
+            <span class="minimap-title" id="minimap-title">[★] DISTRICT MAP</span>
+            <span class="minimap-hint" id="minimap-hint">CLICK TO EXPAND</span>
+          </div>
+          <div class="minimap-viewport">
+            <img id="minimap-thumb-img" src="/assets/district_map.jpg" alt="District Map Thumbnail" />
+            <div class="minimap-pin" id="minimap-pin">
+              <span class="minimap-pin-ring"></span>
+              <span class="minimap-pin-dot"></span>
+              <span class="minimap-pin-label">SALON</span>
+            </div>
+          </div>
+          <div class="minimap-footer" id="minimap-footer">
+            <span id="minimap-subtext">Bangkok RCA · Alley 7</span>
+            <span class="minimap-badge" id="minimap-badge">[FULLSCREEN]</span>
+          </div>
+        </div>
+
         <!-- TUI Prompt Row Bottom Strip -->
         <div class="tui-bottom-bar">
-          <div class="tui-cmd">| Build  SpatialTwin 2.5D Engine  [Zen Massage &amp; Onsen Spa]</div>
-          <div class="tui-keys">scroll zoom · drag canvas pan · r-click flip entity</div>
+          <div class="tui-cmd" id="tui-status-text">| Build  SpatialTwin 2.5D Engine  [Zen Massage &amp; Onsen Spa]</div>
+          <div class="tui-keys" id="tui-keys-text">scroll zoom · drag canvas pan · click minimap for district</div>
         </div>
       </div>
     </div>
