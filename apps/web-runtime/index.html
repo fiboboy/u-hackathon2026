@@ -450,7 +450,9 @@
       position: absolute;
       top: 16px;
       right: 16px;
-      width: 320px;
+      width: 384px;
+      max-height: calc(100vh - 110px);
+      overflow-y: auto;
       background: var(--canvas);
       color: var(--ink);
       border: 1px solid var(--hairline-strong);
@@ -464,7 +466,7 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding-bottom: 10px;
+      padding-bottom: 8px;
       margin-bottom: 8px;
       border-bottom: 1px solid var(--hairline);
     }
@@ -476,9 +478,156 @@
     }
 
     .inspector-subtitle {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--mute);
       margin-top: 2px;
+    }
+
+    .insp-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .insp-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: var(--rounded-sm);
+      text-transform: uppercase;
+    }
+
+    .insp-badge-gold {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #f59e0b;
+    }
+
+    .insp-badge-staff {
+      background: var(--surface-dark);
+      color: var(--on-dark);
+      border: 1px solid var(--charcoal);
+    }
+
+    .insp-badge-pos {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+
+    .insp-kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin: 10px 0;
+    }
+
+    .insp-kpi-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      margin: 10px 0;
+    }
+
+    .insp-kpi-card {
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      padding: 8px 10px;
+    }
+
+    .insp-kpi-label {
+      font-size: 10px;
+      color: var(--mute);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.2px;
+    }
+
+    .insp-kpi-num {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-top: 2px;
+    }
+
+    .insp-kpi-sub {
+      font-size: 10px;
+      color: var(--success);
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    .insp-kpi-sub.warn {
+      color: var(--warning);
+    }
+
+    .insp-kpi-sub.neutral {
+      color: var(--body);
+    }
+
+    .insp-card-section {
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      padding: 10px 12px;
+      margin: 10px 0;
+    }
+
+    .insp-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--mute);
+      text-transform: uppercase;
+      letter-spacing: -0.2px;
+      margin-bottom: 6px;
+    }
+
+    .insp-note-box {
+      font-size: 11px;
+      color: var(--body);
+      line-height: 1.5;
+      background: var(--surface-card);
+      border: 1px solid var(--hairline);
+      border-left: 3px solid var(--warning);
+      padding: 6px 10px;
+      border-radius: var(--rounded-sm);
+      margin: 6px 0;
+    }
+
+    .insp-note-box.alert {
+      border-left-color: var(--danger);
+      color: var(--ink);
+    }
+
+    .insp-stars {
+      color: #ff9f0a;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .stamina-meter {
+      height: 6px;
+      background: var(--hairline-strong);
+      border-radius: 3px;
+      margin-top: 4px;
+      overflow: hidden;
+    }
+
+    .stamina-meter-fill {
+      height: 100%;
+      background: var(--success);
+      transition: width 0.3s ease;
+    }
+
+    .stamina-meter-fill.low {
+      background: var(--danger);
+    }
+
+    .stamina-meter-fill.mid {
+      background: var(--warning);
     }
 
     .close-btn {
@@ -660,9 +809,6 @@
         <button class="btn-header" id="btn-sound" title="Toggle synthesized audio effects">
           [~] Audio: ON
         </button>
-        <button class="btn-header" id="btn-fullscreen" title="Toggle fullscreen mode">
-          [ ] Fullscreen
-        </button>
       </div>
     </header>
 
@@ -749,50 +895,14 @@
         <!-- Inspector Drawer -->
         <div id="inspector-drawer">
           <div class="inspector-header">
-            <div>
+            <div style="flex: 1; min-width: 0; padding-right: 8px;">
               <div class="inspector-title" id="insp-title">Entity</div>
               <div class="inspector-subtitle" id="insp-type">Type: STATION</div>
+              <div class="insp-badge-row" id="insp-badges"></div>
             </div>
-            <button class="close-btn" id="insp-close">[x]</button>
+            <button class="close-btn" id="insp-close" title="Close drawer">[x]</button>
           </div>
-          <div class="metric-row">
-            <span class="metric-label">[+] Status</span>
-            <span class="tag-status tag-idle" id="insp-status">IDLE</span>
-          </div>
-          <div class="metric-row">
-            <span class="metric-label">[+] 2.5D Coords</span>
-            <span class="metric-val" id="insp-coords">(0, 0)</span>
-          </div>
-          <div class="metric-row">
-            <span class="metric-label">[+] Session Timer</span>
-            <span class="metric-val" id="insp-timer">--:--</span>
-          </div>
-          <div class="metric-row">
-            <span class="metric-label">[+] Staff Stamina</span>
-            <span class="metric-val" id="insp-stamina">100%</span>
-          </div>
-
-          <div class="inspector-actions">
-            <button class="btn-insp" id="insp-btn-flip" title="Flip isometric left/right orientation">
-              [~] Flip
-            </button>
-            <button class="btn-insp btn-danger" id="insp-btn-delete" title="Remove this entity from the stage">
-              [x] Remove
-            </button>
-          </div>
-
-          <!-- Character Walk Controls -->
-          <div id="insp-walk-panel">
-            <div class="sidebar-section-title">[+] SEND CHARACTER TO ZONE</div>
-            <div class="walk-grid">
-              <button class="btn-insp" data-walk-x="-275" data-walk-y="148">[>] Reception</button>
-              <button class="btn-insp" data-walk-x="-145" data-walk-y="195">[>] Lounge</button>
-              <button class="btn-insp" data-walk-x="-195" data-walk-y="35">[>] Room #1</button>
-              <button class="btn-insp" data-walk-x="-45" data-walk-y="-38">[>] Room #2</button>
-              <button class="btn-insp" data-walk-x="155" data-walk-y="-45">[>] Onsen Bath</button>
-              <button class="btn-insp" data-walk-x="145" data-walk-y="95">[>] Room #3</button>
-            </div>
-          </div>
+          <div id="insp-body"></div>
         </div>
 
         <!-- Toast Feedback -->

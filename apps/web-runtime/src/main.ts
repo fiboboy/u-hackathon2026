@@ -78,6 +78,10 @@ window.addEventListener("DOMContentLoaded", () => {
         dioramaScene.commandCharacterWalk(entityId, x, y);
         demoPanel.showToast("[>]", "Character walking to target zone...", 2200);
       };
+
+      inspector.onActionToast = (icon, message) => {
+        demoPanel.showToast(icon, message, 3000);
+      };
     }
   });
 });

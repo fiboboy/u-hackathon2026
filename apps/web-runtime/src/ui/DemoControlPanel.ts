@@ -134,69 +134,6 @@ export class DemoControlPanel {
       }
       this.showToast(soundManager.enabled ? "[~]" : "[-]", soundManager.enabled ? "Audio effects enabled" : "Audio effects muted", 2000);
     });
-
-    // Fullscreen Toggle with vendor fallbacks and state synchronization
-    const fsBtn = document.getElementById("btn-fullscreen");
-    const updateFsState = () => {
-      const isFs = Boolean(
-        document.fullscreenElement ||
-        (document as any).webkitFullscreenElement ||
-        (document as any).mozFullScreenElement ||
-        (document as any).msFullscreenElement
-      );
-      if (fsBtn) {
-        fsBtn.textContent = isFs ? "[x] Exit Fullscreen" : "[ ] Fullscreen";
-        fsBtn.classList.toggle("active-btn", isFs);
-      }
-      setTimeout(() => {
-        window.dispatchEvent(new Event("resize"));
-      }, 100);
-    };
-
-    fsBtn?.addEventListener("click", async () => {
-      try {
-        const isFs = Boolean(
-          document.fullscreenElement ||
-          (document as any).webkitFullscreenElement ||
-          (document as any).mozFullScreenElement ||
-          (document as any).msFullscreenElement
-        );
-        if (!isFs) {
-          const docEl = document.documentElement as any;
-          if (docEl.requestFullscreen) {
-            await docEl.requestFullscreen();
-          } else if (docEl.webkitRequestFullscreen) {
-            await docEl.webkitRequestFullscreen();
-          } else if (docEl.mozRequestFullScreen) {
-            await docEl.mozRequestFullScreen();
-          } else if (docEl.msRequestFullscreen) {
-            await docEl.msRequestFullscreen();
-          }
-          this.showToast("[ ]", "Entered Fullscreen mode", 2000);
-        } else {
-          const doc = document as any;
-          if (doc.exitFullscreen) {
-            await doc.exitFullscreen();
-          } else if (doc.webkitExitFullscreen) {
-            await doc.webkitExitFullscreen();
-          } else if (doc.mozCancelFullScreen) {
-            await doc.mozCancelFullScreen();
-          } else if (doc.msExitFullscreen) {
-            await doc.msExitFullscreen();
-          }
-          this.showToast("[ ]", "Exited Fullscreen mode", 2000);
-        }
-      } catch (err: any) {
-        console.warn("Fullscreen toggle warning:", err);
-        this.showToast("[!]", `Fullscreen error: ${err.message || "Action not allowed by browser"}`, 2500);
-      }
-      updateFsState();
-    });
-
-    document.addEventListener("fullscreenchange", updateFsState);
-    document.addEventListener("webkitfullscreenchange", updateFsState);
-    document.addEventListener("mozfullscreenchange", updateFsState);
-    document.addEventListener("MSFullscreenChange", updateFsState);
   }
 
   private async spawnCatalogItem(assetType: string, entityType: string, itemName: string) {

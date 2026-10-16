@@ -18,11 +18,22 @@
       "name": "Shoji Door Wall (Room #1)",
       "type": "decor",
       "asset_type": "wall_shoji_door_left",
-      "grid_position": { "x": 5, "y": 5 },
-      "footprint": { "w": 3, "h": 1 },
+      "grid_position": {
+        "x": 5,
+        "y": 5
+      },
+      "footprint": {
+        "w": 3,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": -155, "world_y": 50, "flip_x": false, "is_wall": true }
+        "custom_data": {
+          "world_x": -155,
+          "world_y": 50,
+          "flip_x": false,
+          "is_wall": true
+        }
       }
     },
     {
@@ -30,11 +41,22 @@
       "name": "Shoji Door Wall (Room #2)",
       "type": "decor",
       "asset_type": "wall_shoji_door_left",
-      "grid_position": { "x": 8, "y": 3 },
-      "footprint": { "w": 3, "h": 1 },
+      "grid_position": {
+        "x": 8,
+        "y": 3
+      },
+      "footprint": {
+        "w": 3,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": -8, "world_y": -25, "flip_x": false, "is_wall": true }
+        "custom_data": {
+          "world_x": -8,
+          "world_y": -25,
+          "flip_x": false,
+          "is_wall": true
+        }
       }
     },
     {
@@ -42,11 +64,22 @@
       "name": "Room Partition Wall (Rooms 1-2)",
       "type": "decor",
       "asset_type": "wall_shoji_front_right",
-      "grid_position": { "x": 5, "y": 3 },
-      "footprint": { "w": 1, "h": 3 },
+      "grid_position": {
+        "x": 5,
+        "y": 3
+      },
+      "footprint": {
+        "w": 1,
+        "h": 3
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": -148, "world_y": -22, "flip_x": false, "is_wall": true }
+        "custom_data": {
+          "world_x": -148,
+          "world_y": -22,
+          "flip_x": false,
+          "is_wall": true
+        }
       }
     },
     {
@@ -54,11 +87,22 @@
       "name": "Reception Window Wall",
       "type": "decor",
       "asset_type": "wall_reception_window_right",
-      "grid_position": { "x": 1, "y": 8 },
-      "footprint": { "w": 1, "h": 3 },
+      "grid_position": {
+        "x": 1,
+        "y": 8
+      },
+      "footprint": {
+        "w": 1,
+        "h": 3
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": -374, "world_y": 116, "flip_x": true, "is_wall": true }
+        "custom_data": {
+          "world_x": -374,
+          "world_y": 116,
+          "flip_x": true,
+          "is_wall": true
+        }
       }
     },
     {
@@ -66,11 +110,22 @@
       "name": "Sakura Shoji Screen (Onsen)",
       "type": "decor",
       "asset_type": "wall_shoji_sakura_left",
-      "grid_position": { "x": 11, "y": 3 },
-      "footprint": { "w": 3, "h": 1 },
+      "grid_position": {
+        "x": 11,
+        "y": 3
+      },
+      "footprint": {
+        "w": 3,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": 232, "world_y": -42, "flip_x": false, "is_wall": true }
+        "custom_data": {
+          "world_x": 232,
+          "world_y": -42,
+          "flip_x": false,
+          "is_wall": true
+        }
       }
     },
     {
@@ -78,11 +133,22 @@
       "name": "Shoji Entry Wall (Room #3 Zen)",
       "type": "decor",
       "asset_type": "wall_shoji_door_left",
-      "grid_position": { "x": 8, "y": 7 },
-      "footprint": { "w": 3, "h": 1 },
+      "grid_position": {
+        "x": 8,
+        "y": 7
+      },
+      "footprint": {
+        "w": 3,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": 18, "world_y": 84, "flip_x": false, "is_wall": true }
+        "custom_data": {
+          "world_x": 18,
+          "world_y": 84,
+          "flip_x": false,
+          "is_wall": true
+        }
       }
     },
     {
@@ -90,11 +156,22 @@
       "name": "Side Shoji Wall (Room #3 Zen)",
       "type": "decor",
       "asset_type": "wall_shoji_front_right",
-      "grid_position": { "x": 9, "y": 9 },
-      "footprint": { "w": 1, "h": 3 },
+      "grid_position": {
+        "x": 9,
+        "y": 9
+      },
+      "footprint": {
+        "w": 1,
+        "h": 3
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": 28, "world_y": 152, "flip_x": false, "is_wall": true }
+        "custom_data": {
+          "world_x": 28,
+          "world_y": 152,
+          "flip_x": false,
+          "is_wall": true
+        }
       }
     },
     {
@@ -102,11 +179,22 @@
       "name": "Scroll Divider Wall (VIP Tea)",
       "type": "decor",
       "asset_type": "wall_divider_scroll_right",
-      "grid_position": { "x": 15, "y": 6 },
-      "footprint": { "w": 3, "h": 1 },
+      "grid_position": {
+        "x": 15,
+        "y": 6
+      },
+      "footprint": {
+        "w": 3,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": 378, "world_y": 38, "flip_x": false, "is_wall": true }
+        "custom_data": {
+          "world_x": 378,
+          "world_y": 38,
+          "flip_x": false,
+          "is_wall": true
+        }
       }
     },
     {
@@ -114,11 +202,21 @@
       "name": "Reception Desk",
       "type": "station",
       "asset_type": "reception_desk",
-      "grid_position": { "x": 2, "y": 9 },
-      "footprint": { "w": 2, "h": 1 },
+      "grid_position": {
+        "x": 2,
+        "y": 9
+      },
+      "footprint": {
+        "w": 2,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": -355, "world_y": 95, "flip_x": false }
+        "custom_data": {
+          "world_x": -355,
+          "world_y": 95,
+          "flip_x": false
+        }
       }
     },
     {
@@ -126,11 +224,21 @@
       "name": "Treasury Cash Chest",
       "type": "chest",
       "asset_type": "cash_chest",
-      "grid_position": { "x": 3, "y": 9 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 3,
+        "y": 9
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": -276, "world_y": 158, "flip_x": false }
+        "custom_data": {
+          "world_x": -276,
+          "world_y": 158,
+          "flip_x": false
+        }
       }
     },
     {
@@ -138,11 +246,21 @@
       "name": "Entrance Bamboo Planter",
       "type": "decor",
       "asset_type": "bamboo_plant_01",
-      "grid_position": { "x": 7, "y": 11 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 7,
+        "y": 11
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": -63, "world_y": 239, "flip_x": false }
+        "custom_data": {
+          "world_x": -63,
+          "world_y": 239,
+          "flip_x": false
+        }
       }
     },
     {
@@ -150,12 +268,22 @@
       "name": "Waiting Lounge Chair #1",
       "type": "lounge",
       "asset_type": "armchair_purple_01",
-      "grid_position": { "x": 6, "y": 10 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 6,
+        "y": 10
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "waiting",
-        "wait_duration_seconds": 0,
-        "custom_data": { "world_x": -195, "world_y": 188, "flip_x": false }
+        "wait_duration_seconds": 23,
+        "custom_data": {
+          "world_x": -195,
+          "world_y": 188,
+          "flip_x": false
+        }
       },
       "rules_group_id": "guest_waiting_rules"
     },
@@ -164,11 +292,21 @@
       "name": "Waiting Lounge Chair #2",
       "type": "lounge",
       "asset_type": "armchair_purple_02",
-      "grid_position": { "x": 7, "y": 10 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 7,
+        "y": 10
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": -55, "world_y": 185, "flip_x": true }
+        "custom_data": {
+          "world_x": -55,
+          "world_y": 185,
+          "flip_x": true
+        }
       }
     },
     {
@@ -176,11 +314,21 @@
       "name": "Tetsubin Tea Table",
       "type": "decor",
       "asset_type": "tea_table_wood",
-      "grid_position": { "x": 6, "y": 11 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 6,
+        "y": 11
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": -155, "world_y": 172, "flip_x": false }
+        "custom_data": {
+          "world_x": -155,
+          "world_y": 172,
+          "flip_x": false
+        }
       }
     },
     {
@@ -188,13 +336,23 @@
       "name": "Tatami Bed #1 (Sakura)",
       "type": "station",
       "asset_type": "massage_bed_wood_left",
-      "grid_position": { "x": 4, "y": 4 },
-      "footprint": { "w": 2, "h": 1 },
+      "grid_position": {
+        "x": 4,
+        "y": 4
+      },
+      "footprint": {
+        "w": 2,
+        "h": 1
+      },
       "state": {
         "status": "idle",
         "current_session_seconds_left": 0,
         "total_session_seconds": 0,
-        "custom_data": { "world_x": -235, "world_y": 22, "flip_x": false }
+        "custom_data": {
+          "world_x": -235,
+          "world_y": 22,
+          "flip_x": false
+        }
       },
       "rules_group_id": "standard_treatment_bed"
     },
@@ -203,11 +361,21 @@
       "name": "Aroma Diffuser (Sakura)",
       "type": "decor",
       "asset_type": "aroma_burner_01",
-      "grid_position": { "x": 4, "y": 3 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 4,
+        "y": 3
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": -325, "world_y": 28, "flip_x": false }
+        "custom_data": {
+          "world_x": -325,
+          "world_y": 28,
+          "flip_x": false
+        }
       }
     },
     {
@@ -215,13 +383,23 @@
       "name": "Tatami Bed #2 (Bamboo)",
       "type": "station",
       "asset_type": "massage_bed_wood_left",
-      "grid_position": { "x": 7, "y": 2 },
-      "footprint": { "w": 2, "h": 1 },
+      "grid_position": {
+        "x": 7,
+        "y": 2
+      },
+      "footprint": {
+        "w": 2,
+        "h": 1
+      },
       "state": {
         "status": "idle",
         "current_session_seconds_left": 0,
         "total_session_seconds": 0,
-        "custom_data": { "world_x": -85, "world_y": -52, "flip_x": false }
+        "custom_data": {
+          "world_x": -85,
+          "world_y": -52,
+          "flip_x": false
+        }
       },
       "rules_group_id": "standard_treatment_bed"
     },
@@ -230,11 +408,21 @@
       "name": "Aroma Diffuser (Bamboo)",
       "type": "decor",
       "asset_type": "aroma_burner_02",
-      "grid_position": { "x": 6, "y": 1 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 6,
+        "y": 1
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": -135, "world_y": -82, "flip_x": false }
+        "custom_data": {
+          "world_x": -135,
+          "world_y": -82,
+          "flip_x": false
+        }
       }
     },
     {
@@ -242,11 +430,21 @@
       "name": "Hinoki Cypress Onsen Bath",
       "type": "station",
       "asset_type": "onsen_tub",
-      "grid_position": { "x": 11, "y": 2 },
-      "footprint": { "w": 2, "h": 2 },
+      "grid_position": {
+        "x": 11,
+        "y": 2
+      },
+      "footprint": {
+        "w": 2,
+        "h": 2
+      },
       "state": {
         "status": "in_service",
-        "custom_data": { "world_x": 180, "world_y": -68, "flip_x": false }
+        "custom_data": {
+          "world_x": 180,
+          "world_y": -68,
+          "flip_x": false
+        }
       }
     },
     {
@@ -254,11 +452,21 @@
       "name": "VIP Tea Ceremony Sofa",
       "type": "lounge",
       "asset_type": "sofa_armchair_cream",
-      "grid_position": { "x": 13, "y": 3 },
-      "footprint": { "w": 2, "h": 1 },
+      "grid_position": {
+        "x": 13,
+        "y": 3
+      },
+      "footprint": {
+        "w": 2,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": 295, "world_y": -12, "flip_x": true }
+        "custom_data": {
+          "world_x": 295,
+          "world_y": -12,
+          "flip_x": true
+        }
       }
     },
     {
@@ -266,11 +474,21 @@
       "name": "VIP Lounge Bamboo Planter",
       "type": "decor",
       "asset_type": "bamboo_plant_02",
-      "grid_position": { "x": 14, "y": 3 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 14,
+        "y": 3
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": 375, "world_y": -18, "flip_x": false }
+        "custom_data": {
+          "world_x": 375,
+          "world_y": -18,
+          "flip_x": false
+        }
       }
     },
     {
@@ -278,11 +496,21 @@
       "name": "Tatami Bed #3 (Zen)",
       "type": "station",
       "asset_type": "massage_bed_wood_right",
-      "grid_position": { "x": 10, "y": 9 },
-      "footprint": { "w": 2, "h": 1 },
+      "grid_position": {
+        "x": 10,
+        "y": 9
+      },
+      "footprint": {
+        "w": 2,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": 122, "world_y": 136, "flip_x": false }
+        "custom_data": {
+          "world_x": 122,
+          "world_y": 136,
+          "flip_x": false
+        }
       }
     },
     {
@@ -290,12 +518,22 @@
       "name": "Receptionist Aiko",
       "type": "staff",
       "asset_type": "char_receptionist",
-      "grid_position": { "x": 2, "y": 8 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 2,
+        "y": 8
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "stamina": 96,
-        "custom_data": { "world_x": -292, "world_y": 106, "flip_x": false }
+        "stamina": 100.0,
+        "custom_data": {
+          "world_x": -292,
+          "world_y": 106,
+          "flip_x": false
+        }
       }
     },
     {
@@ -303,12 +541,22 @@
       "name": "Therapist Somchai (Thai Massage)",
       "type": "staff",
       "asset_type": "char_masseuse_room1",
-      "grid_position": { "x": 3, "y": 4 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 3,
+        "y": 4
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "idle",
         "stamina": 100,
-        "custom_data": { "world_x": -275, "world_y": 8, "flip_x": false }
+        "custom_data": {
+          "world_x": -275,
+          "world_y": 8,
+          "flip_x": false
+        }
       }
     },
     {
@@ -316,12 +564,22 @@
       "name": "Therapist Ken (Shiatsu)",
       "type": "staff",
       "asset_type": "char_masseur_room2",
-      "grid_position": { "x": 7, "y": 1 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 7,
+        "y": 1
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "in_service",
-        "stamina": 84,
-        "custom_data": { "world_x": -50, "world_y": -68, "flip_x": false }
+        "stamina": 67.85,
+        "custom_data": {
+          "world_x": -50,
+          "world_y": -68,
+          "flip_x": false
+        }
       }
     },
     {
@@ -329,12 +587,22 @@
       "name": "Therapist Yuki (Aroma Spa)",
       "type": "staff",
       "asset_type": "char_masseuse_room4",
-      "grid_position": { "x": 10, "y": 7 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 10,
+        "y": 7
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "in_service",
-        "stamina": 90,
-        "custom_data": { "world_x": 185, "world_y": 102, "flip_x": false }
+        "stamina": 73.85,
+        "custom_data": {
+          "world_x": 185,
+          "world_y": 102,
+          "flip_x": false
+        }
       }
     },
     {
@@ -342,11 +610,21 @@
       "name": "Guest Haruka (Reception)",
       "type": "guest",
       "asset_type": "char_customer_pink",
-      "grid_position": { "x": 3, "y": 10 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 3,
+        "y": 10
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": -275, "world_y": 148, "flip_x": false }
+        "custom_data": {
+          "world_x": -275,
+          "world_y": 148,
+          "flip_x": false
+        }
       }
     },
     {
@@ -354,12 +632,22 @@
       "name": "Guest Kenji",
       "type": "guest",
       "asset_type": "char_guest_kenji",
-      "grid_position": { "x": 5, "y": 9 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 5,
+        "y": 9
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "waiting",
-        "wait_duration_seconds": 0,
-        "custom_data": { "world_x": -65, "world_y": 85, "flip_x": false }
+        "wait_duration_seconds": 23,
+        "custom_data": {
+          "world_x": -65,
+          "world_y": 85,
+          "flip_x": false
+        }
       }
     },
     {
@@ -367,11 +655,21 @@
       "name": "Guest Takashi (Yukata)",
       "type": "guest",
       "asset_type": "char_guest_yukata",
-      "grid_position": { "x": 10, "y": 5 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 10,
+        "y": 5
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "idle",
-        "custom_data": { "world_x": 35, "world_y": 8, "flip_x": false }
+        "custom_data": {
+          "world_x": 35,
+          "world_y": 8,
+          "flip_x": false
+        }
       }
     },
     {
@@ -379,11 +677,21 @@
       "name": "Guest Mei (Onsen Relax)",
       "type": "guest",
       "asset_type": "char_guest_relaxing",
-      "grid_position": { "x": 12, "y": 3 },
-      "footprint": { "w": 1, "h": 1 },
+      "grid_position": {
+        "x": 12,
+        "y": 3
+      },
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
       "state": {
         "status": "in_service",
-        "custom_data": { "world_x": 135, "world_y": -52, "flip_x": false }
+        "custom_data": {
+          "world_x": 135,
+          "world_y": -52,
+          "flip_x": false
+        }
       }
     }
   ],
@@ -397,7 +705,10 @@
           "value": 300,
           "state_label": "tea_offered",
           "actions": [
-            { "type": "show_bubble", "icon": "tea_cup" }
+            {
+              "type": "show_bubble",
+              "icon": "tea_cup"
+            }
           ]
         },
         {
@@ -405,9 +716,18 @@
           "value": 600,
           "state_label": "irritation_breach",
           "actions": [
-            { "type": "emit_particles", "emitter_id": "irritation_smoke" },
-            { "type": "apply_shader", "shader_id": "warning_tint_pulse" },
-            { "type": "notify", "channel": "admin_telegram" }
+            {
+              "type": "emit_particles",
+              "emitter_id": "irritation_smoke"
+            },
+            {
+              "type": "apply_shader",
+              "shader_id": "warning_tint_pulse"
+            },
+            {
+              "type": "notify",
+              "channel": "admin_telegram"
+            }
           ]
         }
       ]
