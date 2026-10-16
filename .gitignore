@@ -12,3 +12,5 @@ venv/
 packages/asset-pipeline/sprites/
 inspect_form.mjs
 *.mjs
+
+.vercel

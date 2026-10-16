@@ -83,29 +83,6 @@
       }
     },
     {
-      "id": "wall_reception_div",
-      "name": "Reception Window Wall",
-      "type": "decor",
-      "asset_type": "wall_reception_window_right",
-      "grid_position": {
-        "x": 1,
-        "y": 8
-      },
-      "footprint": {
-        "w": 1,
-        "h": 3
-      },
-      "state": {
-        "status": "idle",
-        "custom_data": {
-          "world_x": -374,
-          "world_y": 116,
-          "flip_x": true,
-          "is_wall": true
-        }
-      }
-    },
-    {
       "id": "wall_onsen_front",
       "name": "Sakura Shoji Screen (Onsen)",
       "type": "decor",
@@ -225,8 +202,8 @@
       "type": "chest",
       "asset_type": "cash_chest",
       "grid_position": {
-        "x": 3,
-        "y": 9
+        "x": 0,
+        "y": 7
       },
       "footprint": {
         "w": 1,
@@ -235,10 +212,13 @@
       "state": {
         "status": "idle",
         "custom_data": {
-          "world_x": -276,
-          "world_y": 158,
-          "flip_x": false
-        }
+          "world_x": -423.0,
+          "world_y": 78.0,
+          "flip_x": false,
+          "walk": false
+        },
+        "grid_x": 0,
+        "grid_y": 7
       }
     },
     {
@@ -278,7 +258,7 @@
       },
       "state": {
         "status": "waiting",
-        "wait_duration_seconds": 23,
+        "wait_duration_seconds": 2312,
         "custom_data": {
           "world_x": -195,
           "world_y": 188,
@@ -573,8 +553,8 @@
         "h": 1
       },
       "state": {
-        "status": "in_service",
-        "stamina": 67.85,
+        "status": "idle",
+        "stamina": 100.0,
         "custom_data": {
           "world_x": -50,
           "world_y": -68,
@@ -596,8 +576,8 @@
         "h": 1
       },
       "state": {
-        "status": "in_service",
-        "stamina": 73.85,
+        "status": "idle",
+        "stamina": 100.0,
         "custom_data": {
           "world_x": 185,
           "world_y": 102,
@@ -619,11 +599,12 @@
         "h": 1
       },
       "state": {
-        "status": "idle",
+        "status": "in_service",
         "custom_data": {
           "world_x": -275,
-          "world_y": 148,
-          "flip_x": false
+          "world_y": 142,
+          "flip_x": false,
+          "walk": true
         }
       }
     },
@@ -633,8 +614,8 @@
       "type": "guest",
       "asset_type": "char_guest_kenji",
       "grid_position": {
-        "x": 5,
-        "y": 9
+        "x": 7,
+        "y": 7
       },
       "footprint": {
         "w": 1,
@@ -642,12 +623,15 @@
       },
       "state": {
         "status": "waiting",
-        "wait_duration_seconds": 23,
+        "wait_duration_seconds": 2312,
         "custom_data": {
-          "world_x": -65,
-          "world_y": 85,
-          "flip_x": false
-        }
+          "world_x": -68.0,
+          "world_y": 66.0,
+          "flip_x": true,
+          "walk": false
+        },
+        "grid_x": 7,
+        "grid_y": 7
       }
     },
     {

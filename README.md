@@ -7,6 +7,10 @@
 [![Backend: FastAPI](https://img.shields.io/badge/FastAPI-0.115-blue.svg)](https://fastapi.tiangolo.com/)
 [![MCP: Enabled](https://img.shields.io/badge/MCP-Protocol%20Ready-purple.svg)](https://modelcontextprotocol.io/)
 [![Design System: OpenCode](https://img.shields.io/badge/Design%20System-OpenCode%20Monospace-201d1d.svg)](DESIGN-opencode.ai.md)
+[![Live Demo: Vercel](https://img.shields.io/badge/Live%20Demo-Vercel%20Production-ffaa33.svg)](https://fearless-bohr-pink.vercel.app)
+
+> **🚀 Live Web Production Demo:** [https://fearless-bohr-pink.vercel.app](https://fearless-bohr-pink.vercel.app)  
+> **📦 GitHub Repository:** [https://github.com/fiboboy/u-hackathon2026](https://github.com/fiboboy/u-hackathon2026)
 
 ---
 

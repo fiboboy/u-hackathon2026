@@ -139,6 +139,13 @@ export class DioramaScene extends Phaser.Scene {
 
     wsClient.connect();
 
+    // Standalone fallback: load default_world.json if bridge is not connected
+    this.time.delayedCall(700, () => {
+      if (!this.currentWorld) {
+        this.loadDefaultWorldFromJson();
+      }
+    });
+
     this.scale.on("resize", (gameSize: Phaser.Structs.Size) => {
       const cx = gameSize.width / 2;
       const cy = gameSize.height / 2;
@@ -378,6 +385,20 @@ export class DioramaScene extends Phaser.Scene {
         }
         break;
     }
+  }
+
+  public async loadDefaultWorldFromJson(): Promise<boolean> {
+    try {
+      const res = await fetch("/assets/default_world.json");
+      if (res.ok) {
+        const worldData = await res.json();
+        this.handleWsMessage({ type: "INIT_WORLD", payload: worldData });
+        return true;
+      }
+    } catch (e) {
+      console.warn("Failed to load default_world.json fallback", e);
+    }
+    return false;
   }
 
   public resetCamera() {
