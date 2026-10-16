@@ -1,0 +1,22 @@
+FROM node:22-alpine AS builder
+
+WORKDIR /build
+
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
+COPY packages/core-schema ./packages/core-schema
+COPY packages/asset-pipeline ./packages/asset-pipeline
+COPY apps/web-runtime ./apps/web-runtime
+
+RUN pnpm install --frozen-lockfile=false
+RUN pnpm --filter @spatialtwin/core-schema build
+RUN pnpm --filter web-runtime build
+
+FROM nginx:alpine
+
+COPY --from=builder /build/apps/web-runtime/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

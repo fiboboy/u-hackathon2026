@@ -1,0 +1,25 @@
+{
+  "name": "@spatialtwin/core-schema",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Zod and TypeScript schemas for SpatialTwin world state, entities, and events",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test dist/tests/schema.test.js"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.3"
+  }
+}

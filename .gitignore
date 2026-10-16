@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+.turbo/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+*.log
+.DS_Store
+packages/asset-pipeline/sprites/
+inspect_form.mjs
+*.mjs

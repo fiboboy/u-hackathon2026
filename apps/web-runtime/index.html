@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpatialTwin — 2.5D Pixel Art Digital Twin Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* OpenCode Design System Tokens (DESIGN-opencode.ai.md) */
+      --primary: #201d1d;
+      --on-primary: #fdfcfc;
+      --ink: #201d1d;
+      --ink-deep: #0f0000;
+      --charcoal: #302c2c;
+      --body: #424245;
+      --mute: #646262;
+      --stone: #6e6e73;
+      --ash: #9a9898;
+      --canvas: #fdfcfc;
+      --surface-soft: #f8f7f7;
+      --surface-card: #f1eeee;
+      --surface-dark: #201d1d;
+      --surface-dark-elevated: #302c2c;
+      --hairline: rgba(15, 0, 0, 0.12);
+      --hairline-strong: #646262;
+      --on-dark: #fdfcfc;
+      --on-dark-mute: #9a9898;
+      --accent: #007aff;
+      --accent-hover: #0056b3;
+      --accent-active: #004085;
+      --warning: #ff9f0a;
+      --warning-hover: #cc7f08;
+      --warning-active: #995f06;
+      --danger: #ff3b30;
+      --danger-hover: #d70015;
+      --danger-active: #a50011;
+      --success: #30d158;
+
+      --rounded-none: 0px;
+      --rounded-sm: 4px;
+      --rounded-full: 9999px;
+
+      --font-mono: 'Berkeley Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      font-family: var(--font-mono);
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: var(--canvas);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #app-layout {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--canvas);
+    }
+
+    /* Primary Nav (OpenCode primary-nav: 56px, #fdfcfc canvas, 1px hairline bottom rule, 0px radius) */
+    header {
+      position: relative;
+      height: 56px;
+      min-height: 56px;
+      background: var(--canvas);
+      color: var(--ink);
+      border-bottom: 1px solid var(--hairline);
+      border-radius: var(--rounded-none);
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .ascii-wordmark {
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.5px;
+      white-space: pre;
+      padding: 4px 8px;
+      background: var(--surface-card);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+    }
+
+    .brand-title h1 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0;
+      line-height: 1.5;
+    }
+
+    .badge-news {
+      background: var(--surface-dark);
+      color: var(--on-dark);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: var(--rounded-sm);
+      line-height: 1.6;
+      white-space: nowrap;
+    }
+
+    /* TUI Prompt Row Hint in Header */
+    .tui-prompt-hint {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      padding: 4px 10px;
+      font-size: 11px;
+      color: var(--body);
+      white-space: nowrap;
+    }
+
+    .tui-prompt-hint .pipe {
+      color: var(--mute);
+      font-weight: 700;
+    }
+
+    .tui-prompt-hint code {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink);
+      height: 32px;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: var(--rounded-none);
+      background-color: var(--success);
+    }
+
+    .status-dot.disconnected {
+      background-color: var(--danger);
+    }
+
+    /* OpenCode button-secondary & button-primary */
+    .btn-header {
+      background: var(--canvas);
+      border: 1px solid var(--hairline-strong);
+      color: var(--ink);
+      padding: 4px 10px;
+      height: 32px;
+      border-radius: var(--rounded-sm);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-header:hover {
+      background: var(--surface-card);
+    }
+
+    .btn-header:active,
+    .btn-header.active-btn {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    /* Main Workspace Body: Left Flat Sidebar + Center Dark TUI Viewport */
+    #workspace-main {
+      position: relative;
+      flex: 1;
+      display: flex;
+      width: 100%;
+      height: calc(100vh - 56px - 52px);
+      overflow: hidden;
+    }
+
+    /* Left Builder Sidebar (Flat on #fdfcfc canvas, 1px hairline right border, 0px radius, no shadow) */
+    #builder-sidebar {
+      width: 268px;
+      min-width: 268px;
+      height: 100%;
+      background: var(--canvas);
+      border-right: 1px solid var(--hairline);
+      border-radius: var(--rounded-none);
+      padding: 16px;
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .sidebar-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--hairline);
+      letter-spacing: 0;
+    }
+
+    .stage-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .btn-stage-mode {
+      padding: 6px 10px;
+      min-height: 34px;
+      border-radius: var(--rounded-sm);
+      border: 1px solid var(--hairline-strong);
+      background: var(--canvas);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 6px;
+      text-align: left;
+    }
+
+    .btn-stage-mode:hover {
+      background: var(--surface-card);
+    }
+
+    .btn-stage-mode:active {
+      background: var(--ink-deep);
+      color: var(--on-primary);
+    }
+
+    .btn-stage-mode.btn-full-width {
+      grid-column: span 2;
+    }
+
+    .btn-stage-mode.active-toggle {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .catalog-item-btn {
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      padding: 8px 8px;
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      text-align: left;
+    }
+
+    .catalog-item-btn span.cat-icon {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--mute);
+    }
+
+    .catalog-item-btn:hover {
+      background: var(--surface-card);
+      border-color: var(--hairline-strong);
+    }
+
+    .catalog-item-btn:active {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    .catalog-item-btn:active span.cat-icon {
+      color: var(--ash);
+    }
+
+    /* Hero TUI Mockup Centerpiece (#game-container: #201d1d surface-dark, 0px radius) */
+    #viewport-wrapper {
+      position: relative;
+      flex: 1;
+      height: 100%;
+      background: var(--surface-dark);
+      border-radius: var(--rounded-none);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #game-container {
+      width: 100%;
+      flex: 1;
+      background: var(--surface-dark);
+    }
+
+    /* Bottom TUI Status Bar inside the Dark Viewport */
+    .tui-bottom-bar {
+      height: 32px;
+      background: var(--surface-dark-elevated);
+      color: var(--on-dark);
+      border-top: 1px solid var(--charcoal);
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      z-index: 80;
+    }
+
+    .tui-bottom-bar .tui-cmd {
+      color: var(--on-dark);
+      font-weight: 500;
+    }
+
+    .tui-bottom-bar .tui-keys {
+      color: var(--ash);
+    }
+
+    /* Demo Runbook Control Bar (Bottom Footer Section: #fdfcfc canvas, 1px hairline top rule, 0px radius) */
+    #demo-panel {
+      height: 52px;
+      min-height: 52px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 0 16px;
+      background: var(--canvas);
+      border-top: 1px solid var(--hairline);
+      border-radius: var(--rounded-none);
+      z-index: 100;
+      overflow-x: auto;
+    }
+
+    .demo-panel-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .demo-section-tag {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--mute);
+      padding-right: 8px;
+      border-right: 1px solid var(--hairline);
+      white-space: nowrap;
+    }
+
+    .demo-btn {
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline-strong);
+      color: var(--ink);
+      padding: 4px 12px;
+      height: 34px;
+      border-radius: var(--rounded-sm);
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .demo-btn:hover {
+      background: var(--surface-card);
+    }
+
+    .demo-btn:active {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    .demo-btn.btn-reset {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--on-primary);
+    }
+
+    .demo-btn.btn-reset:hover {
+      background: var(--ink-deep);
+    }
+
+    /* Entity Inspector Drawer (Flat #fdfcfc canvas, 1px hairline-strong border, 0px radius, zero shadow) */
+    #inspector-drawer {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 320px;
+      background: var(--canvas);
+      color: var(--ink);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-none);
+      padding: 16px;
+      z-index: 110;
+      display: none;
+    }
+
+    .inspector-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 10px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .inspector-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .inspector-subtitle {
+      font-size: 12px;
+      color: var(--mute);
+      margin-top: 2px;
+    }
+
+    .close-btn {
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 8px;
+    }
+
+    .close-btn:hover {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    /* OpenCode list-row inside Inspector */
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--hairline);
+      font-size: 12px;
+    }
+
+    .metric-label {
+      color: var(--body);
+    }
+
+    .metric-val {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .tag-status {
+      padding: 2px 8px;
+      border-radius: var(--rounded-sm);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: var(--surface-dark);
+      color: var(--on-dark);
+    }
+
+    .tag-in_service {
+      background: var(--warning);
+      color: var(--ink-deep);
+    }
+
+    .tag-idle {
+      background: var(--surface-card);
+      color: var(--ink);
+      border: 1px solid var(--hairline);
+    }
+
+    .tag-waiting, .tag-exhausted {
+      background: var(--danger);
+      color: var(--on-primary);
+    }
+
+    .inspector-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .btn-insp {
+      padding: 6px 10px;
+      min-height: 34px;
+      border-radius: var(--rounded-sm);
+      border: 1px solid var(--hairline-strong);
+      background: var(--canvas);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-insp:hover {
+      background: var(--surface-card);
+    }
+
+    .btn-insp:active {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    .btn-insp.btn-danger {
+      background: var(--surface-soft);
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .btn-insp.btn-danger:hover {
+      background: var(--danger);
+      color: var(--on-primary);
+    }
+
+    #insp-walk-panel {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--hairline);
+      display: none;
+    }
+
+    .walk-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    /* Toast Notification (OpenCode tui-prompt-row style, 4px radius, zero shadow) */
+    #toast-notification {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-16px);
+      background: var(--surface-dark);
+      border: 1px solid var(--hairline-strong);
+      color: var(--on-dark);
+      padding: 8px 16px;
+      border-radius: var(--rounded-sm);
+      font-size: 12px;
+      font-weight: 500;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.16s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #toast-notification.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div id="app-layout">
+    <!-- Top Primary Nav -->
+    <header>
+      <div class="brand-title">
+        <div class="ascii-wordmark">[:: SPATIAL ::]</div>
+        <h1>SpatialTwin</h1>
+        <span class="badge-news">2.5D TUI BUILDER</span>
+      </div>
+
+      <div class="tui-prompt-hint">
+        <span class="pipe">|</span>
+        <span><code>drag</code> move</span>
+        <span class="pipe">·</span>
+        <span><code>r-click</code> flip</span>
+        <span class="pipe">·</span>
+        <span><code>dbl-click</code> walk</span>
+      </div>
+
+      <div class="header-status">
+        <div class="status-badge">
+          <span class="status-dot" id="ws-dot"></span>
+          <span id="ws-label">Bridge Online</span>
+        </div>
+        <button class="btn-header" id="btn-highlight-header" title="Highlight pixel contours of all interactive objects and walls">
+          [+] Highlight Objects
+        </button>
+        <button class="btn-header" id="btn-center-cam" title="Reset camera to center of the stage">
+          [o] Center View
+        </button>
+        <button class="btn-header" id="btn-sound" title="Toggle synthesized audio effects">
+          [~] Audio: ON
+        </button>
+        <button class="btn-header" id="btn-fullscreen" title="Toggle fullscreen mode">
+          [ ] Fullscreen
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div id="workspace-main">
+      <!-- Left Builder & Stage Control Sidebar -->
+      <aside id="builder-sidebar">
+        <div class="sidebar-section-title">[+] STAGE CONTROLS</div>
+        <div class="stage-actions-grid">
+          <button class="btn-stage-mode" id="btn-empty-stage" title="Remove all furniture, walls, and characters to leave a clean open floor stage">
+            [-] Empty Stage
+          </button>
+          <button class="btn-stage-mode" id="btn-populate-stage" title="Restore the full default salon layout with walls, furniture, and characters">
+            [+] Full Salon
+          </button>
+          <button class="btn-stage-mode btn-full-width" id="btn-highlight-all" title="Highlight exact pixel-art contours of all interactive objects">
+            [#] Highlight All Objects
+          </button>
+          <button class="btn-stage-mode btn-full-width" id="btn-save-default" title="Save current positions of all walls, furniture, and characters as the default layout">
+            [*] Lock Default Layout
+          </button>
+          <button class="btn-stage-mode btn-full-width active-toggle" id="btn-toggle-walk" title="Toggle autonomous character movement along corridors and doorways">
+            [>] Auto-Walk: ON
+          </button>
+        </div>
+
+        <div class="sidebar-section-title" style="margin-top: 6px;">[+] ADD TO SALON</div>
+        <div class="catalog-grid">
+          <button class="catalog-item-btn" data-asset="massage_bed_wood_left" data-type="station" data-name="Tatami Bed">
+            <span class="cat-icon">[+BED]</span>
+            <span>Tatami Bed</span>
+          </button>
+          <button class="catalog-item-btn" data-asset="onsen_tub" data-type="station" data-name="Onsen Bath">
+            <span class="cat-icon">[+TUB]</span>
+            <span>Onsen Bath</span>
+          </button>
+          <button class="catalog-item-btn" data-asset="reception_desk" data-type="station" data-name="Reception Desk">
+            <span class="cat-icon">[+DSK]</span>
+            <span>Reception</span>
+          </button>
+          <button class="catalog-item-btn" data-asset="sofa_armchair_cream" data-type="lounge" data-name="Lounge Sofa">
+            <span class="cat-icon">[+SFA]</span>
+            <span>Lounge Sofa</span>
+          </button>
+          <button class="catalog-item-btn" data-asset="armchair_purple_01" data-type="lounge" data-name="Guest Armchair">
+            <span class="cat-icon">[+CHR]</span>
+            <span>Guest Chair</span>
+          </button>
+          <button class="catalog-item-btn" data-asset="tea_table_wood" data-type="decor" data-name="Tea Table">
+            <span class="cat-icon">[+TEA]</span>
+            <span>Tea Table</span>
+          </button>
+          <button class="catalog-item-btn" data-asset="wall_shoji_door_left" data-type="decor" data-name="Shoji Door Wall">
+            <span class="cat-icon">[+WLL]</span>
+            <span>Shoji Wall</span>
+          </button>
+          <button class="catalog-item-btn" data-asset="wall_shoji_front_right" data-type="decor" data-name="Room Partition">
+            <span class="cat-icon">[+DIV]</span>
+            <span>Partition</span>
+          </button>
+          <button class="catalog-item-btn" data-asset="aroma_burner_01" data-type="decor" data-name="Aroma Diffuser">
+            <span class="cat-icon">[+ARM]</span>
+            <span>Aroma Lamp</span>
+          </button>
+          <button class="catalog-item-btn" data-asset="bamboo_plant_01" data-type="decor" data-name="Bamboo Planter">
+            <span class="cat-icon">[+BMB]</span>
+            <span>Bamboo Pot</span>
+          </button>
+          <button class="catalog-item-btn" data-asset="char_masseuse_room1" data-type="staff" data-name="Spa Therapist">
+            <span class="cat-icon">[+STF]</span>
+            <span>Therapist</span>
+          </button>
+          <button class="catalog-item-btn" data-asset="char_guest_yukata" data-type="guest" data-name="Yukata Guest">
+            <span class="cat-icon">[+GST]</span>
+            <span>Spa Guest</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Dark TUI Viewport Centerpiece -->
+      <div id="viewport-wrapper">
+        <div id="game-container"></div>
+
+        <!-- Inspector Drawer -->
+        <div id="inspector-drawer">
+          <div class="inspector-header">
+            <div>
+              <div class="inspector-title" id="insp-title">Entity</div>
+              <div class="inspector-subtitle" id="insp-type">Type: STATION</div>
+            </div>
+            <button class="close-btn" id="insp-close">[x]</button>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">[+] Status</span>
+            <span class="tag-status tag-idle" id="insp-status">IDLE</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">[+] 2.5D Coords</span>
+            <span class="metric-val" id="insp-coords">(0, 0)</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">[+] Session Timer</span>
+            <span class="metric-val" id="insp-timer">--:--</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">[+] Staff Stamina</span>
+            <span class="metric-val" id="insp-stamina">100%</span>
+          </div>
+
+          <div class="inspector-actions">
+            <button class="btn-insp" id="insp-btn-flip" title="Flip isometric left/right orientation">
+              [~] Flip
+            </button>
+            <button class="btn-insp btn-danger" id="insp-btn-delete" title="Remove this entity from the stage">
+              [x] Remove
+            </button>
+          </div>
+
+          <!-- Character Walk Controls -->
+          <div id="insp-walk-panel">
+            <div class="sidebar-section-title">[+] SEND CHARACTER TO ZONE</div>
+            <div class="walk-grid">
+              <button class="btn-insp" data-walk-x="-275" data-walk-y="148">[>] Reception</button>
+              <button class="btn-insp" data-walk-x="-145" data-walk-y="195">[>] Lounge</button>
+              <button class="btn-insp" data-walk-x="-195" data-walk-y="35">[>] Room #1</button>
+              <button class="btn-insp" data-walk-x="-45" data-walk-y="-38">[>] Room #2</button>
+              <button class="btn-insp" data-walk-x="155" data-walk-y="-45">[>] Onsen Bath</button>
+              <button class="btn-insp" data-walk-x="145" data-walk-y="95">[>] Room #3</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toast Feedback -->
+        <div id="toast-notification">
+          <span id="toast-icon">[i]</span>
+          <span id="toast-text">Event triggered</span>
+        </div>
+
+        <!-- TUI Prompt Row Bottom Strip -->
+        <div class="tui-bottom-bar">
+          <div class="tui-cmd">| Build  SpatialTwin 2.5D Engine  [Zen Massage &amp; Onsen Spa]</div>
+          <div class="tui-keys">scroll zoom · drag canvas pan · r-click flip entity</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo Runbook Control Bar (Bottom Bar) -->
+    <div id="demo-panel">
+      <div class="demo-panel-left">
+        <span class="demo-section-tag">[+] DEMO SCENARIOS</span>
+        <button class="demo-btn" id="btn-stage1" title="Guest walks to Room #1, bed amber glow & 59:59 timer start">
+          [1] Session (Sheets)
+        </button>
+        <button class="demo-btn" id="btn-stage2" title="Guest wait exceeds 10m -> SLA irritation smoke alert">
+          [2] Delay (SLA)
+        </button>
+        <button class="demo-btn" id="btn-stage3" title="Guest pays at cashier -> golden coin fountain bursts">
+          [3] Payment (/pay)
+        </button>
+        <button class="demo-btn" id="btn-stage4" title="Therapist stamina drops < 20% -> walks to tea table for break">
+          [4] Fatigue (Stamina)
+        </button>
+        <button class="demo-btn" id="btn-stage5" title="5-Star review received -> sakura petals bloom across salon">
+          [5] 5★ Review (Sakura)
+        </button>
+        <button class="demo-btn" id="btn-stage6" title="AI via MCP removes lounge chairs and installs VIP Hinoki Onsen">
+          [6] AI MCP Rebuild
+        </button>
+      </div>
+      <button class="demo-btn btn-reset" id="btn-reset" title="Reset salon to locked default layout">
+        [x] Reset
+      </button>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

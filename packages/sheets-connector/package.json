@@ -1,0 +1,15 @@
+{
+  "name": "@spatialtwin/sheets-connector",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Google Sheets polling connector and Apps Script webhook integration for SpatialTwin",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "simulate": "node dist/src/poller.js --simulate"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.3"
+  }
+}

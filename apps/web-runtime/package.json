@@ -1,0 +1,21 @@
+{
+  "name": "web-runtime",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Phaser.js 4-layer isometric digital twin render client for SpatialTwin",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@spatialtwin/core-schema": "workspace:*",
+    "phaser": "^3.87.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  }
+}

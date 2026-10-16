@@ -1,0 +1,20 @@
+{
+  "name": "@spatialtwin/asset-pipeline",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Headless asset pipeline and procedural pixel-art atlas generator for SpatialTwin",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "generate": "node dist/src/generate_demo_assets.js"
+  },
+  "dependencies": {
+    "pngjs": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/pngjs": "^6.0.5",
+    "typescript": "^5.7.3"
+  }
+}

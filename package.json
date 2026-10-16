@@ -1,0 +1,15 @@
+{
+  "name": "spatialtwin-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SpatialTwin: Real-time isometric digital twin framework for business metrics and MCP agents",
+  "scripts": {
+    "build": "pnpm --filter \"@spatialtwin/*\" --filter web-runtime build",
+    "test": "pnpm --filter \"@spatialtwin/*\" test",
+    "dev:web": "pnpm --filter web-runtime dev",
+    "generate:assets": "pnpm --filter @spatialtwin/asset-pipeline generate"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

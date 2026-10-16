@@ -1,0 +1,226 @@
+{
+  "savePath": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/dist_assets",
+  "images": [
+    {
+      "name": "armchair_cream",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/armchair_cream.png"
+    },
+    {
+      "name": "armchair_purple",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/armchair_purple.png"
+    },
+    {
+      "name": "armchair_purple_01",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/armchair_purple_01.png"
+    },
+    {
+      "name": "armchair_purple_02",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/armchair_purple_02.png"
+    },
+    {
+      "name": "aroma_burner",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/aroma_burner.png"
+    },
+    {
+      "name": "aroma_burner_01",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/aroma_burner_01.png"
+    },
+    {
+      "name": "aroma_burner_02",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/aroma_burner_02.png"
+    },
+    {
+      "name": "bamboo_plant",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/bamboo_plant.png"
+    },
+    {
+      "name": "bamboo_plant_01",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/bamboo_plant_01.png"
+    },
+    {
+      "name": "bamboo_plant_02",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/bamboo_plant_02.png"
+    },
+    {
+      "name": "bubble_big_smile",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/bubble_big_smile.png"
+    },
+    {
+      "name": "bubble_calm",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/bubble_calm.png"
+    },
+    {
+      "name": "bubble_happy",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/bubble_happy.png"
+    },
+    {
+      "name": "bubble_love",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/bubble_love.png"
+    },
+    {
+      "name": "cash_chest",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/cash_chest.png"
+    },
+    {
+      "name": "char_customer_pink",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/char_customer_pink.png"
+    },
+    {
+      "name": "char_guest_kenji",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/char_guest_kenji.png"
+    },
+    {
+      "name": "char_guest_relaxing",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/char_guest_relaxing.png"
+    },
+    {
+      "name": "char_guest_yukata",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/char_guest_yukata.png"
+    },
+    {
+      "name": "char_masseur_room2",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/char_masseur_room2.png"
+    },
+    {
+      "name": "char_masseuse_room1",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/char_masseuse_room1.png"
+    },
+    {
+      "name": "char_masseuse_room4",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/char_masseuse_room4.png"
+    },
+    {
+      "name": "char_receptionist",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/char_receptionist.png"
+    },
+    {
+      "name": "guest_avatar",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/guest_avatar.png"
+    },
+    {
+      "name": "icon_blush",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/icon_blush.png"
+    },
+    {
+      "name": "icon_heart",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/icon_heart.png"
+    },
+    {
+      "name": "icon_sleep_z",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/icon_sleep_z.png"
+    },
+    {
+      "name": "icon_smile",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/icon_smile.png"
+    },
+    {
+      "name": "massage_bed_wood",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/massage_bed_wood.png"
+    },
+    {
+      "name": "massage_bed_wood_left",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/massage_bed_wood_left.png"
+    },
+    {
+      "name": "massage_bed_wood_right",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/massage_bed_wood_right.png"
+    },
+    {
+      "name": "onsen_tub",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/onsen_tub.png"
+    },
+    {
+      "name": "reception_desk",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/reception_desk.png"
+    },
+    {
+      "name": "shoji_screen",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/shoji_screen.png"
+    },
+    {
+      "name": "shoji_screen_01",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/shoji_screen_01.png"
+    },
+    {
+      "name": "shoji_screen_02",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/shoji_screen_02.png"
+    },
+    {
+      "name": "sofa_armchair",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/sofa_armchair.png"
+    },
+    {
+      "name": "sofa_armchair_cream",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/sofa_armchair_cream.png"
+    },
+    {
+      "name": "staff_master",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/staff_master.png"
+    },
+    {
+      "name": "stamina_bar_blue",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/stamina_bar_blue.png"
+    },
+    {
+      "name": "stamina_bar_empty",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/stamina_bar_empty.png"
+    },
+    {
+      "name": "stamina_bar_green",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/stamina_bar_green.png"
+    },
+    {
+      "name": "tea_table",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/tea_table.png"
+    },
+    {
+      "name": "tea_table_dark",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/tea_table_dark.png"
+    },
+    {
+      "name": "tea_table_wood",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/tea_table_wood.png"
+    },
+    {
+      "name": "wall_divider_scroll_right",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/wall_divider_scroll_right.png"
+    },
+    {
+      "name": "wall_plaster_lantern_left",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/wall_plaster_lantern_left.png"
+    },
+    {
+      "name": "wall_reception_window_right",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/wall_reception_window_right.png"
+    },
+    {
+      "name": "wall_shoji_door_left",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/wall_shoji_door_left.png"
+    },
+    {
+      "name": "wall_shoji_front_right",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/wall_shoji_front_right.png"
+    },
+    {
+      "name": "wall_shoji_sakura_left",
+      "path": "C:/Users/maodz/Documents/antigravity/fearless-bohr/packages/asset-pipeline/sprites/wall_shoji_sakura_left.png"
+    }
+  ],
+  "folders": [],
+  "packOptions": {
+    "textureName": "atlas",
+    "textureFormat": "png",
+    "exporter": "Phaser 3",
+    "width": 2048,
+    "height": 2048,
+    "fixedSize": false,
+    "powerOfTwo": true,
+    "padding": 2,
+    "extrude": 0,
+    "allowRotation": false,
+    "detectIdentical": false,
+    "allowTrim": false,
+    "alphaThreshold": 0,
+    "tinify": false
+  }
+}
