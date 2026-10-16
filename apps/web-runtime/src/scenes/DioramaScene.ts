@@ -394,12 +394,73 @@ export class DioramaScene extends Phaser.Scene {
       if (res.ok) {
         const worldData = await res.json();
         this.handleWsMessage({ type: "INIT_WORLD", payload: worldData });
+        soundManager.playZenChime();
         return true;
       }
     } catch (e) {
       console.warn("Failed to load default_world.json fallback", e);
     }
     return false;
+  }
+
+  public clearStage() {
+    if (this.currentWorld) {
+      this.currentWorld = {
+        ...this.currentWorld,
+        entities: []
+      };
+      this.baseLayer.renderWorldGrid(this.currentWorld);
+      this.lightLayer.removeAll();
+      this.hudLayer.removeAll();
+      this.lightLayer.initAmbientLanterns();
+      this.onWorldUpdated?.(this.currentWorld);
+      soundManager.playAction("tap");
+    }
+  }
+
+  public triggerClientDemoStage(stageNum: number) {
+    switch (stageNum) {
+      case 1: // Stage 1: Session Start
+        this.baseLayer.walkEntityTo("guest_kenji", -140, 50, false);
+        setTimeout(() => {
+          this.lightLayer.setLightGlow("massage_bed_01", true, 0xffaa33, 1.8);
+          this.hudLayer.updateTimer("massage_bed_01", 3599);
+          soundManager.playZenChime();
+        }, 1000);
+        break;
+
+      case 2: // Stage 2: Delay SLA Smoke
+        this.particleLayer.triggerIrritationSmoke("guest_kenji", 5000);
+        this.lightLayer.triggerWarningPulse("guest_kenji", 5000);
+        soundManager.playAction("tap");
+        break;
+
+      case 3: // Stage 3: Payment Coin Fountain
+        this.particleLayer.triggerCoinFountain("cash_chest_01", 2.2);
+        soundManager.playCoinChime();
+        break;
+
+      case 4: // Stage 4: Fatigue / Stamina
+        this.hudLayer.updateStaminaBar("master_somchai", 15);
+        this.baseLayer.walkEntityTo("master_somchai", -180, 140, false);
+        setTimeout(() => {
+          this.hudLayer.showBubble("master_somchai", "bubble_happy");
+          soundManager.playZenChime();
+        }, 1200);
+        break;
+
+      case 5: // Stage 5: 5-Star Review Sakura Bloom
+        this.particleLayer.triggerSakuraBloom(8000);
+        soundManager.playZenChime();
+        break;
+
+      case 6: // Stage 6: AI MCP Rebuild
+        this.baseLayer.removeEntity("sofa_armchair_01");
+        this.baseLayer.removeEntity("tea_table_01");
+        this.particleLayer.triggerSakuraBloom(4000);
+        soundManager.playZenChime();
+        break;
+    }
   }
 
   public resetCamera() {

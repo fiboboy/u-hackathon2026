@@ -11,6 +11,9 @@ export class DemoControlPanel {
   public onToggleAutoWalk?: () => boolean;
   public onToggleHighlightAll?: () => boolean;
   public onCenterCamera?: () => void;
+  public onResetStage?: () => Promise<void> | void;
+  public onEmptyStage?: () => Promise<void> | void;
+  public onTriggerScenario?: (stage: number) => Promise<void> | void;
 
   constructor(bridgeUrl = "http://localhost:8000") {
     this.bridgeUrl = bridgeUrl;
@@ -23,47 +26,67 @@ export class DemoControlPanel {
 
   private bindEvents() {
     // Stage 1
-    document.getElementById("btn-stage1")?.addEventListener("click", () => {
+    document.getElementById("btn-stage1")?.addEventListener("click", async () => {
+      await this.onTriggerScenario?.(1);
       this.triggerDemo("/api/v1/demo/stage1_session_start", "[1]", "Stage 1: Guest walks to Room #1 -> Amber bed glow & 59:59 session timer");
     });
 
     // Stage 2
-    document.getElementById("btn-stage2")?.addEventListener("click", () => {
+    document.getElementById("btn-stage2")?.addEventListener("click", async () => {
+      await this.onTriggerScenario?.(2);
       this.triggerDemo("/api/v1/demo/stage2_guest_delay", "[2]", "Stage 2: Guest wait > 10m -> SLA irritation smoke alert");
     });
 
     // Stage 3
-    document.getElementById("btn-stage3")?.addEventListener("click", () => {
+    document.getElementById("btn-stage3")?.addEventListener("click", async () => {
+      await this.onTriggerScenario?.(3);
       this.triggerDemo("/api/v1/demo/stage3_payment_coin", "[3]", "Stage 3: Payment /pay 4500 -> Guest at cashier & golden coin fountain");
     });
 
     // Stage 4
-    document.getElementById("btn-stage4")?.addEventListener("click", () => {
+    document.getElementById("btn-stage4")?.addEventListener("click", async () => {
+      await this.onTriggerScenario?.(4);
       this.triggerDemo("/api/v1/demo/stage4_stamina_drop", "[4]", "Stage 4: Therapist fatigue (< 20%) -> Walks to tea table for break");
     });
 
     // Stage 5
-    document.getElementById("btn-stage5")?.addEventListener("click", () => {
+    document.getElementById("btn-stage5")?.addEventListener("click", async () => {
+      await this.onTriggerScenario?.(5);
       this.triggerDemo("/api/v1/demo/stage5_review_sakura", "[5]", "Stage 5: 5-Star review received -> Sakura petals bloom across salon");
     });
 
     // Stage 6
-    document.getElementById("btn-stage6")?.addEventListener("click", () => {
+    document.getElementById("btn-stage6")?.addEventListener("click", async () => {
+      await this.onTriggerScenario?.(6);
       this.triggerDemo("/api/v1/demo/stage6_mcp_rebuild", "[6]", "Stage 6: AI via MCP removed waiting lounge and installed VIP Hinoki Onsen");
     });
 
-    // Reset / Populate
-    document.getElementById("btn-reset")?.addEventListener("click", () => {
-      this.triggerDemo("/api/v1/demo/reset", "[+]", "Salon restored to locked default layout");
+    // Reset / Populate (Autonomous in-browser fallback + safe background sync)
+    document.getElementById("btn-reset")?.addEventListener("click", async () => {
+      soundManager.playZenChime();
+      if (this.onResetStage) {
+        await this.onResetStage();
+      }
+      this.showToast("[+]", "Salon restored to locked default layout", 2200);
+      fetch(`${this.bridgeUrl}/api/v1/demo/reset`, { method: "POST" }).catch(() => {});
     });
 
-    document.getElementById("btn-populate-stage")?.addEventListener("click", () => {
-      this.triggerDemo("/api/v1/demo/reset", "[+]", "Salon populated with all default walls, furniture, and characters");
+    document.getElementById("btn-populate-stage")?.addEventListener("click", async () => {
+      soundManager.playZenChime();
+      if (this.onResetStage) {
+        await this.onResetStage();
+      }
+      this.showToast("[+]", "Salon populated with all default walls, furniture, and characters", 2200);
+      fetch(`${this.bridgeUrl}/api/v1/demo/reset`, { method: "POST" }).catch(() => {});
     });
 
     // Empty Stage button
-    document.getElementById("btn-empty-stage")?.addEventListener("click", () => {
-      this.triggerDemo("/api/v1/world/clear", "[-]", "Clean empty stage! Add modular walls and furniture from the left catalog");
+    document.getElementById("btn-empty-stage")?.addEventListener("click", async () => {
+      if (this.onEmptyStage) {
+        await this.onEmptyStage();
+      }
+      this.showToast("[-]", "Clean empty stage! Add modular walls and furniture from the left catalog", 2400);
+      fetch(`${this.bridgeUrl}/api/v1/world/clear`, { method: "POST" }).catch(() => {});
     });
 
     // Save Current Layout as Default
@@ -172,19 +195,14 @@ export class DemoControlPanel {
   }
 
   private async triggerDemo(endpoint: string, icon: string, message: string) {
+    this.showToast(icon, message);
     try {
       let resp = await fetch(`${this.bridgeUrl}${endpoint}`, { method: "POST" });
       if (!resp.ok && endpoint === "/api/v1/demo/reset") {
-        resp = await fetch(`${this.bridgeUrl}/api/v1/world/reset`, { method: "POST" });
+        await fetch(`${this.bridgeUrl}/api/v1/world/reset`, { method: "POST" }).catch(() => {});
       }
-      if (resp.ok) {
-        this.showToast(icon, message);
-      } else {
-        const errJson = await resp.json().catch(() => ({}));
-        this.showToast("[!]", `Server error ${resp.status}: ${errJson.detail || errJson.message || "Request failed"}`);
-      }
-    } catch (err: any) {
-      this.showToast("[!]", `Bridge offline (${err.message})`);
+    } catch {
+      // In standalone / Vercel web mode without local Python backend, client simulation ran smoothly
     }
   }
 
@@ -210,8 +228,8 @@ export class DemoControlPanel {
         dot.className = "status-dot";
         label.textContent = "Bridge Online";
       } else {
-        dot.className = "status-dot disconnected";
-        label.textContent = "Connecting...";
+        dot.className = "status-dot standalone";
+        label.textContent = "Standalone Mode";
       }
     }
   }
