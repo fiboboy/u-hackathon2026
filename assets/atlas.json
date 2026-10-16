@@ -1,0 +1,1090 @@
+{
+	"textures": [
+		{
+			"image": "atlas.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1024,
+				"h": 2048
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "wall_divider_scroll_right",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 185,
+						"h": 241
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 185,
+						"h": 241
+					},
+					"frame": {
+						"x": 2,
+						"y": 2,
+						"w": 185,
+						"h": 241
+					}
+				},
+				{
+					"filename": "wall_reception_window_right",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 185,
+						"h": 224
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 185,
+						"h": 224
+					},
+					"frame": {
+						"x": 2,
+						"y": 247,
+						"w": 185,
+						"h": 224
+					}
+				},
+				{
+					"filename": "wall_plaster_lantern_left",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 185,
+						"h": 221
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 185,
+						"h": 221
+					},
+					"frame": {
+						"x": 2,
+						"y": 475,
+						"w": 185,
+						"h": 221
+					}
+				},
+				{
+					"filename": "wall_shoji_sakura_left",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 185,
+						"h": 204
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 185,
+						"h": 204
+					},
+					"frame": {
+						"x": 2,
+						"y": 700,
+						"w": 185,
+						"h": 204
+					}
+				},
+				{
+					"filename": "bamboo_plant",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 79,
+						"h": 203
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 79,
+						"h": 203
+					},
+					"frame": {
+						"x": 2,
+						"y": 908,
+						"w": 79,
+						"h": 203
+					}
+				},
+				{
+					"filename": "bamboo_plant_01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 79,
+						"h": 203
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 79,
+						"h": 203
+					},
+					"frame": {
+						"x": 2,
+						"y": 1115,
+						"w": 79,
+						"h": 203
+					}
+				},
+				{
+					"filename": "wall_shoji_door_left",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 185,
+						"h": 200
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 185,
+						"h": 200
+					},
+					"frame": {
+						"x": 2,
+						"y": 1322,
+						"w": 185,
+						"h": 200
+					}
+				},
+				{
+					"filename": "wall_shoji_front_right",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 185,
+						"h": 200
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 185,
+						"h": 200
+					},
+					"frame": {
+						"x": 85,
+						"y": 908,
+						"w": 185,
+						"h": 200
+					}
+				},
+				{
+					"filename": "shoji_screen_02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 153,
+						"h": 198
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 153,
+						"h": 198
+					},
+					"frame": {
+						"x": 85,
+						"y": 1112,
+						"w": 153,
+						"h": 198
+					}
+				},
+				{
+					"filename": "bamboo_plant_02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 85,
+						"h": 194
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 85,
+						"h": 194
+					},
+					"frame": {
+						"x": 2,
+						"y": 1526,
+						"w": 85,
+						"h": 194
+					}
+				},
+				{
+					"filename": "onsen_tub",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 241,
+						"h": 175
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 241,
+						"h": 175
+					},
+					"frame": {
+						"x": 2,
+						"y": 1724,
+						"w": 241,
+						"h": 175
+					}
+				},
+				{
+					"filename": "armchair_purple",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 119,
+						"h": 132
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 119,
+						"h": 132
+					},
+					"frame": {
+						"x": 2,
+						"y": 1903,
+						"w": 119,
+						"h": 132
+					}
+				},
+				{
+					"filename": "armchair_purple_01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 119,
+						"h": 132
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 119,
+						"h": 132
+					},
+					"frame": {
+						"x": 125,
+						"y": 1903,
+						"w": 119,
+						"h": 132
+					}
+				},
+				{
+					"filename": "massage_bed_wood_right",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 201,
+						"h": 167
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 201,
+						"h": 167
+					},
+					"frame": {
+						"x": 91,
+						"y": 1526,
+						"w": 201,
+						"h": 167
+					}
+				},
+				{
+					"filename": "stamina_bar_empty",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 87,
+						"h": 17
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 87,
+						"h": 17
+					},
+					"frame": {
+						"x": 91,
+						"y": 1697,
+						"w": 87,
+						"h": 17
+					}
+				},
+				{
+					"filename": "stamina_bar_green",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 86,
+						"h": 17
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 86,
+						"h": 17
+					},
+					"frame": {
+						"x": 182,
+						"y": 1697,
+						"w": 86,
+						"h": 17
+					}
+				},
+				{
+					"filename": "reception_desk",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 178,
+						"h": 167
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 178,
+						"h": 167
+					},
+					"frame": {
+						"x": 247,
+						"y": 1718,
+						"w": 178,
+						"h": 167
+					}
+				},
+				{
+					"filename": "stamina_bar_blue",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 85,
+						"h": 17
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 85,
+						"h": 17
+					},
+					"frame": {
+						"x": 272,
+						"y": 1697,
+						"w": 85,
+						"h": 17
+					}
+				},
+				{
+					"filename": "shoji_screen",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 104,
+						"h": 156
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 104,
+						"h": 156
+					},
+					"frame": {
+						"x": 248,
+						"y": 1889,
+						"w": 104,
+						"h": 156
+					}
+				},
+				{
+					"filename": "shoji_screen_01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 104,
+						"h": 156
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 104,
+						"h": 156
+					},
+					"frame": {
+						"x": 356,
+						"y": 1889,
+						"w": 104,
+						"h": 156
+					}
+				},
+				{
+					"filename": "massage_bed_wood",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 208,
+						"h": 165
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 208,
+						"h": 165
+					},
+					"frame": {
+						"x": 191,
+						"y": 1314,
+						"w": 208,
+						"h": 165
+					}
+				},
+				{
+					"filename": "bubble_big_smile",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 35,
+						"h": 37
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 35,
+						"h": 37
+					},
+					"frame": {
+						"x": 191,
+						"y": 1483,
+						"w": 35,
+						"h": 37
+					}
+				},
+				{
+					"filename": "icon_sleep_z",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 31,
+						"h": 33
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 31,
+						"h": 33
+					},
+					"frame": {
+						"x": 230,
+						"y": 1483,
+						"w": 31,
+						"h": 33
+					}
+				},
+				{
+					"filename": "bubble_calm",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 31
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 31
+					},
+					"frame": {
+						"x": 265,
+						"y": 1483,
+						"w": 32,
+						"h": 31
+					}
+				},
+				{
+					"filename": "massage_bed_wood_left",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 208,
+						"h": 165
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 208,
+						"h": 165
+					},
+					"frame": {
+						"x": 296,
+						"y": 1518,
+						"w": 208,
+						"h": 165
+					}
+				},
+				{
+					"filename": "icon_smile",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 27,
+						"h": 27
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 27,
+						"h": 27
+					},
+					"frame": {
+						"x": 403,
+						"y": 1687,
+						"w": 27,
+						"h": 27
+					}
+				},
+				{
+					"filename": "bubble_happy",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 31,
+						"h": 31
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 31,
+						"h": 31
+					},
+					"frame": {
+						"x": 301,
+						"y": 1483,
+						"w": 31,
+						"h": 31
+					}
+				},
+				{
+					"filename": "icon_blush",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 27,
+						"h": 25
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 27,
+						"h": 25
+					},
+					"frame": {
+						"x": 361,
+						"y": 1687,
+						"w": 27,
+						"h": 25
+					}
+				},
+				{
+					"filename": "sofa_armchair",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 147,
+						"h": 147
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 147,
+						"h": 147
+					},
+					"frame": {
+						"x": 429,
+						"y": 1718,
+						"w": 147,
+						"h": 147
+					}
+				},
+				{
+					"filename": "sofa_armchair_cream",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 147,
+						"h": 147
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 147,
+						"h": 147
+					},
+					"frame": {
+						"x": 508,
+						"y": 1869,
+						"w": 147,
+						"h": 147
+					}
+				},
+				{
+					"filename": "char_receptionist",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 40,
+						"h": 80
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 40,
+						"h": 80
+					},
+					"frame": {
+						"x": 464,
+						"y": 1869,
+						"w": 40,
+						"h": 80
+					}
+				},
+				{
+					"filename": "char_guest_relaxing",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 38,
+						"h": 80
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 38,
+						"h": 80
+					},
+					"frame": {
+						"x": 464,
+						"y": 1953,
+						"w": 38,
+						"h": 80
+					}
+				},
+				{
+					"filename": "armchair_purple_02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 119,
+						"h": 132
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 119,
+						"h": 132
+					},
+					"frame": {
+						"x": 242,
+						"y": 1112,
+						"w": 119,
+						"h": 132
+					}
+				},
+				{
+					"filename": "bubble_love",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 35,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 35,
+						"h": 48
+					},
+					"frame": {
+						"x": 242,
+						"y": 1248,
+						"w": 35,
+						"h": 48
+					}
+				},
+				{
+					"filename": "icon_heart",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 47,
+						"h": 47
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 47,
+						"h": 47
+					},
+					"frame": {
+						"x": 281,
+						"y": 1248,
+						"w": 47,
+						"h": 47
+					}
+				},
+				{
+					"filename": "cash_chest",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 48,
+						"h": 44
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 48,
+						"h": 44
+					},
+					"frame": {
+						"x": 332,
+						"y": 1248,
+						"w": 48,
+						"h": 44
+					}
+				},
+				{
+					"filename": "armchair_cream",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 115,
+						"h": 132
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 115,
+						"h": 132
+					},
+					"frame": {
+						"x": 191,
+						"y": 2,
+						"w": 115,
+						"h": 132
+					}
+				},
+				{
+					"filename": "char_masseuse_room4",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 38,
+						"h": 80
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 38,
+						"h": 80
+					},
+					"frame": {
+						"x": 191,
+						"y": 138,
+						"w": 38,
+						"h": 80
+					}
+				},
+				{
+					"filename": "char_customer_pink",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 34,
+						"h": 80
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 34,
+						"h": 80
+					},
+					"frame": {
+						"x": 191,
+						"y": 222,
+						"w": 34,
+						"h": 80
+					}
+				},
+				{
+					"filename": "char_masseuse_room1",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 34,
+						"h": 80
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 34,
+						"h": 80
+					},
+					"frame": {
+						"x": 191,
+						"y": 306,
+						"w": 34,
+						"h": 80
+					}
+				},
+				{
+					"filename": "staff_master",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 34,
+						"h": 80
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 34,
+						"h": 80
+					},
+					"frame": {
+						"x": 191,
+						"y": 390,
+						"w": 34,
+						"h": 80
+					}
+				},
+				{
+					"filename": "char_guest_yukata",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 80
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 80
+					},
+					"frame": {
+						"x": 191,
+						"y": 474,
+						"w": 32,
+						"h": 80
+					}
+				},
+				{
+					"filename": "char_masseur_room2",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 31,
+						"h": 80
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 31,
+						"h": 80
+					},
+					"frame": {
+						"x": 191,
+						"y": 558,
+						"w": 31,
+						"h": 80
+					}
+				},
+				{
+					"filename": "char_guest_kenji",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 30,
+						"h": 80
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 30,
+						"h": 80
+					},
+					"frame": {
+						"x": 191,
+						"y": 642,
+						"w": 30,
+						"h": 80
+					}
+				},
+				{
+					"filename": "guest_avatar",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 30,
+						"h": 80
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 30,
+						"h": 80
+					},
+					"frame": {
+						"x": 191,
+						"y": 726,
+						"w": 30,
+						"h": 80
+					}
+				},
+				{
+					"filename": "aroma_burner",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 75
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 75
+					},
+					"frame": {
+						"x": 191,
+						"y": 810,
+						"w": 64,
+						"h": 75
+					}
+				},
+				{
+					"filename": "aroma_burner_01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 75
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 75
+					},
+					"frame": {
+						"x": 259,
+						"y": 810,
+						"w": 64,
+						"h": 75
+					}
+				},
+				{
+					"filename": "aroma_burner_02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 76,
+						"h": 72
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 76,
+						"h": 72
+					},
+					"frame": {
+						"x": 327,
+						"y": 810,
+						"w": 76,
+						"h": 72
+					}
+				},
+				{
+					"filename": "tea_table_dark",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 82,
+						"h": 66
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 82,
+						"h": 66
+					},
+					"frame": {
+						"x": 225,
+						"y": 642,
+						"w": 82,
+						"h": 66
+					}
+				},
+				{
+					"filename": "tea_table",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 80,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 80,
+						"h": 64
+					},
+					"frame": {
+						"x": 226,
+						"y": 558,
+						"w": 80,
+						"h": 64
+					}
+				},
+				{
+					"filename": "tea_table_wood",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 80,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 80,
+						"h": 64
+					},
+					"frame": {
+						"x": 227,
+						"y": 474,
+						"w": 80,
+						"h": 64
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://github.com/odrick/free-tex-packer-cli",
+		"version": "0.3.0"
+	}
+}
