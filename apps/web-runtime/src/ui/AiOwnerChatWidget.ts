@@ -1,5 +1,6 @@
 import { aiAgentService, ChatMessage } from "../services/AiAgentService.js";
 import { soundManager } from "../services/SoundManager.js";
+import { voiceAgentService } from "../services/VoiceAgentService.js";
 
 export class AiOwnerChatWidget {
   private containerEl!: HTMLElement;
@@ -62,7 +63,7 @@ export class AiOwnerChatWidget {
             </div>
             <div class="ai-key-body">
               <div class="ai-key-desc">
-                Ключ сохраняется <strong>локально в localStorage браузера</strong> и передается напрямую в Vercel AI SDK клиент с <code>dangerouslyAllowBrowser: true</code>.
+                Your API key is stored <strong>locally in browser localStorage</strong> and used only for direct LLM API calls.
               </div>
 
               <div class="ai-field-group">
@@ -107,10 +108,10 @@ export class AiOwnerChatWidget {
         <!-- Quick Prompt Chips Row -->
         <div class="ai-preset-chips-row">
           <span class="ai-chips-tag">PROMPTS:</span>
-          <button class="ai-prompt-chip" data-prompt="Сделай так, чтобы после 20 минут ожидания над клиентом на диване появлялся пар">[Пар после 20м]</button>
-          <button class="ai-prompt-chip" data-prompt="Привяжи источник данных yclients с полем status_visit к зоне suite_aromatherapy">[YClients CRM]</button>
-          <button class="ai-prompt-chip" data-prompt="Включи аромадиффузор в комнате ароматерапии suite_aromatherapy">[Диффузор ON]</button>
-          <button class="ai-prompt-chip" data-prompt="Установи максимальное время ожидания 15 минут в зоне reception">[SLA 15м Ресепшн]</button>
+          <button class="ai-prompt-chip" data-prompt="Trigger warning steam if guest waits over 20 minutes in Waiting Lounge">[Steam after 20m]</button>
+          <button class="ai-prompt-chip" data-prompt="Bind data source YClients with field status_visit to Suite Aromatherapy">[YClients CRM]</button>
+          <button class="ai-prompt-chip" data-prompt="Turn on aroma diffuser in Suite Aromatherapy">[Diffuser ON]</button>
+          <button class="ai-prompt-chip" data-prompt="Set maximum wait SLA to 15 minutes at Reception Desk">[SLA 15m Reception]</button>
         </div>
 
         <!-- Input Bar -->
@@ -119,9 +120,10 @@ export class AiOwnerChatWidget {
             type="text"
             id="ai-chat-input"
             class="ai-chat-input"
-            placeholder="Напишите команду (напр.: сделай пар после 20 минут)..."
+            placeholder="Type command (e.g. alert if wait exceeds 15m, bind reception stream)..."
             autocomplete="off"
           />
+          <button type="button" class="ai-mic-btn" id="ai-btn-mic" title="Voice command (Speech-to-Text)">[🎙]</button>
           <button type="submit" class="ai-send-btn" id="ai-btn-send">[>] SEND</button>
         </form>
       </div>
@@ -202,8 +204,8 @@ export class AiOwnerChatWidget {
         soundManager.playZenChime();
         this.appendSystemNotice(
           aiAgentService.hasApiKey()
-            ? `[✓] API Ключ успешно сохранен! Модель: ${inputModel.value}. Готов к работе через Vercel AI SDK.`
-            : `[i] API Ключ очищен. Включен локальный режим симуляции.`
+            ? `[✓] API Key saved successfully! Model: ${inputModel.value}. Ready for AI calls.`
+            : `[i] API Key cleared. Local simulation mode enabled.`
         );
       }
     });
@@ -214,7 +216,7 @@ export class AiOwnerChatWidget {
       if (inputKey) inputKey.value = "";
       this.updateKeyStatusUI();
       soundManager.playAction("tap");
-      this.appendSystemNotice("[i] Ключ удален из localStorage.");
+      this.appendSystemNotice("[i] API key removed from localStorage.");
     });
 
     // Quick Prompt Chips
@@ -228,6 +230,41 @@ export class AiOwnerChatWidget {
         }
       });
     });
+
+    // Mic Speech-to-Text Button
+    const btnMic = document.getElementById("ai-btn-mic") as HTMLButtonElement;
+    if (btnMic) {
+      if (!voiceAgentService.isSupported) {
+        btnMic.style.display = "none";
+      } else {
+        btnMic.addEventListener("click", () => {
+          if (voiceAgentService.isListening) {
+            voiceAgentService.stopListening();
+            btnMic.classList.remove("recording");
+            btnMic.textContent = "[🎙]";
+          } else {
+            btnMic.classList.add("recording");
+            btnMic.textContent = "[● REC]";
+            soundManager.playAction("tap");
+            voiceAgentService.startListening(
+              (transcript) => {
+                btnMic.classList.remove("recording");
+                btnMic.textContent = "[🎙]";
+                if (this.inputFieldEl) {
+                  this.inputFieldEl.value = transcript;
+                  this.handleSendMessage(transcript);
+                }
+              },
+              (err) => {
+                btnMic.classList.remove("recording");
+                btnMic.textContent = "[🎙]";
+                console.warn("[VoiceAgent] Recognition error:", err);
+              }
+            );
+          }
+        });
+      }
+    }
 
     // Chat Form Submit
     const form = document.getElementById("ai-chat-form") as HTMLFormElement;
@@ -303,14 +340,14 @@ export class AiOwnerChatWidget {
       id: "greeting",
       role: "assistant",
       timestamp: this.getTime(),
-      content: `Здравствуйте! Я ассистент управления салоном SpatialTwin на базе **Vercel AI SDK**.
+      content: `Hello! I am your SpatialTwin Salon Operations Assistant.
 
-Я работаю по принципу **Declarative Mutation State** — код приложения не модифицируется, а все команды выполняются через строго валидированные инструменты:
-• \`updateZoneRule\`: SLA ожидания и таймеры оповещений
-• \`bindDataSource\`: подключение Google Sheets / CRM
-• \`toggleFurnitureItem\`: управление оборудованием зала
+I operate via **Declarative Mutation State** — ensuring strict runtime safety without modifying application code directly:
+• \`updateZoneRule\`: SLA wait thresholds & alert timers
+• \`bindDataSource\`: Connect Google Sheets / CRM telemetry
+• \`toggleFurnitureItem\`: Control salon equipment & ambient features
 
-Попробуйте нажать кнопку ниже или ввести команду своими словами!`
+Try clicking one of the preset prompts below or type your instruction in natural language!`
     });
   }
 
@@ -424,7 +461,7 @@ export class AiOwnerChatWidget {
         <span class="ai-sender-tag">[AI ASSISTANT]</span>
         <span class="ai-time-tag">[${this.getTime()}]</span>
       </div>
-      <div class="ai-msg-body"><span class="ai-dot-pulse">● ● ●</span> Анализ запроса и валидация инструментов...</div>
+      <div class="ai-msg-body"><span class="ai-dot-pulse">● ● ●</span> Analyzing request and validating tool schemas...</div>
     `;
     this.messagesStreamEl.appendChild(indicator);
     this.scrollToBottom();
@@ -451,7 +488,7 @@ export class AiOwnerChatWidget {
         id: `err_${Date.now()}`,
         role: "assistant",
         timestamp: this.getTime(),
-        content: `Произошла ошибка при выполнении: ${err.message}`
+        content: `Error during execution: ${err.message}`
       });
     } finally {
       this.isProcessing = false;

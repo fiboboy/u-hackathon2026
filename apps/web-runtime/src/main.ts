@@ -93,6 +93,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   (window as any).__AI_CHAT_WIDGET__ = aiOwnerChatWidget;
   (window as any).__SPATIAL_DISPATCHER__ = spatialRuntimeDispatcher;
+  (window as any).__VOICE_AGENT__ = voiceAgentService;
 
   // Module 2 & 3: AI Asset creation -> In-canvas scaffolding and hot-reload texture replacement
   aiModal.onApplyRequested = async (asset: GeneratedAsset) => {
