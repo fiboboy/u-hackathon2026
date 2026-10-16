@@ -88,7 +88,25 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: nowrap;
+      overflow: hidden;
+      white-space: nowrap;
+      gap: 12px;
       z-index: 100;
+    }
+
+    @media (max-width: 960px) {
+      #btn-highlight-header, #btn-center-cam {
+        display: none !important;
+      }
+    }
+    @media (max-width: 720px) {
+      .brand-title h1 {
+        display: none !important;
+      }
+      #ws-label {
+        display: none !important;
+      }
     }
 
     .brand-title {
@@ -3072,36 +3090,36 @@
           <div class="ascii-wordmark">[:: SPATIAL ::]</div>
           <h1>SpatialTwin</h1>
         </a>
-        <a href="/" class="btn-header" style="text-decoration: none; font-size: 11px; margin-left: 12px; display: inline-flex; align-items: center; gap: 4px;">
-          [← Landing Page]
+        <a href="/" class="btn-header" style="text-decoration: none; font-size: 11px; margin-left: 6px; padding: 4px 8px;">
+          [← Home]
         </a>
       </div>
 
-      <div class="view-mode-tabs" style="display: flex; gap: 4px; margin-left: auto; margin-right: 12px;">
-        <button class="btn-header active-btn" id="btn-view-salon" title="Switch to 2.5D Interior Salon with Characters">
-          [::] Salon Interior
+      <div class="view-mode-tabs" style="display: flex; gap: 4px;">
+        <button class="btn-header active-btn" id="btn-view-salon" title="Switch to 2.5D Interior Salon">
+          [::] Salon
         </button>
         <button class="btn-header" id="btn-view-district" title="Switch to Fullscreen District City Map">
-          [::] District Map
+          [::] District
         </button>
       </div>
 
       <div class="header-status">
-        <div class="status-badge">
+        <div class="status-badge" style="padding: 4px 8px;">
           <span class="status-dot" id="ws-dot"></span>
-          <span id="ws-label">Bridge Online</span>
+          <span id="ws-label">Online</span>
         </div>
-        <button class="btn-header" id="btn-highlight-header" title="Highlight pixel contours of all interactive objects and walls">
-          [+] Highlight Objects
+        <button class="btn-header" id="btn-highlight-header" title="Highlight pixel contours of all interactive objects">
+          [✨ Outline]
         </button>
-        <button class="btn-header" id="btn-center-cam" title="Reset camera to center of the stage">
-          [o] Center View
+        <button class="btn-header" id="btn-center-cam" title="Reset camera to center">
+          [o Center]
         </button>
-        <button class="btn-header" id="btn-open-staff-messenger" title="Open Staff Messenger (Telegram, LINE, WhatsApp)">
-          [💬] Staff Ping
+        <button class="btn-header" id="btn-open-staff-messenger" title="Staff Ping Messenger">
+          [💬 Ping]
         </button>
-        <button class="btn-header" id="btn-sound" title="Toggle synthesized audio effects">
-          [~] Audio: ON
+        <button class="btn-header" id="btn-sound" title="Toggle audio">
+          [🔊]
         </button>
       </div>
     </header>

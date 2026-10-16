@@ -44,7 +44,7 @@
       --rounded-sm: 4px;
       --rounded-full: 9999px;
 
-      --font-mono: 'Berkeley Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      --font-mono: 'Berkeley Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
     }
 
     * {
@@ -78,7 +78,6 @@
       padding: 0;
     }
 
-    /* Layout Containers */
     .site-wrapper {
       width: 100%;
       min-height: 100vh;
@@ -95,12 +94,12 @@
 
     .container-wide {
       width: 100%;
-      max-width: 1120px;
+      max-width: 1140px;
       margin: 0 auto;
       padding: 0 24px;
     }
 
-    /* Primary Nav (OpenCode primary-nav: 56px, #fdfcfc canvas, 1px hairline bottom rule, 0px radius) */
+    /* Streamlined, Bulletproof Primary Nav (DESIGN-opencode: 56px, no wrap, no clutter) */
     header.primary-nav {
       position: sticky;
       top: 0;
@@ -111,6 +110,7 @@
       z-index: 1000;
       display: flex;
       align-items: center;
+      padding: 0 24px;
     }
 
     .nav-inner {
@@ -118,6 +118,9 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
+      gap: 16px;
+      flex-wrap: nowrap;
+      overflow: hidden;
     }
 
     .brand-link {
@@ -126,6 +129,8 @@
       gap: 10px;
       text-decoration: none;
       color: var(--ink);
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     .ascii-wordmark {
@@ -148,17 +153,20 @@
       letter-spacing: 0;
     }
 
+    /* Minimal 4-Link Nav (Never crowded, clean and readable) */
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 24px;
       list-style: none;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     .nav-links a {
       color: var(--body);
       text-decoration: none;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       transition: color 0.15s ease;
     }
@@ -171,6 +179,51 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .btn-nav-demo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: var(--on-primary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 16px;
+      height: 36px;
+      border-radius: var(--rounded-sm);
+      border: 1px solid var(--primary);
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .btn-nav-demo:hover {
+      background: var(--ink-deep);
+      color: var(--on-primary);
+    }
+
+    .btn-nav-github {
+      color: var(--mute);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 10px;
+    }
+
+    .btn-nav-github:hover {
+      color: var(--ink);
+    }
+
+    @media (max-width: 820px) {
+      .nav-links {
+        display: none;
+      }
+      .btn-nav-github {
+        display: none;
+      }
     }
 
     /* Universal Buttons */
@@ -184,8 +237,8 @@
       text-decoration: none;
       font-size: 14px;
       font-weight: 600;
-      padding: 6px 18px;
-      height: 38px;
+      padding: 8px 20px;
+      height: 40px;
       border-radius: var(--rounded-sm);
       border: 1px solid var(--primary);
       cursor: pointer;
@@ -210,8 +263,8 @@
       text-decoration: none;
       font-size: 14px;
       font-weight: 500;
-      padding: 6px 18px;
-      height: 38px;
+      padding: 8px 20px;
+      height: 40px;
       border-radius: var(--rounded-sm);
       border: 1px solid var(--hairline-strong);
       cursor: pointer;
@@ -230,15 +283,15 @@
       color: var(--on-primary);
       font-size: 15px;
       font-weight: 700;
-      padding: 10px 24px;
-      height: 44px;
+      padding: 12px 28px;
+      height: 46px;
       border-radius: var(--rounded-sm);
       border: 1px solid var(--ink);
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      box-shadow: none;
+      white-space: nowrap;
       transition: all 0.15s ease;
     }
 
@@ -270,7 +323,7 @@
       display: inline-block;
     }
 
-    /* Section Rhythm (DESIGN-opencode: 96px vertical rhythm) */
+    /* Section Rhythm: 96px vertical spacing */
     section {
       padding: 96px 0;
       border-bottom: 1px solid var(--hairline);
@@ -285,7 +338,7 @@
     }
 
     .section-label {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--mute);
       text-transform: uppercase;
@@ -307,13 +360,13 @@
       font-size: 16px;
       font-weight: 400;
       color: var(--body);
-      max-width: 720px;
+      max-width: 760px;
       line-height: 1.6;
     }
 
     /* Hero Section */
     .hero-section {
-      padding: 80px 0 96px 0;
+      padding: 72px 0 96px 0;
       border-bottom: 1px solid var(--hairline);
     }
 
@@ -321,7 +374,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      margin-bottom: 48px;
+      margin-bottom: 40px;
     }
 
     .hero-headline {
@@ -331,15 +384,15 @@
       letter-spacing: -0.5px;
       color: var(--ink);
       margin-bottom: 20px;
-      max-width: 880px;
+      max-width: 920px;
     }
 
     .hero-subhead {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 400;
       line-height: 1.65;
       color: var(--body);
-      max-width: 820px;
+      max-width: 860px;
       margin-bottom: 32px;
     }
 
@@ -393,205 +446,120 @@
       background: var(--surface-soft);
     }
 
-    /* Hero TUI Mockup (DESIGN-opencode: full-bleed surface-dark, no radius, ASCII markers) */
-    .hero-tui-mockup {
+    /* Hero Master Visual Stage (Features user thumbnail asset) */
+    .hero-visual-frame {
+      position: relative;
       background: var(--surface-dark);
-      color: var(--on-dark);
-      border-radius: var(--rounded-none);
       border: 1px solid var(--hairline);
+      border-radius: var(--rounded-none);
       overflow: hidden;
       width: 100%;
     }
 
-    .tui-header-bar {
+    .tui-chrome-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 18px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 18px;
       background: var(--surface-dark-elevated);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       font-size: 12px;
+      color: var(--on-dark);
     }
 
-    .tui-title-group {
+    .tui-chrome-left {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .tui-dot-indicators {
-      display: flex;
+    .tui-status-pill {
+      display: inline-flex;
+      align-items: center;
       gap: 6px;
-    }
-
-    .tui-dot {
-      width: 8px;
-      height: 8px;
-      background: #444;
-    }
-
-    .tui-dot.active {
-      background: var(--success);
-    }
-
-    .tui-tabs {
-      display: flex;
-      gap: 4px;
-    }
-
-    .tui-tab-btn {
-      background: transparent;
-      border: none;
-      color: var(--ash);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 10px;
-      cursor: pointer;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 8px;
       border-radius: var(--rounded-sm);
-      transition: all 0.15s ease;
+      font-size: 11px;
+      color: var(--success);
+      font-weight: 600;
     }
 
-    .tui-tab-btn:hover {
-      color: var(--on-dark);
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .tui-tab-btn.active {
-      color: var(--on-dark);
-      background: rgba(255, 255, 255, 0.12);
-    }
-
-    .tui-stage-area {
-      position: relative;
-      background: #181515;
-      min-height: 480px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .tui-tab-panel {
-      display: none;
-      width: 100%;
-      height: 100%;
-      min-height: 480px;
-      padding: 24px;
-    }
-
-    .tui-tab-panel.active {
-      display: block;
-    }
-
-    .preview-image-container {
+    .hero-img-wrap {
       position: relative;
       width: 100%;
-      max-height: 460px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background: #110f0f;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      overflow: hidden;
+      display: block;
+      line-height: 0;
     }
 
-    .preview-image-container img {
+    .hero-master-img {
       width: 100%;
-      height: 100%;
-      max-height: 440px;
+      height: auto;
+      max-height: 640px;
       object-fit: cover;
       display: block;
-      image-rendering: pixelated;
     }
 
-    /* Overlay HUD badges on Preview */
-    .hud-overlay-tag {
+    /* Overlay Floating Tags on Hero */
+    .hud-tag {
       position: absolute;
       background: rgba(32, 29, 29, 0.92);
-      border: 1px solid var(--hairline-strong);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 6px 12px;
       border-radius: var(--rounded-sm);
       font-size: 11px;
       color: var(--on-dark);
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       pointer-events: none;
+      line-height: 1.4;
+      z-index: 10;
     }
 
-    .tag-amber-glow {
+    .hud-tag-active {
       top: 24px;
+      right: 24px;
+      border-color: var(--success);
+      color: #92fab1;
+    }
+
+    .hud-tag-amber {
+      bottom: 74px;
       left: 24px;
       border-color: #ffaa33;
       color: #ffc466;
     }
 
-    .tag-stamina-live {
-      top: 24px;
-      right: 24px;
-      border-color: var(--success);
-      color: #79f89d;
-    }
-
-    .tag-sla-alert {
-      bottom: 24px;
-      left: 24px;
-      border-color: var(--danger);
-      color: #ff7870;
-    }
-
-    .tag-launch-full {
+    .hud-tag-action {
       bottom: 24px;
       right: 24px;
       pointer-events: auto;
     }
 
-    .tui-log-stream {
-      background: #121010;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 20px;
+    .btn-hero-launch-overlay {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: var(--on-primary);
+      border: 1px solid var(--accent);
+      padding: 8px 18px;
+      border-radius: var(--rounded-sm);
       font-size: 12px;
-      line-height: 1.8;
-      color: #bbb;
-      min-height: 420px;
-      max-height: 440px;
-      overflow-y: auto;
-      user-select: text;
-    }
-
-    .log-line {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 4px;
-    }
-
-    .log-time {
-      color: var(--ash);
-      user-select: none;
-    }
-
-    .log-tag-mcp {
-      color: var(--accent);
       font-weight: 700;
+      text-decoration: none;
+      transition: all 0.15s ease;
     }
 
-    .log-tag-bridge {
-      color: var(--warning);
-      font-weight: 700;
+    .btn-hero-launch-overlay:hover {
+      background: var(--ink-deep);
+      border-color: #fff;
     }
 
-    .log-tag-rule {
-      color: var(--danger);
-      font-weight: 700;
-    }
-
-    .log-tag-pos {
-      color: var(--success);
-      font-weight: 700;
-    }
-
-    .tui-prompt-row {
+    .tui-prompt-footer {
       background: var(--surface-dark-elevated);
       padding: 10px 18px;
       display: flex;
@@ -599,34 +567,213 @@
       justify-content: space-between;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
       font-size: 12px;
-      color: var(--on-dark);
+      color: var(--ash);
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    .tui-prompt-line {
+    /* Multi-Industry Twin Showcase Section (#twins) */
+    .showcase-tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .showcase-tab-btn {
+      background: var(--surface-card);
+      border: 1px solid var(--hairline);
+      color: var(--body);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--rounded-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .showcase-tab-btn:hover {
+      background: var(--surface-soft);
+      color: var(--ink);
+    }
+
+    .showcase-tab-btn.active {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    .showcase-stage-viewport {
+      position: relative;
+      background: #110f0f;
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-none);
+      overflow: hidden;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    .showcase-stage-panel {
+      display: none;
+      position: relative;
+      width: 100%;
+    }
+
+    .showcase-stage-panel.active {
+      display: block;
+    }
+
+    .showcase-stage-img {
+      width: 100%;
+      height: auto;
+      max-height: 600px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .stage-hud-card {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      background: rgba(32, 29, 29, 0.94);
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--rounded-sm);
+      padding: 16px 20px;
+      color: var(--on-dark);
+      max-width: 360px;
+      backdrop-filter: blur(8px);
+      z-index: 10;
+    }
+
+    .stage-hud-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--on-dark);
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
     }
 
-    .tui-prompt-line span.pipe {
+    .stage-hud-desc {
+      font-size: 12px;
       color: var(--ash);
+      line-height: 1.5;
+      margin-bottom: 12px;
     }
 
-    .tui-key-hints {
+    .stage-hud-stats {
+      list-style: none;
       display: flex;
-      gap: 16px;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .stage-stat-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+      padding-bottom: 4px;
+    }
+
+    .stage-stat-label {
       color: var(--ash);
-      font-size: 11px;
     }
 
-    .tui-key-hints kbd {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 1px 6px;
+    .stage-stat-val {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .stage-hud-action {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      z-index: 10;
+    }
+
+    /* 4-Column Business Verticals Grid */
+    .verticals-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .vertical-card {
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline);
+      border-radius: var(--rounded-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: border-color 0.15s ease;
+    }
+
+    .vertical-card:hover {
+      border-color: var(--hairline-strong);
+    }
+
+    .vertical-thumb-wrap {
+      width: 100%;
+      height: 140px;
+      overflow: hidden;
+      background: #110f0f;
+    }
+
+    .vertical-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    .vertical-card:hover .vertical-thumb-img {
+      transform: scale(1.03);
+    }
+
+    .vertical-card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-grow: 1;
+    }
+
+    .vertical-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .vertical-card-desc {
+      font-size: 12px;
+      color: var(--body);
+      line-height: 1.5;
+    }
+
+    .vertical-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    .v-tag {
+      background: var(--surface-card);
+      border: 1px solid var(--hairline);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--mute);
+      padding: 2px 6px;
       border-radius: 2px;
-      color: var(--on-dark);
     }
 
-    /* Grid Layouts for Sections */
+    /* Grids & Cards */
     .two-col-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -645,7 +792,6 @@
       gap: 24px;
     }
 
-    /* Comparison & Problem Cards */
     .problem-card {
       background: var(--surface-soft);
       border: 1px solid var(--hairline);
@@ -657,24 +803,17 @@
     }
 
     .card-marker-neg {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--danger);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .card-marker-pos {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--success);
-      margin-bottom: 4px;
-    }
-
-    .card-marker-star {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .problem-card h3 {
@@ -690,7 +829,6 @@
       line-height: 1.6;
     }
 
-    /* Solution Blocks */
     .solution-block {
       background: var(--canvas);
       border: 1px solid var(--hairline);
@@ -714,7 +852,7 @@
       line-height: 1.6;
     }
 
-    /* Capability Comparison (Live Now vs Roadmap) */
+    /* Live vs Roadmap Comparison */
     .comparison-column {
       background: var(--surface-soft);
       border: 1px solid var(--hairline);
@@ -881,7 +1019,7 @@
       width: 100%;
     }
 
-    /* Addons & Value-Added Revenue Grid */
+    /* Addons & Value-Added Revenue */
     .addons-wrapper {
       margin-top: 48px;
       padding: 32px 28px;
@@ -933,7 +1071,7 @@
       line-height: 1.5;
     }
 
-    /* MCP & Quickstart Section */
+    /* MCP Section */
     .mcp-layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -960,7 +1098,7 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .mcp-tool-entry {
@@ -969,9 +1107,6 @@
       padding: 8px 12px;
       border-radius: var(--rounded-sm);
       font-size: 13px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
     }
 
     .mcp-tool-name {
@@ -1010,7 +1145,7 @@
 
     .faq-row {
       border-top: 1px solid var(--hairline);
-      padding: 20px 0;
+      padding: 18px 0;
     }
 
     .faq-row:last-child {
@@ -1025,7 +1160,7 @@
       background: transparent;
       border: none;
       text-align: left;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--ink);
       cursor: pointer;
@@ -1033,12 +1168,8 @@
       font-family: var(--font-mono);
     }
 
-    .faq-question:hover {
-      color: var(--charcoal);
-    }
-
     .faq-marker {
-      font-size: 16px;
+      font-size: 15px;
       color: var(--mute);
       font-weight: 700;
     }
@@ -1056,7 +1187,7 @@
       display: block;
     }
 
-    /* Footer (DESIGN-opencode: 32px 0 padding, hairline top rule, 5-col link grid) */
+    /* Footer */
     footer.site-footer {
       background: var(--canvas);
       border-top: 1px solid var(--hairline);
@@ -1104,10 +1235,12 @@
       font-size: 12px;
     }
 
-    /* Responsive Adjustments */
-    @media (max-width: 860px) {
+    @media (max-width: 900px) {
       .hero-headline {
         font-size: 28px;
+      }
+      .verticals-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
       .two-col-grid,
       .three-col-grid,
@@ -1116,20 +1249,25 @@
       .mcp-layout {
         grid-template-columns: 1fr;
       }
-      .nav-links {
-        display: none;
+    }
+
+    @media (max-width: 600px) {
+      .verticals-grid {
+        grid-template-columns: 1fr;
       }
-      .tui-prompt-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
+      .stage-hud-card {
+        position: relative;
+        top: auto;
+        left: auto;
+        max-width: 100%;
+        border-radius: 0;
       }
     }
   </style>
 </head>
 <body>
   <div class="site-wrapper">
-    <!-- Top Monospace Nav -->
+    <!-- Streamlined Monospace Nav (Clean, Never Broken, Never Overloaded) -->
     <header class="primary-nav">
       <div class="container-wide nav-inner">
         <a href="/" class="brand-link">
@@ -1138,24 +1276,21 @@
         </a>
 
         <ul class="nav-links">
-          <li><a href="#problem">[Problem]</a></li>
-          <li><a href="#solution">[Solution]</a></li>
-          <li><a href="#capabilities">[Live Capabilities]</a></li>
-          <li><a href="#roadmap">[Roadmap]</a></li>
-          <li><a href="#mcp">[MCP Tools]</a></li>
-          <li><a href="#pricing">[Pricing]</a></li>
-          <li><a href="#faq">[FAQ]</a></li>
+          <li><a href="#twins">[01/Twins]</a></li>
+          <li><a href="#solution">[02/Platform]</a></li>
+          <li><a href="#pricing">[03/Pricing]</a></li>
+          <li><a href="#roadmap">[04/Roadmap]</a></li>
         </ul>
 
         <div class="nav-actions">
-          <a href="https://github.com" target="_blank" class="btn-secondary" title="GitHub Repository">[★ GitHub]</a>
-          <a href="/demo" class="btn-primary" title="Launch Interactive 2.5D Digital Twin">[▶ Live Demo]</a>
+          <a href="https://github.com/fiboboy/u-hackathon2026" target="_blank" class="btn-nav-github">[GitHub]</a>
+          <a href="/demo" class="btn-nav-demo" title="Launch Interactive 2.5D Digital Twin">[▶ Launch Demo]</a>
         </div>
       </div>
     </header>
 
     <main>
-      <!-- Hero Section -->
+      <!-- Hero Section Featuring Master Asset (thumbnail.jpg) -->
       <section class="hero-section">
         <div class="container-wide">
           <div class="hero-content">
@@ -1179,8 +1314,8 @@
               <a href="#pricing" class="btn-secondary">
                 <span>[# View Pricing Tiers]</span>
               </a>
-              <a href="#capabilities" class="btn-secondary">
-                <span>[★ Built In Code vs Roadmap]</span>
+              <a href="#twins" class="btn-secondary">
+                <span>[:: Explore Business Twins]</span>
               </a>
             </div>
 
@@ -1194,123 +1329,278 @@
             </div>
           </div>
 
-          <!-- Hero TUI & Living Simulation Showcase -->
-          <div class="hero-tui-mockup">
-            <div class="tui-header-bar">
-              <div class="tui-title-group">
-                <div class="tui-dot-indicators">
-                  <div class="tui-dot active"></div>
-                  <div class="tui-dot active"></div>
-                  <div class="tui-dot"></div>
-                </div>
-                <span>[:: SPATIAL INTELLIGENCE CONSOLE ::]</span>
-                <span style="color: var(--ash);">• RCA ALLEY LOCATION #1</span>
+          <!-- Hero Master Visual Frame (thumbnail.jpg with Live Ambient Overlay) -->
+          <div class="hero-visual-frame">
+            <div class="tui-chrome-bar">
+              <div class="tui-chrome-left">
+                <span class="tui-status-pill"><span class="badge-pulse-dot"></span> LIVE ENGINE TELEMETRY</span>
+                <span>• RCA ALLEY LOCATION #1</span>
               </div>
-              <div class="tui-tabs">
-                <button class="tui-tab-btn active" onclick="switchTuiTab('salon', this)">[1] Salon Diorama</button>
-                <button class="tui-tab-btn" onclick="switchTuiTab('district', this)">[2] District Map</button>
-                <button class="tui-tab-btn" onclick="switchTuiTab('terminal', this)">[3] Live MCP Stream</button>
+              <div>
+                <span>[:: 4 ROOMS • ฿14,500 TODAY • 3 SESSIONS ACTIVE ::]</span>
               </div>
             </div>
 
-            <div class="tui-stage-area">
-              <!-- Tab 1: Salon Diorama -->
-              <div id="tui-tab-salon" class="tui-tab-panel active">
-                <div class="preview-image-container">
-                  <img src="/assets/diorama_master.png" alt="SpatialTwin 2.5D Living Dollhouse Diorama" />
-                  
-                  <div class="hud-overlay-tag tag-amber-glow">
-                    <span>[ROOM 1]</span>
-                    <span>Amber Pulse: Active Thai Massage (Session 42:15)</span>
-                  </div>
+            <div class="hero-img-wrap">
+              <img src="/assets/thumbnail.jpg" alt="SpatialTwin Flagship 2.5D Living Dollhouse" class="hero-master-img" />
 
-                  <div class="hud-overlay-tag tag-stamina-live">
-                    <span>[STAFF]</span>
-                    <span>Somchai: 74% Stamina • Yuki: 88% Stamina</span>
-                  </div>
-
-                  <div class="hud-overlay-tag tag-sla-alert">
-                    <span>[SLA ALERT]</span>
-                    <span>Client Waiting: 14m (Threshold: 15m)</span>
-                  </div>
-
-                  <div class="hud-overlay-tag tag-launch-full">
-                    <a href="/demo" class="btn-primary" style="padding: 4px 12px; height: 30px; font-size: 11px;">
-                      [▶ Open Interactive Sandbox]
-                    </a>
-                  </div>
-                </div>
+              <div class="hud-tag hud-tag-active">
+                <span>[● ACTIVE SESSION]</span>
+                <span>Room 1: Thai Massage 60m • Somchai (74% Stamina)</span>
               </div>
 
-              <!-- Tab 2: District Map -->
-              <div id="tui-tab-district" class="tui-tab-panel">
-                <div class="preview-image-container">
-                  <img src="/assets/district_map.jpg" alt="Bangkok RCA Alley District Map" />
-                  
-                  <div class="hud-overlay-tag tag-amber-glow">
-                    <span>[DISTRICT OVERVIEW]</span>
-                    <span>RCA Alley (Bangkok) • Active Beacon: Kenji Wellness Hub</span>
-                  </div>
-
-                  <div class="hud-overlay-tag tag-launch-full">
-                    <a href="/demo" class="btn-primary" style="padding: 4px 12px; height: 30px; font-size: 11px;">
-                      [▶ Inspect District In Engine]
-                    </a>
-                  </div>
-                </div>
+              <div class="hud-tag hud-tag-amber">
+                <span>[⚡ AMBER LIGHT SHADER]</span>
+                <span>Active Treatment Glow • Coin Fountain &amp; Sakura Review Particles</span>
               </div>
 
-              <!-- Tab 3: Live MCP Log -->
-              <div id="tui-tab-terminal" class="tui-tab-panel">
-                <div class="tui-log-stream">
-                  <div class="log-line">
-                    <span class="log-time">[13:00:02]</span>
-                    <span class="log-tag-mcp">[MCP INBOUND]</span>
-                    <span>agent.callTool("get_layout", { facility_id: "rca_salon_01" })</span>
-                  </div>
-                  <div class="log-line">
-                    <span class="log-time">[13:00:03]</span>
-                    <span class="log-tag-mcp">[MCP OUTBOUND]</span>
-                    <span>return: { stations: 30, active_staff: 3, waiting_clients: 2, revenue_today: "฿14,500" }</span>
-                  </div>
-                  <div class="log-line">
-                    <span class="log-time">[13:00:09]</span>
-                    <span class="log-tag-bridge">[BRIDGE POLLER]</span>
-                    <span>Google Sheets onEdit() trigger: Row 14 updated (Room 2 reserved for Aromatherapy)</span>
-                  </div>
-                  <div class="log-line">
-                    <span class="log-time">[13:00:10]</span>
-                    <span class="log-tag-mcp">[WORLD RENDER]</span>
-                    <span>Dispatched light shader: Amber ambient glow (#FFAA33) triggered in Room 2</span>
-                  </div>
-                  <div class="log-line">
-                    <span class="log-time">[13:00:14]</span>
-                    <span class="log-tag-rule">[STAMINA WORKER]</span>
-                    <span>Somchai session +45 min (Drain: 0.55/min). Current stamina: 74.2% [NOMINAL]</span>
-                  </div>
-                  <div class="log-line">
-                    <span class="log-time">[13:00:18]</span>
-                    <span class="log-tag-pos">[POS WEBHOOK]</span>
-                    <span>Checkout confirmed: ฿4,500 via PromptPay QR. Fired coin fountain physics in Cashier Zone</span>
-                  </div>
-                  <div class="log-line">
-                    <span class="log-time">[13:00:22]</span>
-                    <span class="log-tag-mcp">[MCP INBOUND]</span>
-                    <span>agent.callTool("configure_business_rules", { max_wait_time_min: 20 }) -> [APPLIED INSTANTLY]</span>
-                  </div>
+              <div class="hud-tag-action">
+                <a href="/demo" class="btn-hero-launch-overlay">
+                  <span>[▶ Click to Enter Live Sandbox Engine]</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="tui-prompt-footer">
+              <div>
+                <span>| Ready: Model Context Protocol v1.1.0 Server &amp; 4-Layer Isometric Engine</span>
+              </div>
+              <div>
+                <span>Interactive Controls: Drag Furniture · 2x Click to Walk · Staff Messenger · Live Stamina HUD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Multi-Industry Spatial Showcase Section Featuring All Assets -->
+      <section id="twins">
+        <div class="container-wide">
+          <div class="section-header">
+            <span class="section-label">[::] SPATIAL INTELLIGENCE ACROSS EVERY PHYSICAL BUSINESS</span>
+            <h2 class="section-title">One universal 8-bit spatial engine. Endless real-world business environments.</h2>
+            <p class="section-subtitle">
+              Whether you operate a boutique spa, an artisanal roastery, a high-velocity supermarket, or a franchise fitness network, SpatialTwin transforms flat telemetry feeds into a self-rendering, living simulation.
+            </p>
+          </div>
+
+          <!-- Interactive Tab Bar -->
+          <div class="showcase-tab-bar">
+            <button class="showcase-tab-btn active" onclick="switchSpaceTab('spa', this)">[1] Wellness &amp; Spa Sanctuary</button>
+            <button class="showcase-tab-btn" onclick="switchSpaceTab('coffee', this)">[2] Coffee Shop &amp; Roastery</button>
+            <button class="showcase-tab-btn" onclick="switchSpaceTab('mart', this)">[3] Supermarket &amp; Retail Mart</button>
+            <button class="showcase-tab-btn" onclick="switchSpaceTab('gym', this)">[4] Fitness Gym &amp; Studio</button>
+            <button class="showcase-tab-btn" onclick="switchSpaceTab('map', this)">[5] Bangkok District City Map</button>
+          </div>
+
+          <!-- Featured Showcase Stage -->
+          <div class="showcase-stage-viewport">
+            <!-- Stage 1: Spa & Wellness -->
+            <div id="space-panel-spa" class="showcase-stage-panel active">
+              <img src="/assets/thumbnail.jpg" alt="Japanese Spa Sanctuary Digital Twin" class="showcase-stage-img" />
+              <div class="stage-hud-card">
+                <div class="stage-hud-title">[★] WELLNESS &amp; SPA SANCTUARY</div>
+                <div class="stage-hud-desc">Private massage suites, hot onsen soaking tubs, tea lounge, and guest reception.</div>
+                <ul class="stage-hud-stats">
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Daily Revenue:</span>
+                    <span class="stage-stat-val">฿14,500 (28 sessions)</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Room RevPASH:</span>
+                    <span class="stage-stat-val">78.5% Utilization</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Staff Stamina:</span>
+                    <span class="stage-stat-val">Somchai: 74% · Yuki: 88%</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">SLA Compliance:</span>
+                    <span class="stage-stat-val">94.2% on-time starts</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="stage-hud-action">
+                <a href="/demo" class="btn-primary" style="padding: 6px 14px; font-size: 12px;">[▶ Launch Spa Engine]</a>
+              </div>
+            </div>
+
+            <!-- Stage 2: Coffee Shop -->
+            <div id="space-panel-coffee" class="showcase-stage-panel">
+              <img src="/assets/coffeeshop.jpg" alt="Artisan Coffee Shop Digital Twin" class="showcase-stage-img" />
+              <div class="stage-hud-card">
+                <div class="stage-hud-title">[☕] ARTISAN COFFEE SHOP &amp; ROASTERY</div>
+                <div class="stage-hud-desc">Espresso bar, pastry display case, dining tables, sofa lounge, and customer restrooms.</div>
+                <ul class="stage-hud-stats">
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Queue Length:</span>
+                    <span class="stage-stat-val">4 orders pending</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Table Occupancy:</span>
+                    <span class="stage-stat-val">82% (14 tables seated)</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Barista Stamina:</span>
+                    <span class="stage-stat-val">Kenji: 91% [NOMINAL]</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Espresso Telemetry:</span>
+                    <span class="stage-stat-val">Machine 1: 9.2 bar pressure</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="stage-hud-action">
+                <a href="/demo" class="btn-primary" style="padding: 6px 14px; font-size: 12px;">[▶ Explore Coffee Twin]</a>
+              </div>
+            </div>
+
+            <!-- Stage 3: Supermarket -->
+            <div id="space-panel-mart" class="showcase-stage-panel">
+              <img src="/assets/mart.jpg" alt="Supermarket and Retail Mart Digital Twin" class="showcase-stage-img" />
+              <div class="stage-hud-card">
+                <div class="stage-hud-title">[🛒] GROCERY SUPERMARKET &amp; MART</div>
+                <div class="stage-hud-desc">Produce gondolas, grocery aisles, dairy chillers, bakery stand, and checkout registers.</div>
+                <ul class="stage-hud-stats">
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Checkout Flow:</span>
+                    <span class="stage-stat-val">Lane 2 bottleneck: 3 in queue</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Chiller Telemetry:</span>
+                    <span class="stage-stat-val">Zone 4: +3.8°C (Compliant)</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Average Basket:</span>
+                    <span class="stage-stat-val">฿420.00 / transaction</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Hotspot Density:</span>
+                    <span class="stage-stat-val">Fresh Bakery: 8 shoppers</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="stage-hud-action">
+                <a href="/demo" class="btn-primary" style="padding: 6px 14px; font-size: 12px;">[▶ Explore Mart Twin]</a>
+              </div>
+            </div>
+
+            <!-- Stage 4: Fitness Gym -->
+            <div id="space-panel-gym" class="showcase-stage-panel">
+              <img src="/assets/gym.jpg" alt="Fitness Gym and Workout Studio Digital Twin" class="showcase-stage-img" />
+              <div class="stage-hud-card">
+                <div class="stage-hud-title">[🏋️] FITNESS GYM &amp; TRAINING STUDIO</div>
+                <div class="stage-hud-desc">Cardio treadmill bay, free weights, strength racks, locker rooms, and member check-in.</div>
+                <ul class="stage-hud-stats">
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Cardio Utilization:</span>
+                    <span class="stage-stat-val">6/8 treadmills active (75%)</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Locker Density:</span>
+                    <span class="stage-stat-val">35% capacity</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Trainer Duty:</span>
+                    <span class="stage-stat-val">2 active personal sessions</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Facility Climate:</span>
+                    <span class="stage-stat-val">21.5°C HVAC nominal</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="stage-hud-action">
+                <a href="/demo" class="btn-primary" style="padding: 6px 14px; font-size: 12px;">[▶ Explore Gym Twin]</a>
+              </div>
+            </div>
+
+            <!-- Stage 5: District Map -->
+            <div id="space-panel-map" class="showcase-stage-panel">
+              <img src="/assets/map.jpg" alt="Bangkok RCA Alley District Map Digital Twin" class="showcase-stage-img" />
+              <div class="stage-hud-card">
+                <div class="stage-hud-title">[🌐] FEDERATED BANGKOK DISTRICT MAP</div>
+                <div class="stage-hud-desc">Interconnected neighborhood twin: Spa Salon, 7-Eleven, RCA Cafe, Bangkok Fitness, and Maitria.</div>
+                <ul class="stage-hud-stats">
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Network Size:</span>
+                    <span class="stage-stat-val">5 connected business nodes</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Aggregated Rev:</span>
+                    <span class="stage-stat-val">฿142,800 today</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Roaming Staff:</span>
+                    <span class="stage-stat-val">14 employees on active shifts</span>
+                  </li>
+                  <li class="stage-stat-row">
+                    <span class="stage-stat-label">Street Footprint:</span>
+                    <span class="stage-stat-val">Kamphaeng Phet 7 Roi / RCA</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="stage-hud-action">
+                <a href="/demo" class="btn-primary" style="padding: 6px 14px; font-size: 12px;">[▶ Inspect District Map]</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4-Card Business Verticals Summary Grid -->
+          <div class="verticals-grid">
+            <div class="vertical-card" onclick="switchSpaceTab('spa', document.querySelectorAll('.showcase-tab-btn')[0])">
+              <div class="vertical-thumb-wrap">
+                <img src="/assets/thumbnail.jpg" alt="Spa and Wellness" class="vertical-thumb-img" />
+              </div>
+              <div class="vertical-card-body">
+                <h4 class="vertical-card-title">[1] Spas &amp; Wellness</h4>
+                <p class="vertical-card-desc">Session countdowns, amber heat glow, staff stamina depletion, and client wait-time SLA alerts.</p>
+                <div class="vertical-card-tags">
+                  <span class="v-tag">Stamina Engine</span>
+                  <span class="v-tag">SLA Physics</span>
                 </div>
               </div>
             </div>
 
-            <div class="tui-prompt-row">
-              <div class="tui-prompt-line">
-                <span class="pipe">|</span>
-                <span>Ready: Model Context Protocol v1.1.0 Server &amp; 4-Layer Isometric Engine</span>
+            <div class="vertical-card" onclick="switchSpaceTab('coffee', document.querySelectorAll('.showcase-tab-btn')[1])">
+              <div class="vertical-thumb-wrap">
+                <img src="/assets/coffeeshop.jpg" alt="Coffee Shops" class="vertical-thumb-img" />
               </div>
-              <div class="tui-key-hints">
-                <span><kbd>[Tab]</kbd> Switch Mode</span>
-                <span><kbd>[Click]</kbd> Inspect Entity</span>
-                <span><kbd>[2x Click]</kbd> Dispatch Walk</span>
+              <div class="vertical-card-body">
+                <h4 class="vertical-card-title">[2] Cafes &amp; Bakeries</h4>
+                <p class="vertical-card-desc">Table occupancy tracking, queue bottlenecks, barista stamina during morning rush hours.</p>
+                <div class="vertical-card-tags">
+                  <span class="v-tag">POS Integration</span>
+                  <span class="v-tag">Table Density</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="vertical-card" onclick="switchSpaceTab('mart', document.querySelectorAll('.showcase-tab-btn')[2])">
+              <div class="vertical-thumb-wrap">
+                <img src="/assets/mart.jpg" alt="Supermarket Mart" class="vertical-thumb-img" />
+              </div>
+              <div class="vertical-card-body">
+                <h4 class="vertical-card-title">[3] Retail &amp; Marts</h4>
+                <p class="vertical-card-desc">Checkout lane congestion, cold-chain temperature telemetry, and foot-traffic density heatmaps.</p>
+                <div class="vertical-card-tags">
+                  <span class="v-tag">Inventory Alerts</span>
+                  <span class="v-tag">Checkout Flow</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="vertical-card" onclick="switchSpaceTab('gym', document.querySelectorAll('.showcase-tab-btn')[3])">
+              <div class="vertical-thumb-wrap">
+                <img src="/assets/gym.jpg" alt="Fitness Gym" class="vertical-thumb-img" />
+              </div>
+              <div class="vertical-card-body">
+                <h4 class="vertical-card-title">[4] Fitness &amp; Studios</h4>
+                <p class="vertical-card-desc">Cardio and strength equipment utilization, locker room occupancy, and trainer schedules.</p>
+                <div class="vertical-card-tags">
+                  <span class="v-tag">IoT Wristbands</span>
+                  <span class="v-tag">Capacity Sync</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1599,7 +1889,7 @@
                 </li>
               </ul>
 
-              <a href="https://github.com" target="_blank" class="btn-secondary pricing-cta">
+              <a href="https://github.com/fiboboy/u-hackathon2026" target="_blank" class="btn-secondary pricing-cta">
                 <span>[★ Clone Open Core]</span>
               </a>
             </div>
@@ -1868,10 +2158,10 @@ via Telegram, and light up Room 1 for service."</code></pre>
 
           <ul class="footer-nav-grid">
             <li><a href="/demo">[Live Demo Sandbox]</a></li>
-            <li><a href="#capabilities">[Live vs Roadmap]</a></li>
+            <li><a href="#twins">[Business Showcase]</a></li>
             <li><a href="#pricing">[Pricing Tiers]</a></li>
             <li><a href="#mcp">[MCP Tool Specification]</a></li>
-            <li><a href="https://github.com" target="_blank">[GitHub Open Core]</a></li>
+            <li><a href="https://github.com/fiboboy/u-hackathon2026" target="_blank">[GitHub Open Core]</a></li>
           </ul>
         </div>
 
@@ -1884,14 +2174,16 @@ via Telegram, and light up Room 1 for service."</code></pre>
   </div>
 
   <script>
-    // Tab switcher in Hero TUI Showcase
-    function switchTuiTab(tabName, btn) {
-      document.querySelectorAll('.tui-tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tui-tab-panel').forEach(p => p.classList.remove('active'));
+    // Tab switcher in Multi-Industry Twin Showcase
+    function switchSpaceTab(spaceId, button) {
+      document.querySelectorAll('.showcase-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.showcase-stage-panel').forEach(panel => panel.classList.remove('active'));
 
-      btn.classList.add('active');
-      const panel = document.getElementById('tui-tab-' + tabName);
-      if (panel) panel.classList.add('active');
+      button.classList.add('active');
+      const targetPanel = document.getElementById('space-panel-' + spaceId);
+      if (targetPanel) {
+        targetPanel.classList.add('active');
+      }
     }
 
     // FAQ Accordion
