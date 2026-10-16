@@ -165,6 +165,52 @@ export class SoundManager {
     osc.start(now);
     osc.stop(now + 0.2);
   }
+
+  // 7. Messenger Dispatch Ping (Telegram / LINE / WhatsApp Outbound)
+  public playMessageSent() {
+    if (!this.enabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    // Upward cheerful two-tone ping (C6 -> G6)
+    [1046.50, 1567.98].forEach((freq, idx) => {
+      const t = now + idx * 0.07;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.14, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.28);
+    });
+  }
+
+  // 8. Staff Reply Incoming Pop (Inbound response from employee)
+  public playMessageReply() {
+    if (!this.enabled) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    // Soft triple chime (E6 -> G6 -> C7)
+    [1318.51, 1567.98, 2093.00].forEach((freq, idx) => {
+      const t = now + idx * 0.06;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.12, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.38);
+    });
+  }
 }
 
 export const soundManager = new SoundManager();

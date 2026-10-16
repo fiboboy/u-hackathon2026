@@ -43,6 +43,7 @@ export class EntityInspector {
   public onDeleteRequested?: (entityId: string) => void;
   public onWalkRequested?: (entityId: string, x: number, y: number) => void;
   public onActionToast?: (icon: string, message: string) => void;
+  public onOpenStaffMessenger?: (staffId: string) => void;
 
   // Curated CRM Client Database for Spa Guests
   private static readonly CLIENT_DATABASE: Record<string, ClientCrmProfile> = {
@@ -581,6 +582,9 @@ export class EntityInspector {
 
       <!-- Staff Actions -->
       <div class="inspector-actions">
+        <button class="btn-insp btn-insp-msg" id="btn-staff-messenger" title="Send direct message to therapist via Telegram, LINE or WhatsApp">
+          [💬] Send Messenger Ping
+        </button>
         <button class="btn-insp" id="btn-send-break" title="Direct therapist to the tea table for stamina recovery">
           [☕] Send to Break
         </button>
@@ -606,6 +610,10 @@ export class EntityInspector {
         <button class="btn-insp" data-walk-x="145" data-walk-y="95">[&gt;] Room #3</button>
       </div>
     `;
+
+    document.getElementById("btn-staff-messenger")?.addEventListener("click", () => {
+      this.onOpenStaffMessenger?.(entity.id);
+    });
 
     document.getElementById("btn-send-break")?.addEventListener("click", () => {
       this.onWalkRequested?.(entity.id, -145, 185);

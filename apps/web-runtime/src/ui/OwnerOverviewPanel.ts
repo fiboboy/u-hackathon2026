@@ -32,6 +32,7 @@ export class OwnerOverviewPanel {
   public onSelectStation?: (stationId: string) => void;
   public onSelectStaff?: (staffId: string) => void;
   public onOpenAiModal?: () => void;
+  public onOpenStaffMessenger?: (staffId?: string) => void;
 
   constructor() {
     this.initElements();
@@ -45,6 +46,10 @@ export class OwnerOverviewPanel {
 
     document.getElementById("btn-owner-add-equipment")?.addEventListener("click", () => {
       this.onOpenAiModal?.();
+    });
+
+    document.getElementById("btn-owner-open-messenger")?.addEventListener("click", () => {
+      this.onOpenStaffMessenger?.();
     });
 
     this.renderDefaultData();
@@ -328,12 +333,29 @@ export class OwnerOverviewPanel {
       left.appendChild(avatarBox);
       left.appendChild(info);
 
+      const rightWrap = document.createElement("div");
+      rightWrap.style.display = "flex";
+      rightWrap.style.alignItems = "center";
+      rightWrap.style.gap = "4px";
+
       const badge = document.createElement("span");
       badge.className = `owner-row-badge ${s.status === "treating" ? "badge-in-use" : s.status === "break" ? "badge-busy" : "badge-ready"}`;
       badge.textContent = s.badgeText;
+      rightWrap.appendChild(badge);
+
+      const msgBtn = document.createElement("button");
+      msgBtn.className = "owner-staff-msg-btn";
+      msgBtn.title = `Message ${s.name} in Telegram / LINE / WhatsApp`;
+      msgBtn.textContent = "[💬]";
+      msgBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        soundManager.playAction("tap");
+        this.onOpenStaffMessenger?.(s.entityId || s.id);
+      });
+      rightWrap.appendChild(msgBtn);
 
       row.appendChild(left);
-      row.appendChild(badge);
+      row.appendChild(rightWrap);
 
       row.addEventListener("click", () => {
         soundManager.playAction("tap");

@@ -11,6 +11,7 @@ import { OwnerOverviewPanel } from "./ui/OwnerOverviewPanel.js";
 import { aiOwnerChatWidget } from "./ui/AiOwnerChatWidget.js";
 import { spatialRuntimeDispatcher } from "./services/SpatialRuntimeDispatcher.js";
 import { voiceAgentService } from "./services/VoiceAgentService.js";
+import { StaffMessengerModal, DispatchEvent } from "./ui/StaffMessengerModal.js";
 
 window.addEventListener("DOMContentLoaded", () => {
   const gameContainer = document.getElementById("game-container");
@@ -41,6 +42,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const assetDrawer = new AssetStudioDrawer();
   const aiModal = new AiAssetCreatorModal();
   const ownerPanel = new OwnerOverviewPanel();
+  const staffMessenger = new StaffMessengerModal();
 
   // Mode Switcher: Builder Mode vs Owner Mode
   const btnModeBuilder = document.getElementById("btn-mode-builder");
@@ -141,12 +143,41 @@ window.addEventListener("DOMContentLoaded", () => {
   // Module 1 & 2 triggers
   assetDrawer.onOpenAiModal = () => aiModal.open();
   ownerPanel.onOpenAiModal = () => aiModal.open();
+  ownerPanel.onOpenStaffMessenger = (staffId) => staffMessenger.open(staffId);
+  inspector.onOpenStaffMessenger = (staffId) => staffMessenger.open(staffId);
   document.getElementById("btn-open-ai-creator")?.addEventListener("click", () => aiModal.open());
   document.getElementById("btn-owner-open-chat")?.addEventListener("click", () => aiOwnerChatWidget.toggleChat(true));
+  document.getElementById("btn-open-staff-messenger")?.addEventListener("click", () => staffMessenger.open());
 
   (window as any).__AI_CHAT_WIDGET__ = aiOwnerChatWidget;
   (window as any).__SPATIAL_DISPATCHER__ = spatialRuntimeDispatcher;
   (window as any).__VOICE_AGENT__ = voiceAgentService;
+  (window as any).__STAFF_MESSENGER__ = staffMessenger;
+
+  // Module 5: Staff Messenger Multi-Channel Dispatch (Telegram / LINE / WhatsApp)
+  staffMessenger.onMessageDispatched = (event: DispatchEvent) => {
+    const dioramaScene = game.scene.getScene("DioramaScene") as DioramaScene;
+    if (dioramaScene) {
+      const channelBadge = event.channel === "telegram" ? "[TG]" : event.channel === "line" ? "[LINE]" : "[WA]";
+      // 1. Show outbound text bubble over staff member on 2.5D diorama
+      dioramaScene.hudLayer.showTextBubble(event.staffId, `${channelBadge} → ${event.staffName.split(" ")[0]}:`, event.text, 4500, false);
+      demoPanel.showToast(channelBadge, `Dispatched to ${event.staffName} via ${event.channel.toUpperCase()} [200 OK]`, 3000);
+
+      // 2. If it's a tea break prompt, send character to tea lounge and restore stamina!
+      if (event.isBreakPrompt) {
+        setTimeout(() => {
+          dioramaScene.commandCharacterWalk(event.staffId, -145, 185);
+          dioramaScene.hudLayer.updateStaminaBar(event.staffId, 85);
+          demoPanel.showToast("🍵", `${event.staffName} proceeding to Tea Lounge for recovery break`, 3200);
+        }, 1200);
+      }
+
+      // 3. Simulate employee reaction bubble on diorama 2.4s later
+      setTimeout(() => {
+        dioramaScene.hudLayer.showTextBubble(event.staffId, `[${event.staffName.split(" ")[0]}]:`, event.replyText.split("(")[0].trim(), 5000, true);
+      }, 2400);
+    }
+  };
 
   // Module 2 & 3: AI Asset creation -> In-canvas scaffolding and hot-reload texture replacement
   aiModal.onApplyRequested = async (asset: GeneratedAsset) => {

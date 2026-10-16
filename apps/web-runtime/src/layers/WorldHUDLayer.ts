@@ -240,6 +240,99 @@ export class WorldHUDLayer {
     });
   }
 
+  /**
+   * Display dynamic staff messenger speech bubble above 2.5D character
+   */
+  public showTextBubble(entityId: string, channelTag: string, text: string, durationMs = 5000, isReply = false) {
+    const existing = this.activeBubbles.get(entityId);
+    if (existing) {
+      existing.destroy();
+      this.activeBubbles.delete(entityId);
+    }
+
+    const pos = this.baseLayer.getEntityPosition(entityId) || { x: -135, y: 152 };
+    const bubbleX = pos.x;
+    const bubbleY = pos.y - 78;
+
+    const c = this.scene.add.container(bubbleX, bubbleY);
+    c.setDepth(21500);
+
+    const cleanText = text.length > 34 ? text.substring(0, 32) + "..." : text;
+    const fullLabel = `${channelTag} ${cleanText}`;
+    const boxWidth = Math.max(130, Math.min(240, fullLabel.length * 6.4 + 20));
+    const boxHeight = 26;
+
+    // Resolve border color based on channel or reply
+    let borderColor = 0x0088cc; // Telegram default
+    const tagUpper = channelTag.toUpperCase();
+    if (tagUpper.includes("LINE")) {
+      borderColor = 0x06c755;
+    } else if (tagUpper.includes("WA") || tagUpper.includes("WHATSAPP")) {
+      borderColor = 0x25d366;
+    } else if (isReply || tagUpper.includes("SOMCHAI") || tagUpper.includes("KEN") || tagUpper.includes("YUKI") || tagUpper.includes("LIN")) {
+      borderColor = 0xff9f0a; // Staff warm amber reply
+    }
+
+    const bg = this.scene.add.graphics();
+    bg.fillStyle(0x201d1d, 0.96);
+    bg.lineStyle(1.5, borderColor, 1.0);
+
+    // Pill body
+    bg.fillRoundedRect(-boxWidth / 2, -boxHeight / 2, boxWidth, boxHeight, 4);
+    bg.strokeRoundedRect(-boxWidth / 2, -boxHeight / 2, boxWidth, boxHeight, 4);
+
+    // Little downward speech triangle pointer
+    bg.fillStyle(0x201d1d, 0.96);
+    bg.beginPath();
+    bg.moveTo(-5, boxHeight / 2);
+    bg.lineTo(0, boxHeight / 2 + 5);
+    bg.lineTo(5, boxHeight / 2);
+    bg.closePath();
+    bg.fillPath();
+
+    bg.lineStyle(1.5, borderColor, 1.0);
+    bg.beginPath();
+    bg.moveTo(-5, boxHeight / 2);
+    bg.lineTo(0, boxHeight / 2 + 5);
+    bg.lineTo(5, boxHeight / 2);
+    bg.strokePath();
+
+    c.add(bg);
+
+    const label = this.scene.add.text(0, 0, fullLabel, {
+      fontSize: "9px",
+      fontFamily: "'Berkeley Mono', 'JetBrains Mono', monospace",
+      color: isReply ? "#ff9f0a" : "#fdfcfc",
+      fontStyle: "bold"
+    }).setOrigin(0.5, 0.5);
+    c.add(label);
+
+    c.setScale(0);
+    this.container.add(c);
+    this.activeBubbles.set(entityId, c);
+
+    this.scene.tweens.add({
+      targets: c,
+      scale: 1.0,
+      y: bubbleY - 4,
+      duration: 250,
+      ease: "Back.easeOut",
+      onComplete: () => {
+        this.scene.tweens.add({
+          targets: c,
+          alpha: 0,
+          scale: 0.8,
+          delay: durationMs,
+          duration: 220,
+          onComplete: () => {
+            c.destroy();
+            this.activeBubbles.delete(entityId);
+          }
+        });
+      }
+    });
+  }
+
   public removeAll() {
     for (const t of this.activeTimers.values()) t.destroy();
     for (const b of this.activeStaminaBars.values()) b.destroy();
