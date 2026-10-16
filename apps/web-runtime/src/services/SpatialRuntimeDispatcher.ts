@@ -1,5 +1,6 @@
 import { soundManager } from "./SoundManager.js";
 import { mcpConsole } from "../ui/McpConsole.js";
+import { voiceAgentService } from "./VoiceAgentService.js";
 
 export interface ZoneRule {
   zoneId: string;
@@ -111,11 +112,10 @@ export class SpatialRuntimeDispatcher {
   }
 
   private initDefaultState() {
-    // Default initial SLA rules
     this.zoneRules.set("waiting_lounge", {
       zoneId: "waiting_lounge",
       maxWaitMinutes: 25,
-      alertThresholdMinutes: 10,
+      alertThresholdMinutes: 20,
       updatedAt: Date.now()
     });
     this.zoneRules.set("reception", {
@@ -131,7 +131,6 @@ export class SpatialRuntimeDispatcher {
       updatedAt: Date.now()
     });
 
-    // Default telemetry bindings
     this.zoneBindings.set("reception", {
       zoneId: "reception",
       sourceType: "moysklad",
@@ -145,7 +144,6 @@ export class SpatialRuntimeDispatcher {
       updatedAt: Date.now()
     });
 
-    // Default furniture states
     this.furnitureStates.set("suite_aromatherapy:aromatherapy_diffuser", {
       zoneId: "suite_aromatherapy",
       itemType: "aromatherapy_diffuser",
@@ -155,19 +153,20 @@ export class SpatialRuntimeDispatcher {
   }
 
   private bindWindowEvents() {
-    // 1. Listen for rule updates
     window.addEventListener("spatialtwin:update_rule", ((e: CustomEvent) => {
       this.handleUpdateRule(e.detail);
     }) as EventListener);
 
-    // 2. Listen for telemetry stream bindings
     window.addEventListener("spatialtwin:bind_stream", ((e: CustomEvent) => {
       this.handleBindStream(e.detail);
     }) as EventListener);
 
-    // 3. Listen for furniture toggles
     window.addEventListener("spatialtwin:toggle_furniture", ((e: CustomEvent) => {
       this.handleToggleFurniture(e.detail);
+    }) as EventListener);
+
+    window.addEventListener("spatialtwin:sla_alert", ((e: CustomEvent) => {
+      this.triggerSlaViolationAlert(e.detail?.zoneId || "waiting_lounge", e.detail?.minutes || 20);
     }) as EventListener);
   }
 
@@ -179,7 +178,7 @@ export class SpatialRuntimeDispatcher {
     return null;
   }
 
-  public showToast(icon: string, message: string, duration = 3200) {
+  public showToast(icon: string, message: string, duration = 3400) {
     const toastEl = document.getElementById("toast-notification");
     const toastTextEl = document.getElementById("toast-text");
     const toastIconEl = document.getElementById("toast-icon");
@@ -191,8 +190,8 @@ export class SpatialRuntimeDispatcher {
     }
   }
 
-  public handleUpdateRule(detail: { zoneId: string; maxWaitMinutes?: number; alertThresholdMinutes?: number }) {
-    const { zoneId, maxWaitMinutes, alertThresholdMinutes } = detail;
+  public handleUpdateRule(detail: { zoneId: string; maxWaitMinutes?: number; alertThresholdMinutes?: number; triggerVoiceAnnouncement?: boolean }) {
+    const { zoneId, maxWaitMinutes, alertThresholdMinutes, triggerVoiceAnnouncement = true } = detail;
     const existing = this.zoneRules.get(zoneId) || { zoneId, updatedAt: Date.now() };
 
     if (typeof maxWaitMinutes === "number") existing.maxWaitMinutes = maxWaitMinutes;
@@ -200,7 +199,6 @@ export class SpatialRuntimeDispatcher {
     existing.updatedAt = Date.now();
     this.zoneRules.set(zoneId, existing);
 
-    // Terminal MCP Log
     mcpConsole.logMcpIn("updateZoneRule", {
       zoneId,
       maxWaitMinutes: existing.maxWaitMinutes,
@@ -210,11 +208,9 @@ export class SpatialRuntimeDispatcher {
     const scene = this.getDioramaScene();
     const zoneMeta = SALON_ZONES[zoneId] || { worldX: -180, worldY: 125, name: zoneId };
 
-    // Visual Scene Reactions
     if (scene && scene.particleLayer) {
       if (zoneId === "waiting_lounge") {
-        // "Сделай так, чтобы после 20 минут над клиентом на диване появлялся пар"
-        scene.particleLayer.spawnSteam(zoneMeta.worldX, zoneMeta.worldY, 6);
+        scene.particleLayer.spawnSteam(zoneMeta.worldX, zoneMeta.worldY, 7);
         soundManager.playAlertChime();
       } else if (zoneId === "suite_onsen") {
         scene.particleLayer.spawnSteam(zoneMeta.worldX, zoneMeta.worldY, 6);
@@ -236,8 +232,98 @@ export class SpatialRuntimeDispatcher {
       }
     });
 
-    const thresholdText = existing.alertThresholdMinutes ? `Alert at ${existing.alertThresholdMinutes}m` : `Max wait ${existing.maxWaitMinutes}m`;
+    const thresholdText = existing.alertThresholdMinutes ? `Alert at ${existing.alertThresholdMinutes}m` : `Max wait: ${existing.maxWaitMinutes}m`;
     this.showToast("[★]", `SLA Rule Updated: [${zoneMeta.name}] -> ${thresholdText}`, 3200);
+
+    if (triggerVoiceAnnouncement && existing.alertThresholdMinutes) {
+      const voiceText = `SLA threshold for ${zoneMeta.name} is now calibrated to ${existing.alertThresholdMinutes} minutes.`;
+      voiceAgentService.speak({
+        text: voiceText,
+        speaker: "receptionist",
+        speakerName: "Receptionist Lin"
+      });
+    }
+  }
+
+  public triggerSlaViolationAlert(zoneId = "waiting_lounge", minutes = 20) {
+    const zoneMeta = SALON_ZONES[zoneId] || { worldX: -180, worldY: 125, name: "Waiting Lounge" };
+    const scene = this.getDioramaScene();
+
+    soundManager.playAlertChime();
+
+    if (scene && scene.particleLayer) {
+      scene.particleLayer.spawnSteam(zoneMeta.worldX, zoneMeta.worldY, 8);
+    }
+
+    if (scene && scene.centerCameraOnEntity) {
+      scene.centerCameraOnEntity("sofa_armchair_01");
+    }
+
+    const alertSpeech = `Attention: Guest in waiting lounge has been waiting for ${minutes} minutes, exceeding SLA threshold. Master Somchai is completing suite preparation.`;
+
+    voiceAgentService.speak({
+      text: alertSpeech,
+      speaker: "receptionist",
+      speakerName: "Receptionist Lin (ElevenLabs)",
+      priority: "urgent"
+    });
+
+    mcpConsole.logMcpIn("triggerSlaAlert", { zoneId, minutes, guest: "Kenji Sato" });
+    mcpConsole.logMcpOut("triggerSlaAlert", {
+      status: "VOICE_ANNOUNCED",
+      audioEngine: voiceAgentService.hasApiKey() ? "ElevenLabs Neural Streaming" : "WebSpeechFallback"
+    });
+
+    this.showToast("[🚨]", `SLA ALERT: Guest in tea lounge waiting ${minutes}m!`, 4500);
+  }
+
+  public querySalonRevenue(): { revenue: number; currency: string; occupancyPct: number; sessionsCount: number; formattedText: string } {
+    const scene = this.getDioramaScene();
+    soundManager.playCoinChime();
+
+    if (scene && scene.centerCameraOnEntity) {
+      scene.centerCameraOnEntity("cash_chest_01");
+    }
+
+    const data = {
+      revenue: 14500,
+      currency: "THB (฿)",
+      occupancyPct: 80,
+      sessionsCount: 18,
+      formattedText: "Today's revenue is ฿14,500 across 18 sessions with 80% room occupancy."
+    };
+
+    mcpConsole.logMcpIn("querySalonRevenue", {});
+    mcpConsole.logMcpOut("querySalonRevenue", data);
+    this.showToast("[฿]", `Today Revenue: ฿14,500 | Occupancy: 80%`, 3500);
+
+    return data;
+  }
+
+  public sendStaffOnBreak(staffId = "master_somchai", durationMinutes = 15): { staffId: string; status: string; destination: string; message: string } {
+    const scene = this.getDioramaScene();
+    soundManager.playZenChime();
+
+    if (scene) {
+      if (scene.sendStaffToBreak) {
+        scene.sendStaffToBreak(staffId);
+      } else if (scene.centerCameraOnEntity) {
+        scene.centerCameraOnEntity("sofa_armchair_01");
+      }
+    }
+
+    const result = {
+      staffId,
+      status: "TEA_BREAK",
+      destination: "waiting_lounge",
+      message: `Master Somchai has been dispatched on a ${durationMinutes}-minute tea break to the waiting lounge.`
+    };
+
+    mcpConsole.logMcpIn("sendStaffOnBreak", { staffId, durationMinutes });
+    mcpConsole.logMcpOut("sendStaffOnBreak", result);
+    this.showToast("[🍵]", `Master Somchai: [TEA BREAK · ${durationMinutes} min]`, 3500);
+
+    return result;
   }
 
   public handleBindStream(detail: { zoneId: string; sourceType: "google_sheets" | "telegram" | "moysklad" | "yclients"; targetField: string }) {
@@ -271,7 +357,7 @@ export class SpatialRuntimeDispatcher {
       targetField
     });
 
-    this.showToast("[~]", `Telemetry Linked: [${zoneMeta.name}] listening to ${sourceType.toUpperCase()} (${targetField})`, 3400);
+    this.showToast("[~]", `Telemetry Linked: [${zoneMeta.name}] -> ${sourceType.toUpperCase()} (${targetField})`, 3400);
   }
 
   public handleToggleFurniture(detail: { zoneId: string; itemType: string; enabled: boolean }) {
@@ -304,7 +390,7 @@ export class SpatialRuntimeDispatcher {
       itemType
     });
 
-    this.showToast("[#]", `Furniture State: [${itemType}] in ${zoneMeta.name} is now ${enabled ? "ONLINE" : "OFFLINE"}`, 2800);
+    this.showToast("[#]", `Furniture: [${itemType}] in ${zoneMeta.name} is now ${enabled ? "ONLINE" : "OFFLINE"}`, 2800);
   }
 
   public getStateSnapshot() {
@@ -324,6 +410,8 @@ export class SpatialRuntimeDispatcher {
 
     return {
       salonTitle: "SpatialTwin Zen Massage & Onsen Spa (Bangkok RCA)",
+      todayRevenue: "฿14,500",
+      activeGuests: 3,
       zones,
       furniture: Array.from(this.furnitureStates.entries()).map(([k, v]) => ({ key: k, item: v.itemType, zone: v.zoneId, active: v.enabled }))
     };

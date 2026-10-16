@@ -10,7 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^4.0.94",
+    "@elevenlabs/client": "^1.28.0",
     "@spatialtwin/core-schema": "workspace:*",
+    "ai": "^7.0.141",
     "phaser": "^3.87.0",
     "zod": "^3.25.76"
   },
